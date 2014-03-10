@@ -1691,6 +1691,12 @@ offsets = {
     "VertexAttribs4hvNV": 1655,
     "TexPageCommitmentEXT": 1656,
     "TexturePageCommitmentEXT" : 1657,
+    "CurrentPaletteMatrixOES" : 1658,
+    "LoadPaletteFromModelViewMatrixOES" : 1659,
+    "MatrixIndexPointerOES" : 1660,
+    "WeightPointerOES" : 1661,
+    "RenderbufferStorageMultisampleIMG" : 1662,
+    "FramebufferTexture2DMultisampleIMG" : 1663,
 }
 
 functions = [
