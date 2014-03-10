@@ -1706,6 +1706,21 @@ offsets = {
     "FramebufferTextureMultisampleMultiviewOVR" : 1670,
     "MultiDrawArraysIndirectEXT" : 1671,
     "MultiDrawElementsIndirectEXT" : 1672,
+    "IsRenderbufferEXT" : 1673,
+    "DeleteRenderbuffersEXT" : 1674,
+    "GenRenderbuffersEXT" : 1675,
+    "RenderbufferStorageEXT" : 1676,
+    "GetRenderbufferParameterivEXT" : 1677,
+    "IsFramebufferEXT" : 1678,
+    "DeleteFramebuffersEXT" : 1679,
+    "GenFramebuffersEXT" : 1680,
+    "CheckFramebufferStatusEXT" : 1681,
+    "FramebufferTexture1DEXT" : 1682,
+    "FramebufferTexture2DEXT" : 1683,
+    "FramebufferTexture3DEXT" : 1684,
+    "FramebufferRenderbufferEXT" : 1685,
+    "GetFramebufferAttachmentParameterivEXT" : 1686,
+    "GenerateMipmapEXT" : 1687,
 }
 
 functions = [
