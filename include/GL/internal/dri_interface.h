@@ -1831,6 +1831,19 @@ struct __DRIimageExtensionRec {
                                             const unsigned int modifier_count,
                                             unsigned int use,
                                             void *loaderPrivate);
+
+   /**
+    * Support for experimental EGL_CL_IMAGE_IMG.
+    * Like createImageFromTexture, but from a buffer, the contents
+    * of which depend on the target.
+    *
+    * \since 8
+    */
+   __DRIimage *(*createImageFromBuffer)(__DRIcontext *context,
+                                        int target,
+                                        void *buffer,
+                                        unsigned *error,
+                                        void *loaderPrivate);
 };
 
 
