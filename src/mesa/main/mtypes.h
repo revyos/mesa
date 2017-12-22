@@ -158,6 +158,7 @@ _mesa_varying_slot_in_fs(gl_varying_slot slot)
  */
 struct gl_config
 {
+   GLboolean rgbMode;
    GLboolean floatMode;
    GLuint doubleBufferMode;
    GLuint stereoMode;
@@ -179,6 +180,14 @@ struct gl_config
 
    /* EXT_framebuffer_sRGB */
    GLint sRGBCapable;
+
+   /* EXT_yuv_surface */
+   GLint YUVOrder;
+   GLint YUVNumberOfPlanes;
+   GLint YUVSubsample;
+   GLint YUVDepthRange;
+   GLint YUVCSCStandard;
+   GLint YUVPlaneBPP;
 };
 
 
