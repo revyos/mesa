@@ -1581,6 +1581,11 @@ if with_gallium_etnaviv
   _drm_ver = '2.4.89'
 endif
 
+# platform_null relies on DRM format-modifier iterators available since 2.4.108
+if with_platform_null
+  _drm_ver = '2.4.108'
+endif
+
 # Loop over the enables versions and get the highest libdrm requirement for all
 # active drivers.
 _drm_blame = ''
