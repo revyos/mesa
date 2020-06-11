@@ -110,7 +110,7 @@ subdir('loader')
 if with_platform_haiku
   subdir('hgl')
 endif
-if with_glx == 'dri'
+if with_glx == 'dri' or with_glx == 'null'
   subdir('glx')
 endif
 if with_gbm
