@@ -1315,6 +1315,7 @@ x11_image_init(VkDevice device_h, struct x11_swapchain *chain,
    } else {
       result = wsi_create_native_image(&chain->base, pCreateInfo,
                                        num_tranches, num_modifiers, modifiers,
+                                       chain->base.wsi->sw,
                                        &image->base);
    }
    if (result < 0)
