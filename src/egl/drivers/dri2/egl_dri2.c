@@ -1367,6 +1367,16 @@ dri2_display_destroy(_EGLDisplay *disp)
       break;
    }
 
+   switch (disp->Platform) {
+   case _EGL_PLATFORM_WAYLAND:
+   case _EGL_PLATFORM_X11:
+      if (dri2_dpy->fd_dpy >= 0 && dri2_dpy->fd_dpy != dri2_dpy->fd)
+         close(dri2_dpy->fd_dpy);
+      break;
+   default:
+      break;
+   }
+
    if (dri2_dpy->fd >= 0)
       close(dri2_dpy->fd);
 
