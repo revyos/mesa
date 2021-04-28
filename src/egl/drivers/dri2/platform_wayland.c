@@ -695,7 +695,7 @@ get_back_bo(struct dri2_egl_surface *dri2_surf)
       use_flags |= __DRI_IMAGE_USE_PROTECTED;
    }
 
-   if (dri2_dpy->is_different_gpu &&
+   if (dri2_dpy->is_different_gpu && !num_modifiers &&
        dri2_surf->back->linear_copy == NULL) {
       /* The LINEAR modifier should be a perfect alias of the LINEAR use
        * flag; try the new interface first before the old, then fall back. */
@@ -811,7 +811,7 @@ update_buffers(struct dri2_egl_display *dri2_dpy,
           dri2_surf->color_buffers[i].wl_buffer) {
          wl_buffer_destroy(dri2_surf->color_buffers[i].wl_buffer);
          dri2_dpy->image->destroyImage(dri2_surf->color_buffers[i].dri_image);
-         if (dri2_dpy->is_different_gpu)
+         if (dri2_surf->color_buffers[i].linear_copy)
             dri2_dpy->image->destroyImage(dri2_surf->color_buffers[i].linear_copy);
          dri2_surf->color_buffers[i].wl_buffer = NULL;
          dri2_surf->color_buffers[i].dri_image = NULL;
@@ -1247,7 +1247,7 @@ dri2_wl_swap_buffers_with_damage(_EGLDisplay *disp,
    if (!dri2_surf->current->wl_buffer) {
       __DRIimage *image;
 
-      if (dri2_dpy->is_different_gpu)
+      if (dri2_surf->current->linear_copy)
          image = dri2_surf->current->linear_copy;
       else
          image = dri2_surf->current->dri_image;
@@ -1281,7 +1281,7 @@ dri2_wl_swap_buffers_with_damage(_EGLDisplay *disp,
 
    dri2_flush_drawable_for_swapbuffers(disp, draw);
 
-   if (dri2_dpy->is_different_gpu) {
+   if (dri2_surf->current->linear_copy) {
       _EGLContext *ctx = _eglGetCurrentContext();
       struct dri2_egl_context *dri2_ctx = dri2_egl_context(ctx);
       dri2_dpy->image->blitImage(dri2_ctx->dri_context,
