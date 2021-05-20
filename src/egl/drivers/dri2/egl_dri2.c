@@ -1368,6 +1368,7 @@ dri2_display_destroy(_EGLDisplay *disp)
    }
 
    switch (disp->Platform) {
+   case _EGL_PLATFORM_DRM:
    case _EGL_PLATFORM_WAYLAND:
    case _EGL_PLATFORM_X11:
       if (dri2_dpy->fd_dpy >= 0 && dri2_dpy->fd_dpy != dri2_dpy->fd)
@@ -3943,6 +3944,15 @@ dri2_bind_wayland_display_wl(_EGLDisplay *disp, struct wl_display *wl_dpy)
        dri2_dpy->image->base.version >= 7 &&
        dri2_dpy->image->createImageFromFds != NULL)
       flags |= WAYLAND_DRM_PRIME;
+   else if (dri2_dpy->image->base.version >= 10 &&
+            dri2_dpy->image->getCapabilities != NULL) {
+         int capabilities;
+
+         capabilities = dri2_dpy->image->getCapabilities(dri2_dpy->dri_screen);
+         if ((capabilities & __DRI_IMAGE_CAP_PRIME_IMPORT) != 0 &&
+             (capabilities & __DRI_IMAGE_CAP_PRIME_EXPORT) != 0)
+            flags |= WAYLAND_DRM_PRIME;
+   }
 
    dri2_dpy->wl_server_drm =
            wayland_drm_init(wl_dpy, device_name,
