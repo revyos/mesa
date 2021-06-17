@@ -1303,7 +1303,8 @@ x11_image_init(VkDevice device_h, struct x11_swapchain *chain,
                const VkAllocationCallbacks* pAllocator,
                const uint64_t *const *modifiers,
                const uint32_t *num_modifiers,
-               int num_tranches, struct x11_image *image)
+               int num_tranches, int display_fd,
+               struct x11_image *image)
 {
    xcb_void_cookie_t cookie;
    VkResult result;
@@ -1311,11 +1312,12 @@ x11_image_init(VkDevice device_h, struct x11_swapchain *chain,
 
    if (chain->base.use_prime_blit) {
       bool use_modifier = num_tranches > 0;
-      result = wsi_create_prime_image(&chain->base, pCreateInfo, use_modifier, &image->base);
+      result = wsi_create_prime_image(&chain->base, pCreateInfo, use_modifier,
+                                      display_fd, &image->base);
    } else {
       result = wsi_create_native_image(&chain->base, pCreateInfo,
                                        num_tranches, num_modifiers, modifiers,
-                                       chain->base.wsi->sw,
+                                       chain->base.wsi->sw, display_fd,
                                        &image->base);
    }
    if (result < 0)
@@ -1687,14 +1689,34 @@ x11_surface_create_swapchain(VkIcdSurfaceBase *icd_surface,
                                  modifiers, num_modifiers, &num_tranches,
                                  pAllocator);
 
+
    uint32_t image = 0;
-   for (; image < chain->base.image_count; image++) {
-      result = x11_image_init(device, chain, pCreateInfo, pAllocator,
-                              (const uint64_t *const *)modifiers,
-                              num_modifiers, num_tranches,
-                              &chain->images[image]);
-      if (result != VK_SUCCESS)
-         goto fail_init_images;
+   {
+      int display_fd = -1;
+
+      if (!wsi_device->sw) {
+         xcb_screen_iterator_t screen_iter =
+            xcb_setup_roots_iterator(xcb_get_setup(conn));
+         xcb_screen_t *screen = screen_iter.data;
+
+         display_fd = wsi_dri3_open(conn, screen->root, None);
+      }
+
+      for (; image < chain->base.image_count; image++) {
+         result = x11_image_init(device, chain, pCreateInfo, pAllocator,
+                                 (const uint64_t *const *)modifiers,
+                                 num_modifiers, num_tranches,
+                                 display_fd, &chain->images[image]);
+         if (result != VK_SUCCESS) {
+            if (display_fd >= 0)
+               close(display_fd);
+
+            goto fail_init_images;
+         }
+      }
+
+      if (display_fd >= 0)
+         close(display_fd);
    }
 
    if ((chain->base.present_mode == VK_PRESENT_MODE_FIFO_KHR ||
