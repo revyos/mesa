@@ -68,6 +68,7 @@ struct wsi_wl_display_dmabuf {
    struct {
       struct u_vector                           argb8888;
       struct u_vector                           xrgb8888;
+      struct u_vector                           rgb565;
    } modifiers;
 };
 
@@ -441,6 +442,9 @@ dmabuf_handle_modifier(void *data, struct zwp_linux_dmabuf_v1 *dmabuf,
    case WL_DRM_FORMAT_XRGB8888:
       modifiers = &display->dmabuf.modifiers.xrgb8888;
       break;
+   case WL_DRM_FORMAT_RGB565:
+      modifiers = &display->dmabuf.modifiers.rgb565;
+      break;
    default:
       return; /* Unsupported format */
    }
@@ -527,6 +531,7 @@ wsi_wl_display_finish(struct wsi_wl_display *display)
    u_vector_finish(&display->dmabuf.formats);
    u_vector_finish(&display->dmabuf.modifiers.argb8888);
    u_vector_finish(&display->dmabuf.modifiers.xrgb8888);
+   u_vector_finish(&display->dmabuf.modifiers.rgb565);
    if (display->swrast.wl_shm)
       wl_shm_destroy(display->swrast.wl_shm);
    if (display->drm.wl_drm)
@@ -563,6 +568,8 @@ wsi_wl_display_init(struct wsi_wayland *wsi_wl,
           !u_vector_init(&display->dmabuf.modifiers.argb8888,
                          sizeof(uint64_t), 32) ||
           !u_vector_init(&display->dmabuf.modifiers.xrgb8888,
+                         sizeof(uint64_t), 32) ||
+          !u_vector_init(&display->dmabuf.modifiers.rgb565,
                          sizeof(uint64_t), 32)) {
          result = VK_ERROR_OUT_OF_HOST_MEMORY;
          goto fail;
@@ -1355,6 +1362,9 @@ wsi_wl_surface_create_swapchain(VkIcdSurfaceBase *icd_surface,
          break;
       case WL_DRM_FORMAT_XRGB8888:
          modifiers = &chain->display->dmabuf.modifiers.xrgb8888;
+         break;
+      case WL_DRM_FORMAT_RGB565:
+         modifiers = &chain->display->dmabuf.modifiers.rgb565;
          break;
       default:
          modifiers = NULL;
