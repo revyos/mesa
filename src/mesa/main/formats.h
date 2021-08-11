@@ -624,6 +624,12 @@ typedef enum pipe_format mesa_format;
 #define HAVE_MESA_FORMAT_YVU420_2PLANE
 #define MESA_FORMAT_YVU420_2PLANE                PIPE_FORMAT_YVU420_2PLANE
 
+#define HAVE_MESA_FORMAT_YUV420_3PLANE
+#define MESA_FORMAT_YUV420_3PLANE                PIPE_FORMAT_YUV420_3PLANE
+
+#define HAVE_MESA_FORMAT_YVU420_3PLANE
+#define MESA_FORMAT_YVU420_3PLANE                PIPE_FORMAT_YVU420_3PLANE
+
 #define MESA_FORMAT_COUNT                        PIPE_FORMAT_COUNT
 
 /* Packed to array format adapters */

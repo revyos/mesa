@@ -118,6 +118,10 @@ PVRDRIMesaFormatToMesaFormat(int pvrdri_mesa_format)
       return MESA_FORMAT_B8G8R8A8_SRGB;
    case PVRDRI_MESA_FORMAT_R8G8B8A8_SRGB:
       return MESA_FORMAT_R8G8B8A8_SRGB;
+   case PVRDRI_MESA_FORMAT_YUV420_3PLANE:
+         return MESA_FORMAT_YUV420_3PLANE;
+   case PVRDRI_MESA_FORMAT_YVU420_3PLANE:
+         return MESA_FORMAT_YVU420_3PLANE;
    default:
       __driUtilMessage("%s: Unknown format: %d", __func__, pvrdri_mesa_format);
       break;
@@ -178,6 +182,11 @@ PVRDRIFormatToFourCC(int dri_format)
       return DRM_FORMAT_NV12;
    case __DRI_IMAGE_FORMAT_NV21:
       return DRM_FORMAT_NV21;
+   case __DRI_IMAGE_FORMAT_YU12:
+      return DRM_FORMAT_YUV420;
+   case __DRI_IMAGE_FORMAT_YV12:
+      return DRM_FORMAT_YVU420;
+
    default:
       __driUtilMessage("%s: Unknown format: %d", __func__, dri_format);
       break;
@@ -238,6 +247,10 @@ PVRDRIFourCCToDRIFormat(int iFourCC)
       return __DRI_IMAGE_FORMAT_NV12;
    case DRM_FORMAT_NV21:
       return __DRI_IMAGE_FORMAT_NV21;
+   case DRM_FORMAT_YUV420:
+      return __DRI_IMAGE_FORMAT_YU12;
+   case DRM_FORMAT_YVU420:
+      return __DRI_IMAGE_FORMAT_YV12;
    default:
       __driUtilMessage("%s: Unknown format: %d", __func__, iFourCC);
       break;

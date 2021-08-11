@@ -330,6 +330,24 @@ driCreateConfigs(mesa_format format,
       yuv_subsample = __DRI_ATTRIB_YUV_SUBSAMPLE_4_2_0_BIT;
       yuv_plane_bpp = __DRI_ATTRIB_YUV_PLANE_BPP_8_BIT;
       break;
+   case MESA_FORMAT_YUV420_3PLANE:
+      masks = format_table[11].masks;
+      shifts = format_table[11].shifts;
+      is_yuv = true; /* FIXME: This should come from formats_info.py */
+      yuv_order = __DRI_ATTRIB_YUV_ORDER_YUV_BIT;
+      yuv_num_planes = 3;
+      yuv_subsample = __DRI_ATTRIB_YUV_SUBSAMPLE_4_2_0_BIT;
+      yuv_plane_bpp = __DRI_ATTRIB_YUV_PLANE_BPP_8_BIT;
+      break;
+   case MESA_FORMAT_YVU420_3PLANE:
+      masks = format_table[11].masks;
+      shifts = format_table[11].shifts;
+      is_yuv = true; /* FIXME: This should come from formats_info.py */
+      yuv_order = __DRI_ATTRIB_YUV_ORDER_YVU_BIT;
+      yuv_num_planes = 3;
+      yuv_subsample = __DRI_ATTRIB_YUV_SUBSAMPLE_4_2_0_BIT;
+      yuv_plane_bpp = __DRI_ATTRIB_YUV_PLANE_BPP_8_BIT;
+      break;
    default:
       fprintf(stderr, "[%s:%u] Unknown framebuffer type %s (%d).\n",
               __func__, __LINE__,

@@ -1455,6 +1455,8 @@ _mesa_format_matches_format_and_type(mesa_format mformat,
    switch (mformat) {
    case MESA_FORMAT_YUV420_2PLANE:
    case MESA_FORMAT_YVU420_2PLANE:
+   case MESA_FORMAT_YUV420_3PLANE:
+   case MESA_FORMAT_YVU420_3PLANE:
       return false;
 
    default:
