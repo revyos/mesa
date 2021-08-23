@@ -107,6 +107,20 @@ static const struct dri2_null_yuv_attrib {
       .num_planes = 2,
       .plane_bpp = __DRI_ATTRIB_YUV_PLANE_BPP_8_BIT,
    },
+   {
+      /* __DRI_IMAGE_FORMAT_YU12 */
+      .order = __DRI_ATTRIB_YUV_ORDER_YUV_BIT,
+      .subsample = __DRI_ATTRIB_YUV_SUBSAMPLE_4_2_0_BIT,
+      .num_planes = 3,
+      .plane_bpp = __DRI_ATTRIB_YUV_PLANE_BPP_8_BIT,
+   },
+   {
+      /* __DRI_IMAGE_FORMAT_YV12 */
+      .order = __DRI_ATTRIB_YUV_ORDER_YVU_BIT,
+      .subsample = __DRI_ATTRIB_YUV_SUBSAMPLE_4_2_0_BIT,
+      .num_planes = 3,
+      .plane_bpp = __DRI_ATTRIB_YUV_PLANE_BPP_8_BIT,
+   },
 };
 
 /*
@@ -161,6 +175,20 @@ static const struct dri2_null_format {
       .rgba_shifts = { -1, -1, -1, -1 },
       .rgba_sizes = { 0, 0, 0, 0 },
       .yuv = &dri2_null_yuv_attribs[2],
+   },
+   {
+      .drm_format = DRM_FORMAT_YUV420,
+      .dri_image_format = __DRI_IMAGE_FORMAT_YU12,
+      .rgba_shifts = { -1, -1, -1, -1 },
+      .rgba_sizes = { 0, 0, 0, 0 },
+      .yuv = &dri2_null_yuv_attribs[3],
+   },
+   {
+      .drm_format = DRM_FORMAT_YVU420,
+      .dri_image_format = __DRI_IMAGE_FORMAT_YV12,
+      .rgba_shifts = { -1, -1, -1, -1 },
+      .rgba_sizes = { 0, 0, 0, 0 },
+      .yuv = &dri2_null_yuv_attribs[4],
    },
 };
 
