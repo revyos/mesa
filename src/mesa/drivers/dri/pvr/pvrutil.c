@@ -174,6 +174,10 @@ PVRDRIFormatToFourCC(int dri_format)
       return DRM_FORMAT_YVU444_PACK10_IMG;
    case __DRI_IMAGE_FORMAT_BGR888:
       return DRM_FORMAT_BGR888;
+   case __DRI_IMAGE_FORMAT_NV12:
+      return DRM_FORMAT_NV12;
+   case __DRI_IMAGE_FORMAT_NV21:
+      return DRM_FORMAT_NV21;
    default:
       __driUtilMessage("%s: Unknown format: %d", __func__, dri_format);
       break;
@@ -230,6 +234,10 @@ PVRDRIFourCCToDRIFormat(int iFourCC)
       return __DRI_IMAGE_FORMAT_YVU444_PACK10_IMG;
    case DRM_FORMAT_BGR888:
       return __DRI_IMAGE_FORMAT_BGR888;
+   case DRM_FORMAT_NV12:
+      return __DRI_IMAGE_FORMAT_NV12;
+   case DRM_FORMAT_NV21:
+      return __DRI_IMAGE_FORMAT_NV21;
    default:
       __driUtilMessage("%s: Unknown format: %d", __func__, iFourCC);
       break;
