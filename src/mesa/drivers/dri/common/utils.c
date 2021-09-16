@@ -480,6 +480,7 @@ __DRIconfig **driConcatConfigs(__DRIconfig **a,
     return all;
 }
 
+/* careful, lack of trailing semicolon */
 #define __ATTRIB(attrib, field) case attrib: *value = config->modes.field; break
 
 /**
@@ -555,9 +556,9 @@ driGetConfigAttribIndex(const __DRIconfig *config,
     __ATTRIB(__DRI_ATTRIB_GREEN_MASK,			greenMask);
     __ATTRIB(__DRI_ATTRIB_BLUE_MASK,			blueMask);
     __ATTRIB(__DRI_ATTRIB_ALPHA_MASK,			alphaMask);
-    case __DRI_ATTRIB_MAX_PBUFFER_WIDTH:
-    case __DRI_ATTRIB_MAX_PBUFFER_HEIGHT:
-    case __DRI_ATTRIB_MAX_PBUFFER_PIXELS:
+    __ATTRIB(__DRI_ATTRIB_MAX_PBUFFER_WIDTH,		maxPbufferWidth);
+    __ATTRIB(__DRI_ATTRIB_MAX_PBUFFER_HEIGHT,		maxPbufferHeight);
+    __ATTRIB(__DRI_ATTRIB_MAX_PBUFFER_PIXELS,		maxPbufferPixels);
     case __DRI_ATTRIB_OPTIMAL_PBUFFER_WIDTH:
     case __DRI_ATTRIB_OPTIMAL_PBUFFER_HEIGHT:
     case __DRI_ATTRIB_VISUAL_SELECT_GROUP:
