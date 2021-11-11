@@ -1721,6 +1721,10 @@ offsets = {
     "FramebufferRenderbufferEXT" : 1685,
     "GetFramebufferAttachmentParameterivEXT" : 1686,
     "GenerateMipmapEXT" : 1687,
+    "ProgramParameteriARB" : 1688,
+    "FramebufferTextureARB" : 1689,
+    "FramebufferTextureLayerARB" : 1690,
+    "FramebufferTextureFaceARB" : 1691,
 }
 
 functions = [
