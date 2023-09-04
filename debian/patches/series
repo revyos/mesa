@@ -73,3 +73,4 @@ img/0065-egl-null-add-support-for-YU12-and-YV12.patch
 img/0066-mesa-partially-revert-pbuffer-attribute-removal.patch
 img/0067-egl_dri2-set-pbuffer-config-attribs-to-0-for-non-pbu.patch
 img/0068-GL_ARB_geometry_shader4-entry-points.patch
+fix-llvm-build.patch
