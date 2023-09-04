@@ -12,10 +12,10 @@ Add support for:
  src/mapi/glapi/gen/static_data.py |  6 +++++
  2 files changed, 38 insertions(+), 9 deletions(-)
 
-diff --git a/src/mapi/glapi/gen/es_EXT.xml b/src/mapi/glapi/gen/es_EXT.xml
-index 962170bc58e..e586b0ec19b 100644
---- a/src/mapi/glapi/gen/es_EXT.xml
-+++ b/src/mapi/glapi/gen/es_EXT.xml
+Index: mesa-21.2.1/src/mapi/glapi/gen/es_EXT.xml
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/es_EXT.xml
++++ mesa-21.2.1/src/mapi/glapi/gen/es_EXT.xml
 @@ -285,28 +285,25 @@
      <enum name="WEIGHT_ARRAY_BUFFER_BINDING_OES"          value="0x889E"/>
      <enum name="MATRIX_INDEX_ARRAY_BUFFER_BINDING_OES"    value="0x8B9E"/>
@@ -84,10 +84,10 @@ index 962170bc58e..e586b0ec19b 100644
  <!-- 87. GL_OES_EGL_image_external -->
  <category name="GL_OES_EGL_image_external" number="87">
      <enum name="TEXTURE_EXTERNAL_OES"                     value="0x8D65"/>
-diff --git a/src/mapi/glapi/gen/static_data.py b/src/mapi/glapi/gen/static_data.py
-index d063930bd81..79b8f19cb75 100644
---- a/src/mapi/glapi/gen/static_data.py
-+++ b/src/mapi/glapi/gen/static_data.py
+Index: mesa-21.2.1/src/mapi/glapi/gen/static_data.py
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/static_data.py
++++ mesa-21.2.1/src/mapi/glapi/gen/static_data.py
 @@ -1691,6 +1691,12 @@ offsets = {
      "VertexAttribs4hvNV": 1655,
      "TexPageCommitmentEXT": 1656,
@@ -101,6 +101,3 @@ index d063930bd81..79b8f19cb75 100644
  }
  
  functions = [
--- 
-2.25.1
-

@@ -11,10 +11,10 @@ existing ones.
  include/GL/internal/dri_interface.h | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 62517e4004a..6490f6e80e2 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -1461,11 +1461,12 @@ struct __DRIdri2ExtensionRec {
  #define __DRI_IMAGE_COMPONENTS_Y_U_V	0x3003
  #define __DRI_IMAGE_COMPONENTS_Y_UV	0x3004
@@ -30,6 +30,3 @@ index 62517e4004a..6490f6e80e2 100644
  
  
  /**
--- 
-2.25.1
-

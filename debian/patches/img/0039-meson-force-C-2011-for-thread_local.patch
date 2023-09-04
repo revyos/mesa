@@ -13,10 +13,10 @@ command line arguments.
  meson.build | 6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/meson.build b/meson.build
-index 2018562a1ec..21d93d372c2 100644
---- a/meson.build
-+++ b/meson.build
+Index: mesa-21.2.1/meson.build
+===================================================================
+--- mesa-21.2.1.orig/meson.build
++++ mesa-21.2.1/meson.build
 @@ -32,6 +32,12 @@ project(
  cc = meson.get_compiler('c')
  cpp = meson.get_compiler('cpp')
@@ -30,6 +30,3 @@ index 2018562a1ec..21d93d372c2 100644
  null_dep = dependency('', required : false)
  
  if get_option('layout') != 'mirror'
--- 
-2.25.1
-

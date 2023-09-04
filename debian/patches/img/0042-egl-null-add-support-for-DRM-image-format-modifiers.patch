@@ -31,10 +31,10 @@ Signed-off-by: Luigi Santivetti <luigi.santivetti@imgtec.com>
  src/egl/drivers/dri2/platform_null.c | 221 +++++++++++++++++++++++----
  3 files changed, 203 insertions(+), 26 deletions(-)
 
-diff --git a/meson.build b/meson.build
-index 21d93d372c2..ca89b8ac20d 100644
---- a/meson.build
-+++ b/meson.build
+Index: mesa-21.2.1/meson.build
+===================================================================
+--- mesa-21.2.1.orig/meson.build
++++ mesa-21.2.1/meson.build
 @@ -1581,6 +1581,11 @@ if with_gallium_etnaviv
    _drm_ver = '2.4.89'
  endif
@@ -47,10 +47,10 @@ index 21d93d372c2..ca89b8ac20d 100644
  # Loop over the enables versions and get the highest libdrm requirement for all
  # active drivers.
  _drm_blame = ''
-diff --git a/src/egl/drivers/dri2/egl_dri2.h b/src/egl/drivers/dri2/egl_dri2.h
-index eb6e4551087..32ad720b343 100644
---- a/src/egl/drivers/dri2/egl_dri2.h
-+++ b/src/egl/drivers/dri2/egl_dri2.h
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.h
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
 @@ -117,6 +117,8 @@ struct display_output {
     uint32_t               mode_blob_id;
     unsigned               formats;
@@ -68,10 +68,10 @@ index eb6e4551087..32ad720b343 100644
     struct display_output     output;
  #endif
  
-diff --git a/src/egl/drivers/dri2/platform_null.c b/src/egl/drivers/dri2/platform_null.c
-index d36dc0ced2a..2c79199da26 100644
---- a/src/egl/drivers/dri2/platform_null.c
-+++ b/src/egl/drivers/dri2/platform_null.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_null.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_null.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_null.c
 @@ -40,6 +40,7 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -80,7 +80,7 @@ index d36dc0ced2a..2c79199da26 100644
  #include <xf86drm.h>
  
  #include "egl_dri2.h"
-@@ -156,6 +157,18 @@ format_idx_get_from_drm_format(uint32_t drm_format)
+@@ -156,6 +157,18 @@ format_idx_get_from_drm_format(uint32_t
     return -1;
  }
  
@@ -167,7 +167,7 @@ index d36dc0ced2a..2c79199da26 100644
  {
     drmModeRes *resources;
     drmModeConnector *connector;
-@@ -674,16 +746,34 @@ display_output_init(int fd, struct display_output *output, bool use_atomic)
+@@ -674,16 +746,34 @@ display_output_init(int fd, struct displ
        goto err_free_plane;
     output->mode = connector->modes[mode_idx];
  
@@ -187,8 +187,7 @@ index d36dc0ced2a..2c79199da26 100644
 +                                                      &output->modifiers,
 +                                                      &output->in_formats_id,
 +                                                      &output->formats);
- 
--      output->formats |= (1 << format_idx);
++
 +   if (!*in_formats_enabled_out) {
 +      _eglLog(_EGL_WARNING, "fallback to plane formats");
 +
@@ -198,7 +197,8 @@ index d36dc0ced2a..2c79199da26 100644
 +         format_idx = format_idx_get_from_drm_format(plane->formats[i]);
 +         if (format_idx == -1)
 +            continue;
-+
+ 
+-      output->formats |= (1 << format_idx);
 +         output->formats |= (1 << format_idx);
 +      }
     }
@@ -223,7 +223,7 @@ index d36dc0ced2a..2c79199da26 100644
     int format_idx;
  
     dri2_dpy->image->queryImage(image, __DRI_IMAGE_ATTRIB_HANDLE, &handle);
-@@ -1001,9 +1093,47 @@ add_fb_for_dri_image(struct dri2_egl_display *dri2_dpy, __DRIimage *image,
+@@ -1001,9 +1093,47 @@ add_fb_for_dri_image(struct dri2_egl_dis
     format_idx = format_idx_get_from_dri_image_format(format);
     assert(format_idx != -1);
  
@@ -274,7 +274,7 @@ index d36dc0ced2a..2c79199da26 100644
  }
  
  static bool
-@@ -1016,12 +1146,7 @@ get_front_bo(struct dri2_egl_surface *dri2_surf)
+@@ -1016,12 +1146,7 @@ get_front_bo(struct dri2_egl_surface *dr
     if (dri2_surf->base.Type == EGL_WINDOW_BIT)
        use |= __DRI_IMAGE_USE_SCANOUT;
  
@@ -288,7 +288,7 @@ index d36dc0ced2a..2c79199da26 100644
     if (!dri2_surf->front)
        return false;
  
-@@ -1058,13 +1183,8 @@ get_back_bo(struct dri2_egl_surface *dri2_surf)
+@@ -1058,13 +1183,8 @@ get_back_bo(struct dri2_egl_surface *dri
     }
  
     if (!dri2_surf->back->dri_image) {
@@ -304,7 +304,7 @@ index d36dc0ced2a..2c79199da26 100644
        if (!dri2_surf->back->dri_image)
           goto err_unlock;
     }
-@@ -1094,6 +1214,30 @@ static void surface_swap_queue_init(struct dri2_egl_surface *dri2_surf)
+@@ -1094,6 +1214,30 @@ static void surface_swap_queue_init(stru
        swap_queue[i].kms_in_fence_fd = -1;
  }
  
@@ -335,7 +335,7 @@ index d36dc0ced2a..2c79199da26 100644
  static _EGLSurface *
  create_surface(_EGLDisplay *disp, _EGLConfig *config, EGLint type,
                 const EGLint *attrib_list)
-@@ -1105,6 +1249,7 @@ create_surface(_EGLDisplay *disp, _EGLConfig *config, EGLint type,
+@@ -1105,6 +1249,7 @@ create_surface(_EGLDisplay *disp, _EGLCo
     const __DRIconfig *dri_config;
     _EGLSurface *surf;
     int format_idx;
@@ -343,7 +343,7 @@ index d36dc0ced2a..2c79199da26 100644
  
     dri2_surf = calloc(1, sizeof(*dri2_surf));
     if (!dri2_surf) {
-@@ -1137,6 +1282,15 @@ create_surface(_EGLDisplay *disp, _EGLConfig *config, EGLint type,
+@@ -1137,6 +1282,15 @@ create_surface(_EGLDisplay *disp, _EGLCo
  
     dri2_surf->format = dri2_null_formats[format_idx].dri_image_format;
  
@@ -389,13 +389,10 @@ index d36dc0ced2a..2c79199da26 100644
        _eglError(EGL_NOT_INITIALIZED, "failed to create output");
        goto cleanup;
     }
-@@ -1640,4 +1807,6 @@ dri2_teardown_null(struct dri2_egl_display *dri2_dpy)
+@@ -1640,4 +1807,6 @@ dri2_teardown_null(struct dri2_egl_displ
           drmModeFreeProperty(dri2_dpy->output.connector_prop_res[i]);
        free(dri2_dpy->output.connector_prop_res);
     }
 +
 +   u_vector_finish(&dri2_dpy->output.modifiers);
  }
--- 
-2.25.1
-

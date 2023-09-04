@@ -11,11 +11,11 @@ thread don't perform a flush as this is an expensive operation.
  src/egl/main/eglapi.c | 12 +++++++++++-
  1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/src/egl/main/eglapi.c b/src/egl/main/eglapi.c
-index 3cd69b96a0f..234449adf64 100644
---- a/src/egl/main/eglapi.c
-+++ b/src/egl/main/eglapi.c
-@@ -853,6 +853,7 @@ eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read,
+Index: mesa-21.2.1/src/egl/main/eglapi.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglapi.c
++++ mesa-21.2.1/src/egl/main/eglapi.c
+@@ -853,6 +853,7 @@ eglMakeCurrent(EGLDisplay dpy, EGLSurfac
                 EGLContext ctx)
  {
     _EGLDisplay *disp = _eglLockDisplay(dpy);
@@ -23,7 +23,7 @@ index 3cd69b96a0f..234449adf64 100644
     _EGLContext *context = _eglLookupContext(ctx, disp);
     _EGLSurface *draw_surf = _eglLookupSurface(draw, disp);
     _EGLSurface *read_surf = _eglLookupSurface(read, disp);
-@@ -909,7 +910,16 @@ eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read,
+@@ -909,7 +910,16 @@ eglMakeCurrent(EGLDisplay dpy, EGLSurfac
         draw_surf && !draw_surf->ProtectedContent)
        RETURN_EGL_ERROR(disp, EGL_BAD_ACCESS, EGL_FALSE);
  
@@ -41,6 +41,3 @@ index 3cd69b96a0f..234449adf64 100644
  
     RETURN_EGL_EVAL(disp, ret);
  }
--- 
-2.25.1
-

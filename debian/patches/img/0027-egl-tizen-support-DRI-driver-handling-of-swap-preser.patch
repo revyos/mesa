@@ -15,10 +15,10 @@ be necessary under certain conditions, e.g. an empty swap.
  src/egl/drivers/dri2/platform_tizen.c | 29 +++++++++++++++++++++------
  2 files changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index b197092939f..16cc095ea29 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -2073,12 +2073,15 @@ enum __DRIimageBufferMask {
      * OpenGL ES API and little change to the SurfaceFlinger API.
      */
@@ -35,11 +35,11 @@ index b197092939f..16cc095ea29 100644
  };
  
  #define __DRI_IMAGE_LOADER "DRI_IMAGE_LOADER"
-diff --git a/src/egl/drivers/dri2/platform_tizen.c b/src/egl/drivers/dri2/platform_tizen.c
-index 49462152beb..2bc9b3e7c64 100644
---- a/src/egl/drivers/dri2/platform_tizen.c
-+++ b/src/egl/drivers/dri2/platform_tizen.c
-@@ -147,7 +147,8 @@ create_image_from_native(struct dri2_egl_surface *dri2_surf,
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_tizen.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_tizen.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_tizen.c
+@@ -147,7 +147,8 @@ create_image_from_native(struct dri2_egl
  }
  
  static int
@@ -49,7 +49,7 @@ index 49462152beb..2bc9b3e7c64 100644
  {
     struct dri2_egl_display *dri2_dpy =
        dri2_egl_display(dri2_surf->base.Resource.Display);
-@@ -277,7 +278,7 @@ get_back_bo(struct dri2_egl_surface *dri2_surf, bool allow_update)
+@@ -277,7 +278,7 @@ get_back_bo(struct dri2_egl_surface *dri
     dri2_surf->back->locked = true;
  
     if (dri2_surf->base.SwapBehavior == EGL_BUFFER_PRESERVED &&
@@ -58,7 +58,7 @@ index 49462152beb..2bc9b3e7c64 100644
        _EGLContext *ctx = _eglGetCurrentContext();
        struct dri2_egl_context *dri2_ctx = dri2_egl_context(ctx);
  
-@@ -609,7 +610,7 @@ dri2_tizen_swap_buffers_with_damage(_EGLDisplay *dpy, _EGLSurface *draw,
+@@ -609,7 +610,7 @@ dri2_tizen_swap_buffers_with_damage(_EGL
      * Make sure we have a back buffer in case we're swapping without ever
      * rendering.
      */
@@ -67,7 +67,7 @@ index 49462152beb..2bc9b3e7c64 100644
        _eglError(EGL_BAD_ALLOC, "DRI2: failed to get back buffer");
        return EGL_FALSE;
     }
-@@ -673,7 +674,7 @@ dri2_tizen_query_buffer_age(_EGLDisplay *dpy, _EGLSurface *surface)
+@@ -673,7 +674,7 @@ dri2_tizen_query_buffer_age(_EGLDisplay
  {
     struct dri2_egl_surface *dri2_surf = dri2_egl_surface(surface);
  
@@ -76,7 +76,7 @@ index 49462152beb..2bc9b3e7c64 100644
        _eglError(EGL_BAD_ALLOC, "DRI2: failed to get back buffer");
        return -1;
     }
-@@ -748,14 +749,22 @@ dri2_tizen_get_buffers(__DRIdrawable *driDrawable,
+@@ -748,14 +749,22 @@ dri2_tizen_get_buffers(__DRIdrawable *dr
     buffers->image_mask = 0;
     buffers->front = NULL;
     buffers->back = NULL;
@@ -101,7 +101,7 @@ index 49462152beb..2bc9b3e7c64 100644
  
     if (buffer_mask & __DRI_IMAGE_BUFFER_FRONT) {
        buffers->front = dri2_surf->front;
-@@ -767,6 +776,14 @@ dri2_tizen_get_buffers(__DRIdrawable *driDrawable,
+@@ -767,6 +776,14 @@ dri2_tizen_get_buffers(__DRIdrawable *dr
        buffers->image_mask |= __DRI_IMAGE_BUFFER_BACK;
     }
  
@@ -116,6 +116,3 @@ index 49462152beb..2bc9b3e7c64 100644
     return 1;
  }
  
--- 
-2.25.1
-

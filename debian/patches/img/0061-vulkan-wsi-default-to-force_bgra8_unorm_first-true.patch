@@ -14,10 +14,10 @@ to VK_FORMAT_B8G8R8A8_UNORM rather than VK_FORMAT_B8G8R8A8_SRGB.
  src/vulkan/wsi/wsi_common.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/src/vulkan/wsi/wsi_common.c b/src/vulkan/wsi/wsi_common.c
-index 66d6683a7c1..1ffca6fecfb 100644
---- a/src/vulkan/wsi/wsi_common.c
-+++ b/src/vulkan/wsi/wsi_common.c
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common.c
 @@ -158,6 +158,10 @@ wsi_device_init(struct wsi_device *wsi,
              driQueryOptionb(dri_options, "vk_wsi_force_bgra8_unorm_first");
        }
@@ -29,6 +29,3 @@ index 66d6683a7c1..1ffca6fecfb 100644
  
     return VK_SUCCESS;
  #if defined(VK_USE_PLATFORM_XCB_KHR) || \
--- 
-2.25.1
-

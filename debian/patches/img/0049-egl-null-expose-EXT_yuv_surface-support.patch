@@ -9,10 +9,10 @@ Subject: [PATCH 49/68] egl/null: expose EXT_yuv_surface support
  src/mesa/drivers/dri/pvr/pvrutil.c   |   8 ++
  3 files changed, 173 insertions(+), 14 deletions(-)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 9c7bcac4cae..888a117d56e 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -1411,6 +1411,8 @@ struct __DRIdri2ExtensionRec {
  #define __DRI_IMAGE_FORMAT_ARGB4444     0x1018
  #define __DRI_IMAGE_FORMAT_YVU444_PACK10_IMG 0x1019
@@ -22,11 +22,11 @@ index 9c7bcac4cae..888a117d56e 100644
  
  #define __DRI_IMAGE_USE_SHARE		0x0001
  #define __DRI_IMAGE_USE_SCANOUT		0x0002
-diff --git a/src/egl/drivers/dri2/platform_null.c b/src/egl/drivers/dri2/platform_null.c
-index f2c481c256b..d1e576af5ce 100644
---- a/src/egl/drivers/dri2/platform_null.c
-+++ b/src/egl/drivers/dri2/platform_null.c
-@@ -79,6 +79,35 @@ uint32_t get_back_buffer_id(struct dri2_egl_surface *dri2_surf)
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_null.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_null.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_null.c
+@@ -79,6 +79,35 @@ uint32_t get_back_buffer_id(struct dri2_
        .prop_value = value,                                                  \
     }
  
@@ -112,11 +112,10 @@ index f2c481c256b..d1e576af5ce 100644
     },
  };
  
-@@ -137,6 +191,36 @@ format_idx_get_from_config(struct dri2_egl_display *dri2_dpy,
-    return -1;
+@@ -138,6 +192,36 @@ format_idx_get_from_config(struct dri2_e
  }
  
-+static int
+ static int
 +yuv_format_idx_get_from_config(struct dri2_egl_display *dri2_dpy,
 +                               const __DRIconfig *dri_config)
 +{
@@ -146,9 +145,10 @@ index f2c481c256b..d1e576af5ce 100644
 +   return -1;
 +}
 +
- static int
++static int
  format_idx_get_from_dri_image_format(uint32_t dri_image_format)
  {
+    for (unsigned int i = 0; i < ARRAY_SIZE(dri2_null_formats); i++)
 @@ -1082,23 +1166,21 @@ static bool
  add_fb_for_dri_image(struct dri2_egl_display *dri2_dpy, __DRIimage *image,
                       uint32_t *fb_id_out)
@@ -178,7 +178,7 @@ index f2c481c256b..d1e576af5ce 100644
     format_idx = format_idx_get_from_dri_image_format(format);
     assert(format_idx != -1);
  
-@@ -1106,10 +1188,44 @@ add_fb_for_dri_image(struct dri2_egl_display *dri2_dpy, __DRIimage *image,
+@@ -1106,10 +1188,44 @@ add_fb_for_dri_image(struct dri2_egl_dis
        dri2_dpy->image->queryImage(image, __DRI_IMAGE_ATTRIB_MODIFIER_UPPER, &h_mod);
        dri2_dpy->image->queryImage(image, __DRI_IMAGE_ATTRIB_MODIFIER_LOWER, &l_mod);
  
@@ -224,7 +224,7 @@ index f2c481c256b..d1e576af5ce 100644
     return !drmModeAddFB2WithModifiers(dri2_dpy->fd, width, height,
                                        dri2_null_formats[format_idx].drm_format,
                                        handles, pitches, offsets, modifiers,
-@@ -1256,6 +1372,7 @@ create_surface(_EGLDisplay *disp, _EGLConfig *config, EGLint type,
+@@ -1256,6 +1372,7 @@ create_surface(_EGLDisplay *disp, _EGLCo
     struct dri2_egl_config *dri2_config = dri2_egl_config(config);
     struct dri2_egl_surface *dri2_surf;
     const __DRIconfig *dri_config;
@@ -232,7 +232,7 @@ index f2c481c256b..d1e576af5ce 100644
     _EGLSurface *surf;
     int format_idx;
     bool ret;
-@@ -1286,7 +1403,14 @@ create_surface(_EGLDisplay *disp, _EGLConfig *config, EGLint type,
+@@ -1286,7 +1403,14 @@ create_surface(_EGLDisplay *disp, _EGLCo
         goto err_free_surface;
     }
  
@@ -248,7 +248,7 @@ index f2c481c256b..d1e576af5ce 100644
     assert(format_idx != -1);
  
     dri2_surf->format = dri2_null_formats[format_idx].dri_image_format;
-@@ -1627,6 +1751,17 @@ dri2_null_image_get_buffers(__DRIdrawable *driDrawable, unsigned int format,
+@@ -1627,6 +1751,17 @@ dri2_null_image_get_buffers(__DRIdrawabl
     return 1;
  }
  
@@ -266,7 +266,7 @@ index f2c481c256b..d1e576af5ce 100644
  static void
  dri2_null_flush_front_buffer(__DRIdrawable * driDrawable, void *loaderPrivate)
  {
-@@ -1635,10 +1770,11 @@ dri2_null_flush_front_buffer(__DRIdrawable * driDrawable, void *loaderPrivate)
+@@ -1635,10 +1770,11 @@ dri2_null_flush_front_buffer(__DRIdrawab
  }
  
  static const __DRIimageLoaderExtension image_loader_extension = {
@@ -279,7 +279,7 @@ index f2c481c256b..d1e576af5ce 100644
  };
  
  static const __DRIextension *image_loader_extensions[] = {
-@@ -1720,10 +1856,24 @@ dri2_null_add_configs_for_formats(_EGLDisplay *disp)
+@@ -1720,10 +1856,24 @@ dri2_null_add_configs_for_formats(_EGLDi
  
     for (unsigned i = 0; dri2_dpy->driver_configs[i]; i++) {
        struct dri2_egl_config *dri2_conf;
@@ -306,7 +306,7 @@ index f2c481c256b..d1e576af5ce 100644
        if (format_idx == -1)
           continue;
  
-@@ -1735,8 +1885,7 @@ dri2_null_add_configs_for_formats(_EGLDisplay *disp)
+@@ -1735,8 +1885,7 @@ dri2_null_add_configs_for_formats(_EGLDi
  
        dri2_conf = dri2_add_config(disp,
                                    dri2_dpy->driver_configs[i], count + 1,
@@ -316,10 +316,10 @@ index f2c481c256b..d1e576af5ce 100644
        if (dri2_conf)
           count++;
     }
-diff --git a/src/mesa/drivers/dri/pvr/pvrutil.c b/src/mesa/drivers/dri/pvr/pvrutil.c
-index 945e18cf220..d107a5dafad 100644
---- a/src/mesa/drivers/dri/pvr/pvrutil.c
-+++ b/src/mesa/drivers/dri/pvr/pvrutil.c
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrutil.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/pvr/pvrutil.c
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrutil.c
 @@ -174,6 +174,10 @@ PVRDRIFormatToFourCC(int dri_format)
        return DRM_FORMAT_YVU444_PACK10_IMG;
     case __DRI_IMAGE_FORMAT_BGR888:
@@ -342,6 +342,3 @@ index 945e18cf220..d107a5dafad 100644
     default:
        __driUtilMessage("%s: Unknown format: %d", __func__, iFourCC);
        break;
--- 
-2.25.1
-

@@ -11,10 +11,10 @@ Until dEQP is fixed, just disable GL on non-X11 platforms.
  src/egl/main/eglcurrent.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/egl/main/eglcurrent.h b/src/egl/main/eglcurrent.h
-index d9a4a90174e..32570970947 100644
---- a/src/egl/main/eglcurrent.h
-+++ b/src/egl/main/eglcurrent.h
+Index: mesa-21.2.1/src/egl/main/eglcurrent.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglcurrent.h
++++ mesa-21.2.1/src/egl/main/eglcurrent.h
 @@ -71,7 +71,7 @@ struct _egl_thread_info
  static inline EGLBoolean
  _eglIsApiValid(EGLenum api)
@@ -24,6 +24,3 @@ index d9a4a90174e..32570970947 100644
     /* OpenGL is not a valid/supported API on Android */
     return api == EGL_OPENGL_ES_API;
  #else
--- 
-2.25.1
-

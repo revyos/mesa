@@ -11,10 +11,10 @@ Subject: [PATCH 38/67] egl: add support for EXT_image_gl_colorspace
  src/egl/main/eglimage.h         |  3 ++
  5 files changed, 74 insertions(+), 2 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index 2f8414e0c60..6b26ff979ae 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
 @@ -1084,6 +1084,9 @@ dri2_setup_screen(_EGLDisplay *disp)
            dri2_dpy->image->createImageFromBuffer) {
           disp->Extensions.IMG_cl_image = EGL_TRUE;
@@ -25,7 +25,7 @@ index 2f8414e0c60..6b26ff979ae 100644
     }
  
     if (dri2_dpy->flush_control)
-@@ -2724,6 +2727,11 @@ dri2_create_image_wayland_wl_buffer_tizen(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -2724,6 +2727,11 @@ dri2_create_image_wayland_wl_buffer_tize
        return NULL;
     }
  
@@ -37,7 +37,7 @@ index 2f8414e0c60..6b26ff979ae 100644
     if (tbm_surface_get_info(tbm_surf, &info)) {
        _eglError(EGL_BAD_PARAMETER, "tbm_surface_get_info");
        return NULL;
-@@ -2799,6 +2807,11 @@ dri2_create_image_wayland_wl_buffer(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -2799,6 +2807,11 @@ dri2_create_image_wayland_wl_buffer(_EGL
     if (!_eglParseImageAttribList(&attrs, disp, attr_list))
        return NULL;
  
@@ -49,7 +49,7 @@ index 2f8414e0c60..6b26ff979ae 100644
     plane = attrs.PlaneWL;
     f = buffer->driver_format;
     if (plane < 0 || plane >= f->nplanes) {
-@@ -2862,6 +2875,11 @@ dri2_create_image_khr_texture(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -2862,6 +2875,11 @@ dri2_create_image_khr_texture(_EGLDispla
     if (!_eglParseImageAttribList(&attrs, disp, attr_list))
        return EGL_NO_IMAGE_KHR;
  
@@ -61,7 +61,7 @@ index 2f8414e0c60..6b26ff979ae 100644
     switch (target) {
     case EGL_GL_TEXTURE_2D_KHR:
        if (!disp->Extensions.KHR_gl_texture_2D_image) {
-@@ -3007,6 +3025,11 @@ dri2_create_image_mesa_drm_buffer(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -3007,6 +3025,11 @@ dri2_create_image_mesa_drm_buffer(_EGLDi
        return NULL;
     }
  
@@ -73,7 +73,7 @@ index 2f8414e0c60..6b26ff979ae 100644
     switch (attrs.DRMBufferFormatMESA) {
     case EGL_DRM_BUFFER_FORMAT_ARGB32_MESA:
        format = __DRI_IMAGE_FORMAT_ARGB8888;
-@@ -3189,6 +3212,23 @@ dri2_num_fourcc_format_planes(EGLint format)
+@@ -3189,6 +3212,23 @@ dri2_num_fourcc_format_planes(EGLint for
     }
  }
  
@@ -97,7 +97,7 @@ index 2f8414e0c60..6b26ff979ae 100644
  /* Returns the total number of file descriptors. Zero indicates an error. */
  static unsigned
  dri2_check_dma_buf_format(const _EGLImageAttribs *attrs)
-@@ -3334,6 +3374,7 @@ dri2_create_image_dma_buf(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -3334,6 +3374,7 @@ dri2_create_image_dma_buf(_EGLDisplay *d
     int fds[DMA_BUF_MAX_PLANES];
     int pitches[DMA_BUF_MAX_PLANES];
     int offsets[DMA_BUF_MAX_PLANES];
@@ -105,7 +105,7 @@ index 2f8414e0c60..6b26ff979ae 100644
     uint64_t modifier;
     bool has_modifier = false;
     unsigned error;
-@@ -3359,6 +3400,18 @@ dri2_create_image_dma_buf(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -3359,6 +3400,18 @@ dri2_create_image_dma_buf(_EGLDisplay *d
     if (!num_fds)
        return NULL;
  
@@ -124,7 +124,7 @@ index 2f8414e0c60..6b26ff979ae 100644
     for (unsigned i = 0; i < num_fds; ++i) {
        fds[i] = attrs.DMABufPlaneFds[i].Value;
        pitches[i] = attrs.DMABufPlanePitches[i].Value;
-@@ -3403,7 +3456,7 @@ dri2_create_image_dma_buf(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -3403,7 +3456,7 @@ dri2_create_image_dma_buf(_EGLDisplay *d
        }
        dri_image =
           dri2_dpy->image->createImageFromDmaBufs2(dri2_dpy->dri_screen,
@@ -133,7 +133,7 @@ index 2f8414e0c60..6b26ff979ae 100644
              modifier, fds, num_fds, pitches, offsets,
              attrs.DMABufYuvColorSpaceHint.Value,
              attrs.DMABufSampleRangeHint.Value,
-@@ -3415,7 +3468,7 @@ dri2_create_image_dma_buf(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -3415,7 +3468,7 @@ dri2_create_image_dma_buf(_EGLDisplay *d
     else {
        dri_image =
           dri2_dpy->image->createImageFromDmaBufs(dri2_dpy->dri_screen,
@@ -142,11 +142,11 @@ index 2f8414e0c60..6b26ff979ae 100644
              fds, num_fds, pitches, offsets,
              attrs.DMABufYuvColorSpaceHint.Value,
              attrs.DMABufSampleRangeHint.Value,
-diff --git a/src/egl/main/eglapi.c b/src/egl/main/eglapi.c
-index e4f2c43b4ef..2d3931dfd26 100644
---- a/src/egl/main/eglapi.c
-+++ b/src/egl/main/eglapi.c
-@@ -508,6 +508,7 @@ _eglCreateExtensionsString(_EGLDisplay *disp)
+Index: mesa-21.2.1/src/egl/main/eglapi.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglapi.c
++++ mesa-21.2.1/src/egl/main/eglapi.c
+@@ -508,6 +508,7 @@ _eglCreateExtensionsString(_EGLDisplay *
     _EGL_CHECK_EXTENSION(EXT_create_context_robustness);
     _EGL_CHECK_EXTENSION(EXT_image_dma_buf_import);
     _EGL_CHECK_EXTENSION(EXT_image_dma_buf_import_modifiers);
@@ -154,10 +154,10 @@ index e4f2c43b4ef..2d3931dfd26 100644
     _EGL_CHECK_EXTENSION(EXT_protected_surface);
     _EGL_CHECK_EXTENSION(EXT_surface_CTA861_3_metadata);
     _EGL_CHECK_EXTENSION(EXT_surface_SMPTE2086_metadata);
-diff --git a/src/egl/main/egldisplay.h b/src/egl/main/egldisplay.h
-index 8489af9dde2..6e5b29fe1ac 100644
---- a/src/egl/main/egldisplay.h
-+++ b/src/egl/main/egldisplay.h
+Index: mesa-21.2.1/src/egl/main/egldisplay.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egldisplay.h
++++ mesa-21.2.1/src/egl/main/egldisplay.h
 @@ -108,6 +108,7 @@ struct _egl_extensions
     EGLBoolean EXT_create_context_robustness;
     EGLBoolean EXT_image_dma_buf_import;
@@ -166,11 +166,11 @@ index 8489af9dde2..6e5b29fe1ac 100644
     EGLBoolean EXT_pixel_format_float;
     EGLBoolean EXT_protected_surface;
     EGLBoolean EXT_surface_CTA861_3_metadata;
-diff --git a/src/egl/main/eglimage.c b/src/egl/main/eglimage.c
-index 64bf7f2bfe9..73d4e85b82e 100644
---- a/src/egl/main/eglimage.c
-+++ b/src/egl/main/eglimage.c
-@@ -46,6 +46,18 @@ _eglParseKHRImageAttribs(_EGLImageAttribs *attrs, _EGLDisplay *disp,
+Index: mesa-21.2.1/src/egl/main/eglimage.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglimage.c
++++ mesa-21.2.1/src/egl/main/eglimage.c
+@@ -46,6 +46,18 @@ _eglParseKHRImageAttribs(_EGLImageAttrib
        attrs->ImagePreserved = val;
        break;
  
@@ -189,7 +189,7 @@ index 64bf7f2bfe9..73d4e85b82e 100644
     case EGL_GL_TEXTURE_LEVEL_KHR:
        if (!disp->Extensions.KHR_gl_texture_2D_image)
           return EGL_BAD_PARAMETER;
-@@ -285,6 +297,8 @@ _eglParseImageAttribList(_EGLImageAttribs *attrs, _EGLDisplay *disp,
+@@ -285,6 +297,8 @@ _eglParseImageAttribList(_EGLImageAttrib
  
     memset(attrs, 0, sizeof(*attrs));
  
@@ -198,10 +198,10 @@ index 64bf7f2bfe9..73d4e85b82e 100644
     if (!attrib_list)
        return EGL_TRUE;
  
-diff --git a/src/egl/main/eglimage.h b/src/egl/main/eglimage.h
-index 9837f05dad1..fc02d7a265c 100644
---- a/src/egl/main/eglimage.h
-+++ b/src/egl/main/eglimage.h
+Index: mesa-21.2.1/src/egl/main/eglimage.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglimage.h
++++ mesa-21.2.1/src/egl/main/eglimage.h
 @@ -80,6 +80,9 @@ struct _egl_image_attribs
     struct _egl_image_attrib_int DMABufChromaHorizontalSiting;
     struct _egl_image_attrib_int DMABufChromaVerticalSiting;
@@ -212,6 +212,3 @@ index 9837f05dad1..fc02d7a265c 100644
     /* EGL_EXT_protected_surface */
     EGLBoolean ProtectedContent;
  };
--- 
-2.25.1
-

@@ -13,10 +13,10 @@ force it to use the PVR DRI driver.
  src/loader/loader.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/src/loader/loader.c b/src/loader/loader.c
-index 08eeb61504b..c7e561ef2e4 100644
---- a/src/loader/loader.c
-+++ b/src/loader/loader.c
+Index: mesa-21.2.1/src/loader/loader.c
+===================================================================
+--- mesa-21.2.1.orig/src/loader/loader.c
++++ mesa-21.2.1/src/loader/loader.c
 @@ -436,7 +436,11 @@ loader_get_pci_driver(int fd)
     char *driver = NULL;
  
@@ -29,6 +29,3 @@ index 08eeb61504b..c7e561ef2e4 100644
  
     for (i = 0; i < ARRAY_SIZE(driver_map); i++) {
        if (vendor_id != driver_map[i].vendor_id)
--- 
-2.25.1
-

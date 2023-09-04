@@ -13,10 +13,10 @@ Add BGR888 DRI format and fourcc.
  src/mesa/drivers/dri/common/dri_util.c | 5 +++++
  4 files changed, 11 insertions(+)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 66dc0927cb7..510289403d2 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -1367,6 +1367,9 @@ struct __DRIdri2ExtensionRec {
  #define __DRI_IMAGE_FORMAT_ABGR16161616F 0x1015
  #define __DRI_IMAGE_FORMAT_SXRGB8       0x1016
@@ -35,10 +35,10 @@ index 66dc0927cb7..510289403d2 100644
  
  /**
   * Queryable on images created by createImageFromNames.
-diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
-index cd3ce8a8c60..57657592a38 100644
---- a/include/drm-uapi/drm_fourcc.h
-+++ b/include/drm-uapi/drm_fourcc.h
+Index: mesa-21.2.1/include/drm-uapi/drm_fourcc.h
+===================================================================
+--- mesa-21.2.1.orig/include/drm-uapi/drm_fourcc.h
++++ mesa-21.2.1/include/drm-uapi/drm_fourcc.h
 @@ -344,6 +344,7 @@ extern "C" {
  #define DRM_FORMAT_YUV444	fourcc_code('Y', 'U', '2', '4') /* non-subsampled Cb (1) and Cr (2) planes */
  #define DRM_FORMAT_YVU444	fourcc_code('Y', 'V', '2', '4') /* non-subsampled Cr (1) and Cb (2) planes */
@@ -47,11 +47,11 @@ index cd3ce8a8c60..57657592a38 100644
  
  /*
   * Format Modifiers:
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index 9e5a55a287c..eee28eb4726 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
-@@ -2652,6 +2652,7 @@ dri2_num_fourcc_format_planes(EGLint format)
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+@@ -2652,6 +2652,7 @@ dri2_num_fourcc_format_planes(EGLint for
     case DRM_FORMAT_Y410:
     case DRM_FORMAT_Y412:
     case DRM_FORMAT_Y416:
@@ -59,22 +59,19 @@ index 9e5a55a287c..eee28eb4726 100644
        return 1;
  
     case DRM_FORMAT_NV12:
-diff --git a/src/mesa/drivers/dri/common/dri_util.c b/src/mesa/drivers/dri/common/dri_util.c
-index e2a11240dea..caed5fa6a68 100644
---- a/src/mesa/drivers/dri/common/dri_util.c
-+++ b/src/mesa/drivers/dri/common/dri_util.c
-@@ -904,6 +904,11 @@ static const struct {
-       .mesa_format     =        MESA_FORMAT_B5G5R5A1_UNORM,
+Index: mesa-21.2.1/src/mesa/drivers/dri/common/dri_util.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/common/dri_util.c
++++ mesa-21.2.1/src/mesa/drivers/dri/common/dri_util.c
+@@ -905,6 +905,11 @@ static const struct {
        .internal_format =        GL_RGB5_A1,
     },
-+   {
+    {
 +      .image_format    = __DRI_IMAGE_FORMAT_ARGB4444,
 +      .mesa_format     =        MESA_FORMAT_B4G4R4A4_UNORM,
 +      .internal_format =        GL_RGBA4,
 +   },
-    {
++   {
        .image_format    = __DRI_IMAGE_FORMAT_XRGB8888,
        .mesa_format     =        MESA_FORMAT_B8G8R8X8_UNORM,
--- 
-2.25.1
-
+       .internal_format =        GL_RGB8,

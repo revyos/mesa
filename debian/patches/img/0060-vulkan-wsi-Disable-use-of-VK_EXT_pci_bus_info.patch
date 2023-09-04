@@ -15,10 +15,10 @@ to indicate that the device is a PCI one.
  src/vulkan/wsi/wsi_common_drm.c | 4 ++++
  3 files changed, 10 insertions(+)
 
-diff --git a/src/vulkan/wsi/wsi_common.c b/src/vulkan/wsi/wsi_common.c
-index b1360edb911..66d6683a7c1 100644
---- a/src/vulkan/wsi/wsi_common.c
-+++ b/src/vulkan/wsi/wsi_common.c
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common.c
 @@ -56,11 +56,15 @@ wsi_device_init(struct wsi_device *wsi,
     WSI_GET_CB(GetPhysicalDeviceQueueFamilyProperties);
  #undef WSI_GET_CB
@@ -35,10 +35,10 @@ index b1360edb911..66d6683a7c1 100644
     };
     GetPhysicalDeviceProperties2(pdevice, &pdp2);
  
-diff --git a/src/vulkan/wsi/wsi_common.h b/src/vulkan/wsi/wsi_common.h
-index c2563c677e6..4a733665d2c 100644
---- a/src/vulkan/wsi/wsi_common.h
-+++ b/src/vulkan/wsi/wsi_common.h
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common.h
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common.h
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common.h
 @@ -112,7 +112,9 @@ struct wsi_device {
     VkPhysicalDeviceMemoryProperties memory_props;
     uint32_t queue_family_count;
@@ -49,11 +49,11 @@ index c2563c677e6..4a733665d2c 100644
  
     bool supports_modifiers;
     uint32_t maxImageDimension2D;
-diff --git a/src/vulkan/wsi/wsi_common_drm.c b/src/vulkan/wsi/wsi_common_drm.c
-index 6201891ca80..49a78cf4c62 100644
---- a/src/vulkan/wsi/wsi_common_drm.c
-+++ b/src/vulkan/wsi/wsi_common_drm.c
-@@ -45,6 +45,7 @@ wsi_device_matches_drm_fd(const struct wsi_device *wsi, int drm_fd)
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common_drm.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common_drm.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common_drm.c
+@@ -45,6 +45,7 @@ wsi_device_matches_drm_fd(const struct w
     if (ret)
        return false;
  
@@ -61,7 +61,7 @@ index 6201891ca80..49a78cf4c62 100644
     bool match = false;
     switch (fd_device->bustype) {
     case DRM_BUS_PCI:
-@@ -57,6 +58,9 @@ wsi_device_matches_drm_fd(const struct wsi_device *wsi, int drm_fd)
+@@ -57,6 +58,9 @@ wsi_device_matches_drm_fd(const struct w
     default:
        break;
     }
@@ -71,6 +71,3 @@ index 6201891ca80..49a78cf4c62 100644
  
     drmFreeDevice(&fd_device);
  
--- 
-2.25.1
-

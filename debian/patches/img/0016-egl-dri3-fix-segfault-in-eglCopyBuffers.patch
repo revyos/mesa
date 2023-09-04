@@ -12,11 +12,11 @@ current back buffer.
  src/loader/loader_dri3_helper.c | 15 ++++++++++++---
  1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/src/loader/loader_dri3_helper.c b/src/loader/loader_dri3_helper.c
-index 6e825f9a898..ff6d1ffc660 100644
---- a/src/loader/loader_dri3_helper.c
-+++ b/src/loader/loader_dri3_helper.c
-@@ -863,15 +863,24 @@ loader_dri3_copy_drawable(struct loader_dri3_drawable *draw,
+Index: mesa-21.2.1/src/loader/loader_dri3_helper.c
+===================================================================
+--- mesa-21.2.1.orig/src/loader/loader_dri3_helper.c
++++ mesa-21.2.1/src/loader/loader_dri3_helper.c
+@@ -863,15 +863,24 @@ loader_dri3_copy_drawable(struct loader_
                            xcb_drawable_t dest,
                            xcb_drawable_t src)
  {
@@ -44,6 +44,3 @@ index 6e825f9a898..ff6d1ffc660 100644
  }
  
  void
--- 
-2.25.1
-

@@ -14,10 +14,10 @@ allocation functions when allocating swapchain images.
  src/vulkan/wsi/wsi_common_x11.c     |  42 ++++++---
  6 files changed, 169 insertions(+), 40 deletions(-)
 
-diff --git a/src/vulkan/wsi/wsi_common.h b/src/vulkan/wsi/wsi_common.h
-index d5367db3a94..c2563c677e6 100644
---- a/src/vulkan/wsi/wsi_common.h
-+++ b/src/vulkan/wsi/wsi_common.h
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common.h
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common.h
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common.h
 @@ -37,6 +37,8 @@
  #define VK_STRUCTURE_TYPE_WSI_MEMORY_ALLOCATE_INFO_MESA (VkStructureType)1000001003
  #define VK_STRUCTURE_TYPE_WSI_SURFACE_SUPPORTED_COUNTERS_MESA (VkStructureType)1000001005
@@ -46,11 +46,11 @@ index d5367db3a94..c2563c677e6 100644
  struct wsi_fence {
     VkDevice                     device;
     const struct wsi_device      *wsi_device;
-diff --git a/src/vulkan/wsi/wsi_common_display.c b/src/vulkan/wsi/wsi_common_display.c
-index 71a84e54079..f135b4e38de 100644
---- a/src/vulkan/wsi/wsi_common_display.c
-+++ b/src/vulkan/wsi/wsi_common_display.c
-@@ -1032,7 +1032,7 @@ wsi_display_image_init(VkDevice device_h,
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common_display.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common_display.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common_display.c
+@@ -1032,7 +1032,7 @@ wsi_display_image_init(VkDevice device_h
  
     VkResult result = wsi_create_native_image(&chain->base, create_info,
                                               0, NULL, NULL, false,
@@ -59,11 +59,11 @@ index 71a84e54079..f135b4e38de 100644
     if (result != VK_SUCCESS)
        return result;
  
-diff --git a/src/vulkan/wsi/wsi_common_drm.c b/src/vulkan/wsi/wsi_common_drm.c
-index aabb761908c..6201891ca80 100644
---- a/src/vulkan/wsi/wsi_common_drm.c
-+++ b/src/vulkan/wsi/wsi_common_drm.c
-@@ -113,6 +113,7 @@ wsi_create_native_image(const struct wsi_swapchain *chain,
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common_drm.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common_drm.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common_drm.c
+@@ -113,6 +113,7 @@ wsi_create_native_image(const struct wsi
                          const uint32_t *num_modifiers,
                          const uint64_t *const *modifiers,
                          bool host_visible,
@@ -71,7 +71,7 @@ index aabb761908c..6201891ca80 100644
                          struct wsi_image *image)
  {
     const struct wsi_device *wsi = chain->wsi;
-@@ -170,6 +171,12 @@ wsi_create_native_image(const struct wsi_swapchain *chain,
+@@ -170,6 +171,12 @@ wsi_create_native_image(const struct wsi
        __vk_append_struct(&image_info, &image_format_list);
     }
  
@@ -84,7 +84,7 @@ index aabb761908c..6201891ca80 100644
     VkImageDrmFormatModifierListCreateInfoEXT image_modifier_list;
  
     uint32_t image_modifier_count = 0, modifier_prop_count = 0;
-@@ -308,9 +315,14 @@ wsi_create_native_image(const struct wsi_swapchain *chain,
+@@ -308,9 +315,14 @@ wsi_create_native_image(const struct wsi
        .pNext = NULL,
        .implicit_sync = true,
     };
@@ -108,7 +108,7 @@ index aabb761908c..6201891ca80 100644
                         struct wsi_image *image)
  {
     const struct wsi_device *wsi = chain->wsi;
-@@ -480,9 +493,14 @@ wsi_create_prime_image(const struct wsi_swapchain *chain,
+@@ -480,9 +493,14 @@ wsi_create_prime_image(const struct wsi_
        .pNext = NULL,
        .implicit_sync = true,
     };
@@ -124,11 +124,11 @@ index aabb761908c..6201891ca80 100644
        .handleTypes = VK_EXTERNAL_MEMORY_HANDLE_TYPE_DMA_BUF_BIT_EXT,
     };
     const VkMemoryDedicatedAllocateInfo prime_memory_dedicated_info = {
-diff --git a/src/vulkan/wsi/wsi_common_private.h b/src/vulkan/wsi/wsi_common_private.h
-index 5ad087b32e0..e46328156dc 100644
---- a/src/vulkan/wsi/wsi_common_private.h
-+++ b/src/vulkan/wsi/wsi_common_private.h
-@@ -95,12 +95,14 @@ wsi_create_native_image(const struct wsi_swapchain *chain,
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common_private.h
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common_private.h
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common_private.h
+@@ -95,12 +95,14 @@ wsi_create_native_image(const struct wsi
                          const uint32_t *num_modifiers,
                          const uint64_t *const *modifiers,
                          bool host_visible,
@@ -143,10 +143,10 @@ index 5ad087b32e0..e46328156dc 100644
                         struct wsi_image *image);
  
  void
-diff --git a/src/vulkan/wsi/wsi_common_wayland.c b/src/vulkan/wsi/wsi_common_wayland.c
-index 983833e880b..1109d3f07b6 100644
---- a/src/vulkan/wsi/wsi_common_wayland.c
-+++ b/src/vulkan/wsi/wsi_common_wayland.c
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common_wayland.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common_wayland.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common_wayland.c
 @@ -32,6 +32,8 @@
  #include <pthread.h>
  #include <poll.h>
@@ -166,7 +166,7 @@ index 983833e880b..1109d3f07b6 100644
     /* Points to formats in wsi_wl_display_drm or wsi_wl_display_dmabuf */
     struct u_vector *                            formats;
  
-@@ -261,10 +266,52 @@ wsi_wl_display_add_wl_shm_format(struct wsi_wl_display *display,
+@@ -261,10 +266,52 @@ wsi_wl_display_add_wl_shm_format(struct
     }
  }
  
@@ -219,7 +219,7 @@ index 983833e880b..1109d3f07b6 100644
  }
  
  static uint32_t
-@@ -346,6 +393,9 @@ drm_handle_format(void *data, struct wl_drm *drm, uint32_t wl_format)
+@@ -346,6 +393,9 @@ drm_handle_format(void *data, struct wl_
  static void
  drm_handle_authenticated(void *data, struct wl_drm *drm)
  {
@@ -229,7 +229,7 @@ index 983833e880b..1109d3f07b6 100644
  }
  
  static void
-@@ -487,6 +537,9 @@ wsi_wl_display_finish(struct wsi_wl_display *display)
+@@ -487,6 +537,9 @@ wsi_wl_display_finish(struct wsi_wl_disp
        wl_proxy_wrapper_destroy(display->wl_display_wrapper);
     if (display->queue)
        wl_event_queue_destroy(display->queue);
@@ -239,7 +239,7 @@ index 983833e880b..1109d3f07b6 100644
  }
  
  static VkResult
-@@ -501,6 +554,7 @@ wsi_wl_display_init(struct wsi_wayland *wsi_wl,
+@@ -501,6 +554,7 @@ wsi_wl_display_init(struct wsi_wayland *
     display->wsi_wl = wsi_wl;
     display->wl_display = wl_display;
     display->sw = sw;
@@ -247,7 +247,7 @@ index 983833e880b..1109d3f07b6 100644
  
     if (get_format_list) {
        if (!u_vector_init(&display->swrast.formats, sizeof(VkFormat), 8) ||
-@@ -542,41 +596,60 @@ wsi_wl_display_init(struct wsi_wayland *wsi_wl,
+@@ -542,41 +596,60 @@ wsi_wl_display_init(struct wsi_wayland *
     /* Round-trip to get wl_drms and zwp_linux_dmabuf_v1 globals */
     wl_display_roundtrip_queue(display->wl_display, display->queue);
  
@@ -334,7 +334,7 @@ index 983833e880b..1109d3f07b6 100644
     /* We don't need this anymore */
     wl_registry_destroy(registry);
  
-@@ -1075,7 +1148,7 @@ wsi_wl_image_init(struct wsi_wl_swapchain *chain,
+@@ -1075,7 +1148,7 @@ wsi_wl_image_init(struct wsi_wl_swapchai
                                      chain->num_drm_modifiers > 0 ? 1 : 0,
                                      &chain->num_drm_modifiers,
                                      &chain->drm_modifiers, false,
@@ -343,11 +343,11 @@ index 983833e880b..1109d3f07b6 100644
  
     if (result != VK_SUCCESS)
        return result;
-diff --git a/src/vulkan/wsi/wsi_common_x11.c b/src/vulkan/wsi/wsi_common_x11.c
-index eb639d6c265..ba64e260932 100644
---- a/src/vulkan/wsi/wsi_common_x11.c
-+++ b/src/vulkan/wsi/wsi_common_x11.c
-@@ -1303,7 +1303,8 @@ x11_image_init(VkDevice device_h, struct x11_swapchain *chain,
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common_x11.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common_x11.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common_x11.c
+@@ -1303,7 +1303,8 @@ x11_image_init(VkDevice device_h, struct
                 const VkAllocationCallbacks* pAllocator,
                 const uint64_t *const *modifiers,
                 const uint32_t *num_modifiers,
@@ -357,7 +357,7 @@ index eb639d6c265..ba64e260932 100644
  {
     xcb_void_cookie_t cookie;
     VkResult result;
-@@ -1311,11 +1312,12 @@ x11_image_init(VkDevice device_h, struct x11_swapchain *chain,
+@@ -1311,11 +1312,12 @@ x11_image_init(VkDevice device_h, struct
  
     if (chain->base.use_prime_blit) {
        bool use_modifier = num_tranches > 0;
@@ -372,7 +372,7 @@ index eb639d6c265..ba64e260932 100644
                                         &image->base);
     }
     if (result < 0)
-@@ -1687,14 +1689,34 @@ x11_surface_create_swapchain(VkIcdSurfaceBase *icd_surface,
+@@ -1687,14 +1689,34 @@ x11_surface_create_swapchain(VkIcdSurfac
                                   modifiers, num_modifiers, &num_tranches,
                                   pAllocator);
  
@@ -414,6 +414,3 @@ index eb639d6c265..ba64e260932 100644
     }
  
     if ((chain->base.present_mode == VK_PRESENT_MODE_FIFO_KHR ||
--- 
-2.25.1
-

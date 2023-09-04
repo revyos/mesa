@@ -10,11 +10,10 @@ Subject: [PATCH 68/68] GL_ARB_geometry_shader4 entry points.
  3 files changed, 102 insertions(+), 1 deletion(-)
  create mode 100644 src/mapi/glapi/gen/ARB_geometry_shader4.xml
 
-diff --git a/src/mapi/glapi/gen/ARB_geometry_shader4.xml b/src/mapi/glapi/gen/ARB_geometry_shader4.xml
-new file mode 100644
-index 00000000000..d92dc577b17
+Index: mesa-21.2.1/src/mapi/glapi/gen/ARB_geometry_shader4.xml
+===================================================================
 --- /dev/null
-+++ b/src/mapi/glapi/gen/ARB_geometry_shader4.xml
++++ mesa-21.2.1/src/mapi/glapi/gen/ARB_geometry_shader4.xml
 @@ -0,0 +1,97 @@
 +<?xml version="1.0"?>
 +<!DOCTYPE OpenGLAPI SYSTEM "gl_API.dtd">
@@ -113,10 +112,10 @@ index 00000000000..d92dc577b17
 +</category>
 +
 +</OpenGLAPI>
-diff --git a/src/mapi/glapi/gen/gl_API.xml b/src/mapi/glapi/gen/gl_API.xml
-index 4e35de0f4ea..d5a5e7f5386 100644
---- a/src/mapi/glapi/gen/gl_API.xml
-+++ b/src/mapi/glapi/gen/gl_API.xml
+Index: mesa-21.2.1/src/mapi/glapi/gen/gl_API.xml
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/gl_API.xml
++++ mesa-21.2.1/src/mapi/glapi/gen/gl_API.xml
 @@ -8064,7 +8064,7 @@
  
  <!-- 46. GL_ARB_framebuffer_sRGB -->
@@ -126,10 +125,10 @@ index 4e35de0f4ea..d5a5e7f5386 100644
  
  <!-- 48. GL_ARB_half_float_vertex -->
  
-diff --git a/src/mapi/glapi/gen/static_data.py b/src/mapi/glapi/gen/static_data.py
-index 974f366d7b4..833ad73dd6a 100644
---- a/src/mapi/glapi/gen/static_data.py
-+++ b/src/mapi/glapi/gen/static_data.py
+Index: mesa-21.2.1/src/mapi/glapi/gen/static_data.py
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/static_data.py
++++ mesa-21.2.1/src/mapi/glapi/gen/static_data.py
 @@ -1721,6 +1721,10 @@ offsets = {
      "FramebufferRenderbufferEXT" : 1685,
      "GetFramebufferAttachmentParameterivEXT" : 1686,
@@ -141,6 +140,3 @@ index 974f366d7b4..833ad73dd6a 100644
  }
  
  functions = [
--- 
-2.25.1
-

@@ -9,11 +9,11 @@ This adds support for YUYV configs.
  src/egl/drivers/dri2/platform_wayland.c | 15 ++++++++++++++-
  2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index ee3bcda4d12..d511d73f2ed 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
-@@ -2769,6 +2769,7 @@ static const struct wl_drm_components_descriptor {
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+@@ -2769,6 +2769,7 @@ static const struct wl_drm_components_de
     { __DRI_IMAGE_COMPONENTS_Y_U_V, EGL_TEXTURE_Y_U_V_WL, 3 },
     { __DRI_IMAGE_COMPONENTS_Y_UV, EGL_TEXTURE_Y_UV_WL, 2 },
     { __DRI_IMAGE_COMPONENTS_Y_XUXV, EGL_TEXTURE_Y_XUXV_WL, 2 },
@@ -21,10 +21,10 @@ index ee3bcda4d12..d511d73f2ed 100644
  };
  
  static _EGLImage *
-diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
-index a096d9500c1..72456d5d748 100644
---- a/src/egl/drivers/dri2/platform_wayland.c
-+++ b/src/egl/drivers/dri2/platform_wayland.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_wayland.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
 @@ -135,6 +135,13 @@ static const struct dri2_wl_visual {
        { 11, 5, 0, -1 },
        { 5, 6, 5, 0 },
@@ -39,7 +39,7 @@ index a096d9500c1..72456d5d748 100644
  };
  
  static_assert(ARRAY_SIZE(dri2_wl_visuals) <= EGL_DRI2_MAX_FORMATS,
-@@ -958,6 +965,7 @@ dri2_wl_get_capability(void *loaderPrivate, enum dri_loader_cap cap)
+@@ -958,6 +965,7 @@ dri2_wl_get_capability(void *loaderPriva
  {
     switch (cap) {
     case DRI_LOADER_CAP_FP16:
@@ -47,7 +47,7 @@ index a096d9500c1..72456d5d748 100644
        return 1;
     default:
        return 0;
-@@ -1552,6 +1560,7 @@ dri2_wl_add_configs_for_visuals(_EGLDisplay *disp)
+@@ -1552,6 +1560,7 @@ dri2_wl_add_configs_for_visuals(_EGLDisp
     struct dri2_egl_display *dri2_dpy = dri2_egl_display(disp);
     unsigned int format_count[ARRAY_SIZE(dri2_wl_visuals)] = { 0 };
     unsigned int count = 0;
@@ -55,7 +55,7 @@ index a096d9500c1..72456d5d748 100644
     bool assigned;
  
     for (unsigned i = 0; dri2_dpy->driver_configs[i]; i++) {
-@@ -1563,8 +1572,12 @@ dri2_wl_add_configs_for_visuals(_EGLDisplay *disp)
+@@ -1563,8 +1572,12 @@ dri2_wl_add_configs_for_visuals(_EGLDisp
           if (!BITSET_TEST(dri2_dpy->formats, j))
              continue;
  
@@ -69,6 +69,3 @@ index a096d9500c1..72456d5d748 100644
           if (dri2_conf) {
              if (dri2_conf->base.ConfigID == count + 1)
                 count++;
--- 
-2.25.1
-

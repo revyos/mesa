@@ -16,11 +16,11 @@ invalid.
  src/egl/drivers/dri2/platform_wayland.c | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
-index c2e428769fe..811d28bd669 100644
---- a/src/egl/drivers/dri2/platform_wayland.c
-+++ b/src/egl/drivers/dri2/platform_wayland.c
-@@ -1117,6 +1117,8 @@ dri2_wl_swap_buffers_with_damage(_EGLDisplay *disp,
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_wayland.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+@@ -1117,6 +1117,8 @@ dri2_wl_swap_buffers_with_damage(_EGLDis
        wl_surface_damage(dri2_surf->wl_surface_wrapper,
                          0, 0, INT32_MAX, INT32_MAX);
  
@@ -29,7 +29,7 @@ index c2e428769fe..811d28bd669 100644
     if (dri2_dpy->is_different_gpu) {
        _EGLContext *ctx = _eglGetCurrentContext();
        struct dri2_egl_context *dri2_ctx = dri2_egl_context(ctx);
-@@ -1126,10 +1128,9 @@ dri2_wl_swap_buffers_with_damage(_EGLDisplay *disp,
+@@ -1126,10 +1128,9 @@ dri2_wl_swap_buffers_with_damage(_EGLDis
                                   0, 0, dri2_surf->base.Width,
                                   dri2_surf->base.Height,
                                   0, 0, dri2_surf->base.Width,
@@ -41,6 +41,3 @@ index c2e428769fe..811d28bd669 100644
     dri2_dpy->flush->invalidate(dri2_surf->dri_drawable);
  
     wl_surface_commit(dri2_surf->wl_surface_wrapper);
--- 
-2.25.1
-

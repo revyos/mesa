@@ -38,11 +38,11 @@ large value it currently has.
  src/egl/main/egldriver.h            |  1 +
  7 files changed, 50 insertions(+), 4 deletions(-)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 6490f6e80e2..9c7bcac4cae 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
-@@ -2052,6 +2052,8 @@ typedef struct __DRIDriverVtableExtensionRec {
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
+@@ -2052,6 +2052,8 @@ typedef struct __DRIDriverVtableExtensio
  
  #define __DRI2_RENDERER_HAS_PROTECTED_CONTENT                 0x000e
  
@@ -51,11 +51,11 @@ index 6490f6e80e2..9c7bcac4cae 100644
  typedef struct __DRI2rendererQueryExtensionRec __DRI2rendererQueryExtension;
  struct __DRI2rendererQueryExtensionRec {
     __DRIextension base;
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index 6b26ff979ae..c4a49cae592 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
-@@ -2055,6 +2055,26 @@ dri2_make_current(_EGLDisplay *disp, _EGLSurface *dsurf,
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+@@ -2055,6 +2055,26 @@ dri2_make_current(_EGLDisplay *disp, _EG
     return EGL_TRUE;
  }
  
@@ -90,15 +90,14 @@ index 6b26ff979ae..c4a49cae592 100644
     .CreateWindowSurface = dri2_create_window_surface,
     .CreatePixmapSurface = dri2_create_pixmap_surface,
     .CreatePbufferSurface = dri2_create_pbuffer_surface,
-diff --git a/src/egl/drivers/haiku/egl_haiku.cpp b/src/egl/drivers/haiku/egl_haiku.cpp
-index 18c73c9cd8b..2690a82eb75 100644
---- a/src/egl/drivers/haiku/egl_haiku.cpp
-+++ b/src/egl/drivers/haiku/egl_haiku.cpp
-@@ -297,6 +297,14 @@ haiku_make_current(_EGLDisplay *disp, _EGLSurface *dsurf,
- }
+Index: mesa-21.2.1/src/egl/drivers/haiku/egl_haiku.cpp
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/haiku/egl_haiku.cpp
++++ mesa-21.2.1/src/egl/drivers/haiku/egl_haiku.cpp
+@@ -298,6 +298,14 @@ haiku_make_current(_EGLDisplay *disp, _E
  
  
-+extern "C"
+ extern "C"
 +EGLint
 +haiku_dri2_query_context_client_version(_EGLDisplay *disp, _EGLContext *ctx)
 +{
@@ -106,9 +105,10 @@ index 18c73c9cd8b..2690a82eb75 100644
 +	return 0;
 +}
 +
- extern "C"
++extern "C"
  EGLBoolean
  haiku_swap_buffers(_EGLDisplay *disp, _EGLSurface *surf)
+ {
 @@ -316,6 +324,7 @@ const _EGLDriver _eglDriver = {
  	.CreateContext = haiku_create_context,
  	.DestroyContext = haiku_destroy_context,
@@ -117,11 +117,11 @@ index 18c73c9cd8b..2690a82eb75 100644
  	.CreateWindowSurface = haiku_create_window_surface,
  	.CreatePixmapSurface = haiku_create_pixmap_surface,
  	.CreatePbufferSurface = haiku_create_pbuffer_surface,
-diff --git a/src/egl/main/eglapi.c b/src/egl/main/eglapi.c
-index 2d3931dfd26..1cbff9656e4 100644
---- a/src/egl/main/eglapi.c
-+++ b/src/egl/main/eglapi.c
-@@ -948,7 +948,7 @@ eglQueryContext(EGLDisplay dpy, EGLContext ctx,
+Index: mesa-21.2.1/src/egl/main/eglapi.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglapi.c
++++ mesa-21.2.1/src/egl/main/eglapi.c
+@@ -948,7 +948,7 @@ eglQueryContext(EGLDisplay dpy, EGLConte
  
     _EGL_CHECK_CONTEXT(disp, context, EGL_FALSE);
  
@@ -130,10 +130,10 @@ index 2d3931dfd26..1cbff9656e4 100644
  
     RETURN_EGL_EVAL(disp, ret);
  }
-diff --git a/src/egl/main/eglcontext.c b/src/egl/main/eglcontext.c
-index 15de7c99496..7274d246194 100644
---- a/src/egl/main/eglcontext.c
-+++ b/src/egl/main/eglcontext.c
+Index: mesa-21.2.1/src/egl/main/eglcontext.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglcontext.c
++++ mesa-21.2.1/src/egl/main/eglcontext.c
 @@ -35,6 +35,7 @@
  #include "eglcontext.h"
  #include "egldisplay.h"
@@ -142,7 +142,7 @@ index 15de7c99496..7274d246194 100644
  #include "eglsurface.h"
  #include "egllog.h"
  #include "util/macros.h"
-@@ -670,8 +671,19 @@ _eglQueryContextRenderBuffer(_EGLContext *ctx)
+@@ -670,8 +671,19 @@ _eglQueryContextRenderBuffer(_EGLContext
  }
  
  
@@ -163,7 +163,7 @@ index 15de7c99496..7274d246194 100644
  {
     if (!value)
        return _eglError(EGL_BAD_PARAMETER, "eglQueryContext");
-@@ -688,7 +700,7 @@ _eglQueryContext(_EGLContext *c, EGLint attribute, EGLint *value)
+@@ -688,7 +700,7 @@ _eglQueryContext(_EGLContext *c, EGLint
        *value = c->Config ? c->Config->ConfigID : 0;
        break;
     case EGL_CONTEXT_CLIENT_VERSION:
@@ -172,11 +172,11 @@ index 15de7c99496..7274d246194 100644
        break;
     case EGL_CONTEXT_CLIENT_TYPE:
        *value = c->ClientAPI;
-diff --git a/src/egl/main/eglcontext.h b/src/egl/main/eglcontext.h
-index 06029e81251..d890217852d 100644
---- a/src/egl/main/eglcontext.h
-+++ b/src/egl/main/eglcontext.h
-@@ -74,7 +74,8 @@ _eglInitContext(_EGLContext *ctx, _EGLDisplay *disp,
+Index: mesa-21.2.1/src/egl/main/eglcontext.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglcontext.h
++++ mesa-21.2.1/src/egl/main/eglcontext.h
+@@ -74,7 +74,8 @@ _eglInitContext(_EGLContext *ctx, _EGLDi
  
  
  extern EGLBoolean
@@ -186,10 +186,10 @@ index 06029e81251..d890217852d 100644
  
  
  extern EGLBoolean
-diff --git a/src/egl/main/egldriver.h b/src/egl/main/egldriver.h
-index 12f9a0aab86..92af8bd16d5 100644
---- a/src/egl/main/egldriver.h
-+++ b/src/egl/main/egldriver.h
+Index: mesa-21.2.1/src/egl/main/egldriver.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egldriver.h
++++ mesa-21.2.1/src/egl/main/egldriver.h
 @@ -97,6 +97,7 @@ struct _egl_driver
     EGLBoolean (*MakeCurrent)(_EGLDisplay *disp,
                               _EGLSurface *draw, _EGLSurface *read,
@@ -198,6 +198,3 @@ index 12f9a0aab86..92af8bd16d5 100644
  
     /* surface funcs */
     _EGLSurface *(*CreateWindowSurface)(_EGLDisplay *disp, _EGLConfig *config,
--- 
-2.25.1
-

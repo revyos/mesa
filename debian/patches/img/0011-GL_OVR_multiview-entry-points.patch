@@ -8,10 +8,10 @@ Subject: [PATCH 11/67] GL_OVR_multiview entry points
  src/mapi/glapi/gen/static_data.py |  1 +
  2 files changed, 18 insertions(+)
 
-diff --git a/src/mapi/glapi/gen/gl_API.xml b/src/mapi/glapi/gen/gl_API.xml
-index cf5a0f0a0c0..4e35de0f4ea 100644
---- a/src/mapi/glapi/gen/gl_API.xml
-+++ b/src/mapi/glapi/gen/gl_API.xml
+Index: mesa-21.2.1/src/mapi/glapi/gen/gl_API.xml
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/gl_API.xml
++++ mesa-21.2.1/src/mapi/glapi/gen/gl_API.xml
 @@ -13125,6 +13125,23 @@
      </function>
  </category>
@@ -36,10 +36,10 @@ index cf5a0f0a0c0..4e35de0f4ea 100644
  <xi:include href="EXT_window_rectangles.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
  
  <!-- 520. GL_EXT_shader_framebuffer_fetch -->
-diff --git a/src/mapi/glapi/gen/static_data.py b/src/mapi/glapi/gen/static_data.py
-index c723cb3fab8..73625c7fe41 100644
---- a/src/mapi/glapi/gen/static_data.py
-+++ b/src/mapi/glapi/gen/static_data.py
+Index: mesa-21.2.1/src/mapi/glapi/gen/static_data.py
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/static_data.py
++++ mesa-21.2.1/src/mapi/glapi/gen/static_data.py
 @@ -1702,6 +1702,7 @@ offsets = {
      "GetFramebufferPixelLocalStorageSizeEXT" : 1666,
      "FramebufferTexture2DDownsampleIMG" : 1667,
@@ -48,6 +48,3 @@ index c723cb3fab8..73625c7fe41 100644
  }
  
  functions = [
--- 
-2.25.1
-

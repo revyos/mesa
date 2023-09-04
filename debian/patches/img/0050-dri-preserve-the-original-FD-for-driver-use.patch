@@ -33,10 +33,10 @@ X11 EGL and GLX platforms.
  src/glx/dri3_priv.h                      |  1 +
  8 files changed, 125 insertions(+), 7 deletions(-)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 888a117d56e..2fb440feb50 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -1146,7 +1146,7 @@ struct __DRIbufferRec {
  };
  
@@ -91,10 +91,10 @@ index 888a117d56e..2fb440feb50 100644
  };
  
  /**
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index c4a49cae592..1df53ef011c 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
 @@ -1367,6 +1367,16 @@ dri2_display_destroy(_EGLDisplay *disp)
        break;
     }
@@ -112,11 +112,11 @@ index c4a49cae592..1df53ef011c 100644
     if (dri2_dpy->fd >= 0)
        close(dri2_dpy->fd);
  
-diff --git a/src/egl/drivers/dri2/egl_dri2.h b/src/egl/drivers/dri2/egl_dri2.h
-index 141df1b1732..af03caee623 100644
---- a/src/egl/drivers/dri2/egl_dri2.h
-+++ b/src/egl/drivers/dri2/egl_dri2.h
-@@ -230,6 +230,7 @@ struct dri2_egl_display
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.h
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
+@@ -231,6 +231,7 @@ struct dri2_egl_display
     const __DRIconfigOptionsExtension *configOptions;
     const __DRImutableRenderBufferDriverExtension *mutable_render_buffer;
     int                       fd;
@@ -124,10 +124,10 @@ index 141df1b1732..af03caee623 100644
  
     /* dri2_initialize/dri2_terminate increment/decrement this count, so does
      * dri2_make_current (tracks if there are active contexts/surfaces). */
-diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
-index 06272d4081e..b393e058770 100644
---- a/src/egl/drivers/dri2/platform_wayland.c
-+++ b/src/egl/drivers/dri2/platform_wayland.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_wayland.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
 @@ -44,6 +44,7 @@
  #include "loader.h"
  #include "util/u_vector.h"
@@ -136,7 +136,7 @@ index 06272d4081e..b393e058770 100644
  #include "eglglobals.h"
  
  #include <wayland-egl-backend.h>
-@@ -973,21 +974,32 @@ dri2_wl_get_capability(void *loaderPrivate, enum dri_loader_cap cap)
+@@ -973,21 +974,32 @@ dri2_wl_get_capability(void *loaderPriva
     }
  }
  
@@ -171,7 +171,7 @@ index 06272d4081e..b393e058770 100644
  };
  
  static void
-@@ -1640,12 +1652,14 @@ dri2_initialize_wayland_drm(_EGLDisplay *disp)
+@@ -1640,12 +1652,14 @@ dri2_initialize_wayland_drm(_EGLDisplay
  {
     _EGLDevice *dev;
     struct dri2_egl_display *dri2_dpy;
@@ -186,7 +186,7 @@ index 06272d4081e..b393e058770 100644
     disp->DriverData = (void *) dri2_dpy;
     if (disp->PlatformDisplay == NULL) {
        dri2_dpy->wl_dpy = wl_display_connect(NULL);
-@@ -1690,8 +1704,20 @@ dri2_initialize_wayland_drm(_EGLDisplay *disp)
+@@ -1690,8 +1704,20 @@ dri2_initialize_wayland_drm(_EGLDisplay
         (roundtrip(dri2_dpy) < 0 || !dri2_dpy->authenticated))
        goto cleanup;
  
@@ -207,7 +207,7 @@ index 06272d4081e..b393e058770 100644
     dev = _eglAddDevice(dri2_dpy->fd, false);
     if (!dev) {
        _eglError(EGL_NOT_INITIALIZED, "DRI2: failed to find EGLDevice");
-@@ -2236,6 +2262,7 @@ dri2_initialize_wayland_swrast(_EGLDisplay *disp)
+@@ -2236,6 +2262,7 @@ dri2_initialize_wayland_swrast(_EGLDispl
        return _eglError(EGL_BAD_ALLOC, "eglInitialize");
  
     dri2_dpy->fd = -1;
@@ -215,11 +215,11 @@ index 06272d4081e..b393e058770 100644
     disp->DriverData = (void *) dri2_dpy;
     if (disp->PlatformDisplay == NULL) {
        dri2_dpy->wl_dpy = wl_display_connect(NULL);
-diff --git a/src/egl/drivers/dri2/platform_x11.c b/src/egl/drivers/dri2/platform_x11.c
-index 5ffdf132184..5cf3ce2a369 100644
---- a/src/egl/drivers/dri2/platform_x11.c
-+++ b/src/egl/drivers/dri2/platform_x11.c
-@@ -1277,6 +1277,7 @@ dri2_initialize_x11_swrast(_EGLDisplay *disp)
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_x11.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_x11.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_x11.c
+@@ -1277,6 +1277,7 @@ dri2_initialize_x11_swrast(_EGLDisplay *
        return _eglError(EGL_BAD_ALLOC, "eglInitialize");
  
     dri2_dpy->fd = -1;
@@ -227,7 +227,7 @@ index 5ffdf132184..5cf3ce2a369 100644
     if (!dri2_get_xcb_connection(disp, dri2_dpy))
        goto cleanup;
  
-@@ -1364,6 +1365,7 @@ dri2_initialize_x11_dri3(_EGLDisplay *disp)
+@@ -1364,6 +1365,7 @@ dri2_initialize_x11_dri3(_EGLDisplay *di
        return _eglError(EGL_BAD_ALLOC, "eglInitialize");
  
     dri2_dpy->fd = -1;
@@ -235,7 +235,7 @@ index 5ffdf132184..5cf3ce2a369 100644
     if (!dri2_get_xcb_connection(disp, dri2_dpy))
        goto cleanup;
  
-@@ -1472,6 +1474,7 @@ dri2_initialize_x11_dri2(_EGLDisplay *disp)
+@@ -1472,6 +1474,7 @@ dri2_initialize_x11_dri2(_EGLDisplay *di
        return _eglError(EGL_BAD_ALLOC, "eglInitialize");
  
     dri2_dpy->fd = -1;
@@ -243,10 +243,10 @@ index 5ffdf132184..5cf3ce2a369 100644
     if (!dri2_get_xcb_connection(disp, dri2_dpy))
        goto cleanup;
  
-diff --git a/src/egl/drivers/dri2/platform_x11_dri3.c b/src/egl/drivers/dri2/platform_x11_dri3.c
-index e117105fcb6..0babf9f867e 100644
---- a/src/egl/drivers/dri2/platform_x11_dri3.c
-+++ b/src/egl/drivers/dri2/platform_x11_dri3.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_x11_dri3.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_x11_dri3.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_x11_dri3.c
 @@ -32,6 +32,7 @@
  
  #include <xf86drm.h>
@@ -255,7 +255,7 @@ index e117105fcb6..0babf9f867e 100644
  
  #include "egl_dri2.h"
  #include "platform_x11_dri3.h"
-@@ -414,11 +415,21 @@ dri3_flush_front_buffer(__DRIdrawable *driDrawable, void *loaderPrivate)
+@@ -414,11 +415,21 @@ dri3_flush_front_buffer(__DRIdrawable *d
        _eglLog(_EGL_WARNING, "FIXME: egl/x11 doesn't support front buffer rendering.");
  }
  
@@ -278,7 +278,7 @@ index e117105fcb6..0babf9f867e 100644
  };
  
  static EGLBoolean
-@@ -537,6 +548,7 @@ dri3_x11_connect(struct dri2_egl_display *dri2_dpy)
+@@ -537,6 +548,7 @@ dri3_x11_connect(struct dri2_egl_display
     xcb_xfixes_query_version_cookie_t xfixes_query_cookie;
     xcb_generic_error_t *error;
     const xcb_query_extension_reply_t *extension;
@@ -286,7 +286,7 @@ index e117105fcb6..0babf9f867e 100644
  
     xcb_prefetch_extension_data (dri2_dpy->conn, &xcb_dri3_id);
     xcb_prefetch_extension_data (dri2_dpy->conn, &xcb_present_id);
-@@ -616,12 +628,25 @@ dri3_x11_connect(struct dri2_egl_display *dri2_dpy)
+@@ -616,12 +628,25 @@ dri3_x11_connect(struct dri2_egl_display
        return EGL_FALSE;
     }
  
@@ -312,10 +312,10 @@ index e117105fcb6..0babf9f867e 100644
        return EGL_FALSE;
     }
  
-diff --git a/src/glx/dri3_glx.c b/src/glx/dri3_glx.c
-index db1b079663f..1ed6b60ffe8 100644
---- a/src/glx/dri3_glx.c
-+++ b/src/glx/dri3_glx.c
+Index: mesa-21.2.1/src/glx/dri3_glx.c
+===================================================================
+--- mesa-21.2.1.orig/src/glx/dri3_glx.c
++++ mesa-21.2.1/src/glx/dri3_glx.c
 @@ -77,6 +77,7 @@
  #include "dri3_priv.h"
  #include "loader.h"
@@ -324,7 +324,7 @@ index db1b079663f..1ed6b60ffe8 100644
  
  static struct dri3_drawable *
  loader_drawable_to_dri3_drawable(struct loader_dri3_drawable *draw) {
-@@ -529,6 +530,14 @@ dri3_flush_swap_buffers(__DRIdrawable *driDrawable, void *loaderPrivate)
+@@ -529,6 +530,14 @@ dri3_flush_swap_buffers(__DRIdrawable *d
     loader_dri3_swapbuffer_barrier(draw);
  }
  
@@ -353,7 +353,7 @@ index db1b079663f..1ed6b60ffe8 100644
  };
  
  const __DRIuseInvalidateExtension dri3UseInvalidate = {
-@@ -618,6 +628,10 @@ dri3_destroy_screen(struct glx_screen *base)
+@@ -618,6 +628,10 @@ dri3_destroy_screen(struct glx_screen *b
     loader_dri3_close_screen(psc->driScreen);
     (*psc->core->destroyScreen) (psc->driScreen);
     driDestroyConfigs(psc->driver_configs);
@@ -364,7 +364,7 @@ index db1b079663f..1ed6b60ffe8 100644
     close(psc->fd);
     free(psc);
  }
-@@ -842,8 +856,9 @@ dri3_create_screen(int screen, struct glx_display * priv)
+@@ -842,8 +856,9 @@ dri3_create_screen(int screen, struct gl
     struct dri3_screen *psc;
     __GLXDRIscreen *psp;
     struct glx_config *configs = NULL, *visuals = NULL;
@@ -375,7 +375,7 @@ index db1b079663f..1ed6b60ffe8 100644
  
     psc = calloc(1, sizeof *psc);
     if (psc == NULL)
-@@ -851,6 +866,7 @@ dri3_create_screen(int screen, struct glx_display * priv)
+@@ -851,6 +866,7 @@ dri3_create_screen(int screen, struct gl
  
     psc->fd = -1;
     psc->fd_display_gpu = -1;
@@ -383,7 +383,7 @@ index db1b079663f..1ed6b60ffe8 100644
  
     if (!glx_screen_init(&psc->base, screen, priv)) {
        free(psc);
-@@ -871,12 +887,23 @@ dri3_create_screen(int screen, struct glx_display * priv)
+@@ -871,12 +887,23 @@ dri3_create_screen(int screen, struct gl
        return NULL;
     }
  
@@ -416,10 +416,10 @@ index db1b079663f..1ed6b60ffe8 100644
     if (psc->fd >= 0)
        close(psc->fd);
     if (psc->fd_display_gpu >= 0)
-diff --git a/src/glx/dri3_priv.h b/src/glx/dri3_priv.h
-index c0e833c16ef..b3dccf28c06 100644
---- a/src/glx/dri3_priv.h
-+++ b/src/glx/dri3_priv.h
+Index: mesa-21.2.1/src/glx/dri3_priv.h
+===================================================================
+--- mesa-21.2.1.orig/src/glx/dri3_priv.h
++++ mesa-21.2.1/src/glx/dri3_priv.h
 @@ -107,6 +107,7 @@ struct dri3_screen {
  
     void *driver;
@@ -428,6 +428,3 @@ index c0e833c16ef..b3dccf28c06 100644
     bool is_different_gpu;
  
     /* fd for display GPU in case of prime */
--- 
-2.25.1
-

@@ -36,11 +36,11 @@ side are wrappers around Mesa WSI functions.
  create mode 100644 src/pvr/wsi/pvr_wsi_wayland.c
  create mode 100644 src/pvr/wsi/pvr_wsi_x11.c
 
-diff --git a/meson.build b/meson.build
-index 8db1699729a..9341e5500fc 100644
---- a/meson.build
-+++ b/meson.build
-@@ -296,6 +296,7 @@ with_swrast_vk = _vulkan_drivers.contains('swrast')
+Index: mesa-21.2.1/meson.build
+===================================================================
+--- mesa-21.2.1.orig/meson.build
++++ mesa-21.2.1/meson.build
+@@ -296,6 +296,7 @@ with_swrast_vk = _vulkan_drivers.contain
  with_virtio_vk = _vulkan_drivers.contains('virtio-experimental')
  with_freedreno_kgsl = get_option('freedreno-kgsl')
  with_broadcom_vk = _vulkan_drivers.contains('broadcom')
@@ -48,10 +48,10 @@ index 8db1699729a..9341e5500fc 100644
  with_any_vk = _vulkan_drivers.length() != 0
  
  with_any_broadcom = with_gallium_vc4 or with_gallium_v3d or with_broadcom_vk
-diff --git a/meson_options.txt b/meson_options.txt
-index d36e714ea4c..e0c25a5b15b 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
+Index: mesa-21.2.1/meson_options.txt
+===================================================================
+--- mesa-21.2.1.orig/meson_options.txt
++++ mesa-21.2.1/meson_options.txt
 @@ -194,7 +194,7 @@ option(
    'vulkan-drivers',
    type : 'array',
@@ -61,10 +61,10 @@ index d36e714ea4c..e0c25a5b15b 100644
    description : 'List of vulkan drivers to build. If this is set to auto all drivers applicable to the target OS/architecture will be built'
  )
  option(
-diff --git a/src/meson.build b/src/meson.build
-index f6eede56648..36fec262020 100644
---- a/src/meson.build
-+++ b/src/meson.build
+Index: mesa-21.2.1/src/meson.build
+===================================================================
+--- mesa-21.2.1.orig/src/meson.build
++++ mesa-21.2.1/src/meson.build
 @@ -90,6 +90,9 @@ endif
  if with_gallium_panfrost or with_gallium_lima or with_panfrost_vk
    subdir('panfrost')
@@ -75,11 +75,10 @@ index f6eede56648..36fec262020 100644
  if with_gallium_virgl or with_virtio_vk
    subdir('virtio')
  endif
-diff --git a/src/pvr/meson.build b/src/pvr/meson.build
-new file mode 100644
-index 00000000000..09a6986a4c9
+Index: mesa-21.2.1/src/pvr/meson.build
+===================================================================
 --- /dev/null
-+++ b/src/pvr/meson.build
++++ mesa-21.2.1/src/pvr/meson.build
 @@ -0,0 +1,23 @@
 +# Copyright (c) Imagination Technologies Ltd.
 +
@@ -104,11 +103,10 @@ index 00000000000..09a6986a4c9
 +if with_pvr_vk
 +  subdir('wsi')
 +endif
-diff --git a/src/pvr/wsi/meson.build b/src/pvr/wsi/meson.build
-new file mode 100644
-index 00000000000..57c7623c4bb
+Index: mesa-21.2.1/src/pvr/wsi/meson.build
+===================================================================
 --- /dev/null
-+++ b/src/pvr/wsi/meson.build
++++ mesa-21.2.1/src/pvr/wsi/meson.build
 @@ -0,0 +1,75 @@
 +# Copyright (c) Imagination Technologies Ltd.
 +
@@ -185,11 +183,10 @@ index 00000000000..57c7623c4bb
 +  build_by_default : true,
 +  install : true
 +)
-diff --git a/src/pvr/wsi/pvr_mesa_wsi_interface.h b/src/pvr/wsi/pvr_mesa_wsi_interface.h
-new file mode 100644
-index 00000000000..b4b1bcb0c9d
+Index: mesa-21.2.1/src/pvr/wsi/pvr_mesa_wsi_interface.h
+===================================================================
 --- /dev/null
-+++ b/src/pvr/wsi/pvr_mesa_wsi_interface.h
++++ mesa-21.2.1/src/pvr/wsi/pvr_mesa_wsi_interface.h
 @@ -0,0 +1,306 @@
 +/*************************************************************************/ /*!
 +@File
@@ -497,11 +494,10 @@ index 00000000000..b4b1bcb0c9d
 +                         const char *name);
 +
 +#endif /* PVR_MESA_WSI_INTERFACE_H */
-diff --git a/src/pvr/wsi/pvr_wsi.c b/src/pvr/wsi/pvr_wsi.c
-new file mode 100644
-index 00000000000..a1fcdfd6164
+Index: mesa-21.2.1/src/pvr/wsi/pvr_wsi.c
+===================================================================
 --- /dev/null
-+++ b/src/pvr/wsi/pvr_wsi.c
++++ mesa-21.2.1/src/pvr/wsi/pvr_wsi.c
 @@ -0,0 +1,333 @@
 +/*
 + * Copyright © Imagination Technologies Ltd.
@@ -836,11 +832,10 @@ index 00000000000..a1fcdfd6164
 +
 +   return NULL;
 +}
-diff --git a/src/pvr/wsi/pvr_wsi.h b/src/pvr/wsi/pvr_wsi.h
-new file mode 100644
-index 00000000000..142358db3de
+Index: mesa-21.2.1/src/pvr/wsi/pvr_wsi.h
+===================================================================
 --- /dev/null
-+++ b/src/pvr/wsi/pvr_wsi.h
++++ mesa-21.2.1/src/pvr/wsi/pvr_wsi.h
 @@ -0,0 +1,78 @@
 +/*
 + * Copyright © Imagination Technologies Ltd.
@@ -920,11 +915,10 @@ index 00000000000..142358db3de
 +}
 +
 +#endif
-diff --git a/src/pvr/wsi/pvr_wsi_display.c b/src/pvr/wsi/pvr_wsi_display.c
-new file mode 100644
-index 00000000000..65a1c99507c
+Index: mesa-21.2.1/src/pvr/wsi/pvr_wsi_display.c
+===================================================================
 --- /dev/null
-+++ b/src/pvr/wsi/pvr_wsi_display.c
++++ mesa-21.2.1/src/pvr/wsi/pvr_wsi_display.c
 @@ -0,0 +1,293 @@
 +/*
 + * Copyright © Imagination Technologies Ltd.
@@ -1219,11 +1213,10 @@ index 00000000000..65a1c99507c
 +                                    pValue);
 +}
 +
-diff --git a/src/pvr/wsi/pvr_wsi_wayland.c b/src/pvr/wsi/pvr_wsi_wayland.c
-new file mode 100644
-index 00000000000..5b052667ac9
+Index: mesa-21.2.1/src/pvr/wsi/pvr_wsi_wayland.c
+===================================================================
 --- /dev/null
-+++ b/src/pvr/wsi/pvr_wsi_wayland.c
++++ mesa-21.2.1/src/pvr/wsi/pvr_wsi_wayland.c
 @@ -0,0 +1,45 @@
 +/*
 + * Copyright © Imagination Technologies Ltd.
@@ -1270,11 +1263,10 @@ index 00000000000..5b052667ac9
 +{
 +   return wsi_create_wl_surface(pAllocator, pCreateInfo, pSurface);
 +}
-diff --git a/src/pvr/wsi/pvr_wsi_x11.c b/src/pvr/wsi/pvr_wsi_x11.c
-new file mode 100644
-index 00000000000..0a69e92ac9e
+Index: mesa-21.2.1/src/pvr/wsi/pvr_wsi_x11.c
+===================================================================
 --- /dev/null
-+++ b/src/pvr/wsi/pvr_wsi_x11.c
++++ mesa-21.2.1/src/pvr/wsi/pvr_wsi_x11.c
 @@ -0,0 +1,62 @@
 +/*
 + * Copyright © Imagination Technologies Ltd.
@@ -1338,6 +1330,3 @@ index 00000000000..0a69e92ac9e
 +				  pCreateInfo,
 +				  pSurface);
 +}
--- 
-2.25.1
-

@@ -14,11 +14,11 @@ with attributes known to the Server.
  src/loader/loader_dri3_helper.h          |   4 +
  4 files changed, 113 insertions(+), 50 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/platform_x11_dri3.c b/src/egl/drivers/dri2/platform_x11_dri3.c
-index 0babf9f867e..94205a495a6 100644
---- a/src/egl/drivers/dri2/platform_x11_dri3.c
-+++ b/src/egl/drivers/dri2/platform_x11_dri3.c
-@@ -143,6 +143,7 @@ dri3_create_surface(_EGLDisplay *disp, EGLint type, _EGLConfig *conf,
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_x11_dri3.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_x11_dri3.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_x11_dri3.c
+@@ -143,6 +143,7 @@ dri3_create_surface(_EGLDisplay *disp, E
     struct dri3_egl_surface *dri3_surf;
     const __DRIconfig *dri_config;
     xcb_drawable_t drawable;
@@ -26,7 +26,7 @@ index 0babf9f867e..94205a495a6 100644
  
     dri3_surf = calloc(1, sizeof *dri3_surf);
     if (!dri3_surf) {
-@@ -150,6 +151,10 @@ dri3_create_surface(_EGLDisplay *disp, EGLint type, _EGLConfig *conf,
+@@ -150,6 +151,10 @@ dri3_create_surface(_EGLDisplay *disp, E
        return NULL;
     }
  
@@ -37,7 +37,7 @@ index 0babf9f867e..94205a495a6 100644
     if (!dri2_init_surface(&dri3_surf->surf.base, disp, type, conf,
                            attrib_list, false, native_surface))
        goto cleanup_surf;
-@@ -174,7 +179,7 @@ dri3_create_surface(_EGLDisplay *disp, EGLint type, _EGLConfig *conf,
+@@ -174,7 +179,7 @@ dri3_create_surface(_EGLDisplay *disp, E
  
     if (loader_dri3_drawable_init(dri2_dpy->conn, drawable,
                                   dri2_dpy->dri_screen,
@@ -46,11 +46,11 @@ index 0babf9f867e..94205a495a6 100644
                                   dri2_dpy->multibuffers_available,
                                   dri_config,
                                   &dri2_dpy->loader_dri3_ext,
-diff --git a/src/glx/dri3_glx.c b/src/glx/dri3_glx.c
-index 1ed6b60ffe8..025ad0128ec 100644
---- a/src/glx/dri3_glx.c
-+++ b/src/glx/dri3_glx.c
-@@ -354,6 +354,21 @@ dri3_destroy_drawable(__GLXDRIdrawable *base)
+Index: mesa-21.2.1/src/glx/dri3_glx.c
+===================================================================
+--- mesa-21.2.1.orig/src/glx/dri3_glx.c
++++ mesa-21.2.1/src/glx/dri3_glx.c
+@@ -354,6 +354,21 @@ dri3_destroy_drawable(__GLXDRIdrawable *
     free(pdraw);
  }
  
@@ -72,7 +72,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
  static __GLXDRIdrawable *
  dri3_create_drawable(struct glx_screen *base, XID xDrawable,
                       GLXDrawable drawable, struct glx_config *config_base)
-@@ -361,11 +376,9 @@ dri3_create_drawable(struct glx_screen *base, XID xDrawable,
+@@ -361,11 +376,9 @@ dri3_create_drawable(struct glx_screen *
     struct dri3_drawable *pdraw;
     struct dri3_screen *psc = (struct dri3_screen *) base;
     __GLXDRIconfigPrivate *config = (__GLXDRIconfigPrivate *) config_base;
@@ -85,7 +85,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
  
     pdraw = calloc(1, sizeof(*pdraw));
     if (!pdraw)
-@@ -376,14 +389,6 @@ dri3_create_drawable(struct glx_screen *base, XID xDrawable,
+@@ -376,14 +389,6 @@ dri3_create_drawable(struct glx_screen *
     pdraw->base.drawable = drawable;
     pdraw->base.psc = &psc->base;
  
@@ -100,7 +100,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
     (void) __glXInitialize(psc->base.dpy);
  
     if (loader_dri3_drawable_init(XGetXCBConnection(base->dpy),
-@@ -737,13 +742,14 @@ static const struct glx_context_vtable dri3_context_vtable = {
+@@ -737,13 +742,14 @@ static const struct glx_context_vtable d
     .interop_export_object = dri3_interop_export_object
  };
  
@@ -119,7 +119,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
  {
     const __DRIextension **extensions;
     unsigned mask;
-@@ -774,16 +780,6 @@ dri3_bind_extensions(struct dri3_screen *psc, struct glx_display * priv,
+@@ -774,16 +780,6 @@ dri3_bind_extensions(struct dri3_screen
     }
  
     for (i = 0; extensions[i]; i++) {
@@ -136,7 +136,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
        if ((strcmp(extensions[i]->name, __DRI2_FLUSH) == 0)) {
           psc->f = (__DRI2flushExtension *) extensions[i];
           /* internal driver extension, no GL extension exposed */
-@@ -817,6 +813,33 @@ dri3_bind_extensions(struct dri3_screen *psc, struct glx_display * priv,
+@@ -817,6 +813,33 @@ dri3_bind_extensions(struct dri3_screen
     }
  }
  
@@ -170,7 +170,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
  static char *
  dri3_get_driver_name(struct glx_screen *glx_screen)
  {
-@@ -859,6 +882,8 @@ dri3_create_screen(int screen, struct glx_display * priv)
+@@ -859,6 +882,8 @@ dri3_create_screen(int screen, struct gl
     char *driverName = NULL, *driverNameDisplayGPU, *tmp;
     int i;
     int fd_old;
@@ -179,7 +179,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
  
     psc = calloc(1, sizeof *psc);
     if (psc == NULL)
-@@ -890,8 +915,8 @@ dri3_create_screen(int screen, struct glx_display * priv)
+@@ -890,8 +915,8 @@ dri3_create_screen(int screen, struct gl
     fd_old = psc->fd;
     psc->fd_dpy = os_dupfd_cloexec(psc->fd);
     psc->fd_display_gpu = fcntl(psc->fd, F_DUPFD_CLOEXEC, 3);
@@ -190,7 +190,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
        close(psc->fd_display_gpu);
        psc->fd_display_gpu = -1;
     }
-@@ -933,27 +958,6 @@ dri3_create_screen(int screen, struct glx_display * priv)
+@@ -933,27 +958,6 @@ dri3_create_screen(int screen, struct gl
        goto handle_error;
     }
  
@@ -218,7 +218,7 @@ index 1ed6b60ffe8..025ad0128ec 100644
     psc->driScreen =
        psc->image_driver->createNewScreen2(screen, psc->fd,
                                            pdp->loader_extensions,
-@@ -965,7 +969,42 @@ dri3_create_screen(int screen, struct glx_display * priv)
+@@ -965,7 +969,42 @@ dri3_create_screen(int screen, struct gl
        goto handle_error;
     }
  
@@ -262,11 +262,11 @@ index 1ed6b60ffe8..025ad0128ec 100644
  
     if (!psc->image || psc->image->base.version < 7 || !psc->image->createImageFromFds) {
        ErrorMessageF("Version 7 or imageFromFds image extension not found\n");
-diff --git a/src/loader/loader_dri3_helper.c b/src/loader/loader_dri3_helper.c
-index ff6d1ffc660..5c0379ab5de 100644
---- a/src/loader/loader_dri3_helper.c
-+++ b/src/loader/loader_dri3_helper.c
-@@ -2288,3 +2288,18 @@ dri3_find_back_alloc(struct loader_dri3_drawable *draw)
+Index: mesa-21.2.1/src/loader/loader_dri3_helper.c
+===================================================================
+--- mesa-21.2.1.orig/src/loader/loader_dri3_helper.c
++++ mesa-21.2.1/src/loader/loader_dri3_helper.c
+@@ -2288,3 +2288,18 @@ dri3_find_back_alloc(struct loader_dri3_
  
     return back;
  }
@@ -285,11 +285,11 @@ index ff6d1ffc660..5c0379ab5de 100644
 +   return false;
 +#endif
 +}
-diff --git a/src/loader/loader_dri3_helper.h b/src/loader/loader_dri3_helper.h
-index 028e25dc070..5790f5444f5 100644
---- a/src/loader/loader_dri3_helper.h
-+++ b/src/loader/loader_dri3_helper.h
-@@ -287,4 +287,8 @@ loader_dri3_swapbuffer_barrier(struct loader_dri3_drawable *draw);
+Index: mesa-21.2.1/src/loader/loader_dri3_helper.h
+===================================================================
+--- mesa-21.2.1.orig/src/loader/loader_dri3_helper.h
++++ mesa-21.2.1/src/loader/loader_dri3_helper.h
+@@ -287,4 +287,8 @@ loader_dri3_swapbuffer_barrier(struct lo
  
  void
  loader_dri3_close_screen(__DRIscreen *dri_screen);
@@ -298,6 +298,3 @@ index 028e25dc070..5790f5444f5 100644
 +loader_dri3_has_modifiers(bool multiplanes_available,
 +                          const __DRIimageExtension *image);
  #endif
--- 
-2.25.1
-

@@ -13,11 +13,11 @@ values from the DRI config.
  src/egl/drivers/dri2/egl_dri2.c | 20 ++++++++++++++++++--
  1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index 56b5175db6e..1b10c2e7362 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
-@@ -407,6 +407,7 @@ dri2_add_config(_EGLDisplay *disp, const __DRIconfig *dri_config, int id,
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+@@ -407,6 +407,7 @@ dri2_add_config(_EGLDisplay *disp, const
     struct dri2_egl_display *dri2_dpy = dri2_egl_display(disp);
     _EGLConfig base;
     unsigned int attrib, value, double_buffer;
@@ -25,7 +25,7 @@ index 56b5175db6e..1b10c2e7362 100644
     bool srgb = false;
     EGLint key, bind_to_texture_rgb, bind_to_texture_rgba;
     int dri_shifts[4] = { -1, -1, -1, -1 };
-@@ -530,11 +531,17 @@ dri2_add_config(_EGLDisplay *disp, const __DRIconfig *dri_config, int id,
+@@ -530,11 +531,17 @@ dri2_add_config(_EGLDisplay *disp, const
           break;
  
        case __DRI_ATTRIB_MAX_PBUFFER_WIDTH:
@@ -45,7 +45,7 @@ index 56b5175db6e..1b10c2e7362 100644
        case __DRI_ATTRIB_MUTABLE_RENDER_BUFFER:
           if (disp->Extensions.KHR_mutable_render_buffer)
              surface_type |= EGL_MUTABLE_RENDER_BUFFER_BIT_KHR;
-@@ -614,6 +621,15 @@ dri2_add_config(_EGLDisplay *disp, const __DRIconfig *dri_config, int id,
+@@ -614,6 +621,15 @@ dri2_add_config(_EGLDisplay *disp, const
        }
     }
  
@@ -61,6 +61,3 @@ index 56b5175db6e..1b10c2e7362 100644
     if (attr_list)
        for (int i = 0; attr_list[i] != EGL_NONE; i += 2)
           _eglSetConfigKey(&base, attr_list[i], attr_list[i+1]);
--- 
-2.25.1
-

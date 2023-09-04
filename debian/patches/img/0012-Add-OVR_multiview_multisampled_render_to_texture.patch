@@ -10,11 +10,10 @@ Subject: [PATCH 12/67] Add OVR_multiview_multisampled_render_to_texture
  3 files changed, 25 insertions(+)
  create mode 100644 src/mapi/glapi/gen/OVR_multiview_multisampled_render_to_texture.xml
 
-diff --git a/src/mapi/glapi/gen/OVR_multiview_multisampled_render_to_texture.xml b/src/mapi/glapi/gen/OVR_multiview_multisampled_render_to_texture.xml
-new file mode 100644
-index 00000000000..86bebc728e9
+Index: mesa-21.2.1/src/mapi/glapi/gen/OVR_multiview_multisampled_render_to_texture.xml
+===================================================================
 --- /dev/null
-+++ b/src/mapi/glapi/gen/OVR_multiview_multisampled_render_to_texture.xml
++++ mesa-21.2.1/src/mapi/glapi/gen/OVR_multiview_multisampled_render_to_texture.xml
 @@ -0,0 +1,21 @@
 +<?xml version="1.0"?>
 +<!DOCTYPE OpenGLAPI SYSTEM "gl_API.dtd">
@@ -37,10 +36,10 @@ index 00000000000..86bebc728e9
 +</category>
 +
 +</OpenGLAPI>
-diff --git a/src/mapi/glapi/gen/es_EXT.xml b/src/mapi/glapi/gen/es_EXT.xml
-index b3432820ba6..fe8f27e1e6f 100644
---- a/src/mapi/glapi/gen/es_EXT.xml
-+++ b/src/mapi/glapi/gen/es_EXT.xml
+Index: mesa-21.2.1/src/mapi/glapi/gen/es_EXT.xml
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/es_EXT.xml
++++ mesa-21.2.1/src/mapi/glapi/gen/es_EXT.xml
 @@ -1459,6 +1459,9 @@
  <!-- 240. EXT_sparse_texture -->
  <xi:include href="EXT_sparse_texture.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
@@ -51,10 +50,10 @@ index b3432820ba6..fe8f27e1e6f 100644
  <!-- 253. GL_EXT_shader_pixel_local_storage2 -->
  <xi:include href="EXT_shader_pixel_local_storage2.xml" xmlns:xi="http://www.w3.org/2001/XInclude"/>
  
-diff --git a/src/mapi/glapi/gen/static_data.py b/src/mapi/glapi/gen/static_data.py
-index 73625c7fe41..dc6bdc9dcce 100644
---- a/src/mapi/glapi/gen/static_data.py
-+++ b/src/mapi/glapi/gen/static_data.py
+Index: mesa-21.2.1/src/mapi/glapi/gen/static_data.py
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/static_data.py
++++ mesa-21.2.1/src/mapi/glapi/gen/static_data.py
 @@ -1703,6 +1703,7 @@ offsets = {
      "FramebufferTexture2DDownsampleIMG" : 1667,
      "FramebufferTextureLayerDownsampleIMG" : 1668,
@@ -63,6 +62,3 @@ index 73625c7fe41..dc6bdc9dcce 100644
  }
  
  functions = [
--- 
-2.25.1
-

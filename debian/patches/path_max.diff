@@ -1,5 +1,7 @@
---- a/src/util/tests/cache/cache_test.c
-+++ b/src/util/tests/cache/cache_test.c
+Index: mesa-21.2.1/src/util/tests/cache/cache_test.c
+===================================================================
+--- mesa-21.2.1.orig/src/util/tests/cache/cache_test.c
++++ mesa-21.2.1/src/util/tests/cache/cache_test.c
 @@ -141,8 +141,8 @@ check_directories_created(const char *ca
  {
     bool sub_dirs_created = false;
@@ -19,8 +21,10 @@
     }
  
     expect_true(sub_dirs_created, "create sub dirs");
---- a/src/util/process_test.c
-+++ b/src/util/process_test.c
+Index: mesa-21.2.1/src/util/process_test.c
+===================================================================
+--- mesa-21.2.1.orig/src/util/process_test.c
++++ mesa-21.2.1/src/util/process_test.c
 @@ -36,6 +36,10 @@
  #define PATH_MAX MAX_PATH
  #endif
@@ -32,8 +36,10 @@
  bool error = false;
  
  static void
---- a/src/gallium/auxiliary/pipe-loader/pipe_loader.c
-+++ b/src/gallium/auxiliary/pipe-loader/pipe_loader.c
+Index: mesa-21.2.1/src/gallium/auxiliary/pipe-loader/pipe_loader.c
+===================================================================
+--- mesa-21.2.1.orig/src/gallium/auxiliary/pipe-loader/pipe_loader.c
++++ mesa-21.2.1/src/gallium/auxiliary/pipe-loader/pipe_loader.c
 @@ -43,6 +43,10 @@
  #define PATH_MAX _MAX_PATH
  #endif

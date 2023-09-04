@@ -38,10 +38,10 @@ Subject: [PATCH 01/67] Add pvr dri driver
  create mode 100644 src/mesa/drivers/dri/pvr/pvrmesa.h
  create mode 100644 src/mesa/drivers/dri/pvr/pvrutil.c
 
-diff --git a/meson.build b/meson.build
-index 155db287796..968b4f5f499 100644
---- a/meson.build
-+++ b/meson.build
+Index: mesa-21.2.1/meson.build
+===================================================================
+--- mesa-21.2.1.orig/meson.build
++++ mesa-21.2.1/meson.build
 @@ -171,11 +171,11 @@ if dri_drivers.contains('auto')
    if system_has_kms_drm
      # TODO: PPC, Sparc
@@ -57,7 +57,7 @@ index 155db287796..968b4f5f499 100644
      else
        error('Unknown architecture @0@. Please pass -Ddri-drivers to set driver options. Patches gladly accepted to fix this.'.format(
              host_machine.cpu_family()))
-@@ -194,6 +194,7 @@ with_dri_i965 = dri_drivers.contains('i965')
+@@ -194,6 +194,7 @@ with_dri_i965 = dri_drivers.contains('i9
  with_dri_r100 = dri_drivers.contains('r100')
  with_dri_r200 = dri_drivers.contains('r200')
  with_dri_nouveau = dri_drivers.contains('nouveau')
@@ -95,10 +95,10 @@ index 155db287796..968b4f5f499 100644
      set_variable(
        'dep_libdrm_' + d[0],
        dependency('libdrm_' + d[0], version : '>=' + _drm_ver)
-diff --git a/meson_options.txt b/meson_options.txt
-index 29c402c4844..dac791099a1 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
+Index: mesa-21.2.1/meson_options.txt
+===================================================================
+--- mesa-21.2.1.orig/meson_options.txt
++++ mesa-21.2.1/meson_options.txt
 @@ -55,7 +55,7 @@ option(
    'dri-drivers',
    type : 'array',
@@ -108,10 +108,10 @@ index 29c402c4844..dac791099a1 100644
    description : 'List of dri drivers to build. If this is set to auto all drivers applicable to the target OS/architecture will be built'
  )
  option(
-diff --git a/src/mesa/drivers/dri/meson.build b/src/mesa/drivers/dri/meson.build
-index 239ca962c2a..88a973bb84f 100644
---- a/src/mesa/drivers/dri/meson.build
-+++ b/src/mesa/drivers/dri/meson.build
+Index: mesa-21.2.1/src/mesa/drivers/dri/meson.build
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/meson.build
++++ mesa-21.2.1/src/mesa/drivers/dri/meson.build
 @@ -48,6 +48,11 @@ if with_dri_nouveau
    _dri_drivers += libnouveau_vieux
    _dri_link += 'nouveau_vieux_dri.so'
@@ -124,11 +124,10 @@ index 239ca962c2a..88a973bb84f 100644
  
  if _dri_drivers != []
    libmesa_dri_drivers = shared_library(
-diff --git a/src/mesa/drivers/dri/pvr/dri_support.h b/src/mesa/drivers/dri/pvr/dri_support.h
-new file mode 100644
-index 00000000000..631410438fd
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/dri_support.h
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/dri_support.h
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/dri_support.h
 @@ -0,0 +1,581 @@
 +/* -*- mode: c; indent-tabs-mode: t; c-basic-offset: 8; tab-width: 8 -*- */
 +/* vi: set ts=8 sw=8 sts=8: */
@@ -711,11 +710,10 @@ index 00000000000..631410438fd
 +};
 +
 +#endif /* defined(__PVRDRIIFCE_H__) */
-diff --git a/src/mesa/drivers/dri/pvr/img_drm_fourcc.h b/src/mesa/drivers/dri/pvr/img_drm_fourcc.h
-new file mode 100644
-index 00000000000..8d570ff8f53
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/img_drm_fourcc.h
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/img_drm_fourcc.h
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/img_drm_fourcc.h
 @@ -0,0 +1,113 @@
 +/*************************************************************************/ /*!
 +@File
@@ -830,11 +828,10 @@ index 00000000000..8d570ff8f53
 +#define DRM_FORMAT_MOD_PVR_FBCDC_16x4_V7     fourcc_mod_code(PVR, 12)
 +
 +#endif /* IMG_DRM_FOURCC_H */
-diff --git a/src/mesa/drivers/dri/pvr/imgpixfmts.h b/src/mesa/drivers/dri/pvr/imgpixfmts.h
-new file mode 100644
-index 00000000000..da12a0fb5f6
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/imgpixfmts.h
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/imgpixfmts.h
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/imgpixfmts.h
 @@ -0,0 +1,307 @@
 +/*************************************************************************/ /*!
 +@File           imgpixfmts.h
@@ -1143,11 +1140,10 @@ index 00000000000..da12a0fb5f6
 +} IMG_PIXFMT;
 +
 +#endif /* IMGPIXFMTS_H */
-diff --git a/src/mesa/drivers/dri/pvr/imgyuv.h b/src/mesa/drivers/dri/pvr/imgyuv.h
-new file mode 100644
-index 00000000000..7ae8fd19ac0
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/imgyuv.h
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/imgyuv.h
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/imgyuv.h
 @@ -0,0 +1,58 @@
 +/*************************************************************************/ /*!
 +@File
@@ -1207,11 +1203,10 @@ index 00000000000..7ae8fd19ac0
 +
 +
 +#endif /* IMGYUV_H */
-diff --git a/src/mesa/drivers/dri/pvr/mesa_context.c b/src/mesa/drivers/dri/pvr/mesa_context.c
-new file mode 100644
-index 00000000000..d36bae5ac54
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/mesa_context.c
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/mesa_context.c
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/mesa_context.c
 @@ -0,0 +1,208 @@
 +/**
 + * \file context.c
@@ -1421,11 +1416,10 @@ index 00000000000..d36bae5ac54
 +
 +   _glapi_set_dispatch(psTable);
 +}
-diff --git a/src/mesa/drivers/dri/pvr/meson.build b/src/mesa/drivers/dri/pvr/meson.build
-new file mode 100644
-index 00000000000..59cccf8add4
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/meson.build
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/meson.build
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/meson.build
 @@ -0,0 +1,48 @@
 +# Copyright (c) Imagination Technologies Ltd.
 +#
@@ -1475,11 +1469,10 @@ index 00000000000..59cccf8add4
 +  gnu_symbol_visibility : 'hidden',
 +  dependencies : [dep_libpvr],
 +)
-diff --git a/src/mesa/drivers/dri/pvr/pvrcb.c b/src/mesa/drivers/dri/pvr/pvrcb.c
-new file mode 100644
-index 00000000000..ea8911c64d5
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrcb.c
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrcb.c
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrcb.c
 @@ -0,0 +1,328 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -1809,11 +1802,10 @@ index 00000000000..ea8911c64d5
 +
 +   PVRDRIDrawableRemoveReference(psPVRDrawable);
 +}
-diff --git a/src/mesa/drivers/dri/pvr/pvrcompat.c b/src/mesa/drivers/dri/pvr/pvrcompat.c
-new file mode 100644
-index 00000000000..23a57dde682
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrcompat.c
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrcompat.c
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrcompat.c
 @@ -0,0 +1,838 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -2653,11 +2645,10 @@ index 00000000000..23a57dde682
 +
 +   return true;
 +}
-diff --git a/src/mesa/drivers/dri/pvr/pvrdri.c b/src/mesa/drivers/dri/pvr/pvrdri.c
-new file mode 100644
-index 00000000000..ab941f71567
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrdri.c
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrdri.c
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrdri.c
 @@ -0,0 +1,613 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -3272,11 +3263,10 @@ index 00000000000..ab941f71567
 +
 +   return pvr_driver_extensions;
 +}
-diff --git a/src/mesa/drivers/dri/pvr/pvrdri.h b/src/mesa/drivers/dri/pvr/pvrdri.h
-new file mode 100644
-index 00000000000..fd465bf7f5c
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrdri.h
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrdri.h
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrdri.h
 @@ -0,0 +1,188 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -3466,11 +3456,10 @@ index 00000000000..fd465bf7f5c
 +void MODSUPDrawableRemoveReference(void *pvReferenceHandle);
 +
 +#endif /* defined(__PVRDRI_H__) */
-diff --git a/src/mesa/drivers/dri/pvr/pvrdri_support.h b/src/mesa/drivers/dri/pvr/pvrdri_support.h
-new file mode 100644
-index 00000000000..58ea3505a4d
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrdri_support.h
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrdri_support.h
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrdri_support.h
 @@ -0,0 +1,206 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -3678,11 +3667,10 @@ index 00000000000..58ea3505a4d
 +bool DRISUPHaveGetFenceFromCLEvent(void);
 +
 +#endif /* defined(__PVRDRI_SUPPORT_H__) */
-diff --git a/src/mesa/drivers/dri/pvr/pvrext.c b/src/mesa/drivers/dri/pvr/pvrext.c
-new file mode 100644
-index 00000000000..478399618df
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrext.c
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrext.c
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrext.c
 @@ -0,0 +1,704 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -4388,11 +4376,10 @@ index 00000000000..478399618df
 +      break;
 +   }
 +}
-diff --git a/src/mesa/drivers/dri/pvr/pvrmesa.h b/src/mesa/drivers/dri/pvr/pvrmesa.h
-new file mode 100644
-index 00000000000..5e1c9c1b2e6
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrmesa.h
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrmesa.h
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrmesa.h
 @@ -0,0 +1,36 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -4430,11 +4417,10 @@ index 00000000000..5e1c9c1b2e6
 +void pvrdri_set_dispatch_table(PVRDRIContext *psPVRContext);
 +
 +#endif /* !defined(__PVRMESA_H__) */
-diff --git a/src/mesa/drivers/dri/pvr/pvrutil.c b/src/mesa/drivers/dri/pvr/pvrutil.c
-new file mode 100644
-index 00000000000..945e18cf220
+Index: mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrutil.c
+===================================================================
 --- /dev/null
-+++ b/src/mesa/drivers/dri/pvr/pvrutil.c
++++ mesa-21.2.1/src/mesa/drivers/dri/pvr/pvrutil.c
 @@ -0,0 +1,239 @@
 +/*
 + * Copyright (c) Imagination Technologies Ltd.
@@ -4675,11 +4661,11 @@ index 00000000000..945e18cf220
 +
 +   return 0;
 +}
-diff --git a/src/meson.build b/src/meson.build
-index acc7fe94abb..c3bab27718d 100644
---- a/src/meson.build
-+++ b/src/meson.build
-@@ -25,6 +25,7 @@ inc_gallium = include_directories('gallium/include')
+Index: mesa-21.2.1/src/meson.build
+===================================================================
+--- mesa-21.2.1.orig/src/meson.build
++++ mesa-21.2.1/src/meson.build
+@@ -25,6 +25,7 @@ inc_gallium = include_directories('galli
  inc_gallium_aux = include_directories('gallium/auxiliary')
  inc_amd_common = include_directories('amd/common')
  inc_amd_common_llvm = include_directories('amd/llvm')
@@ -4687,6 +4673,3 @@ index acc7fe94abb..c3bab27718d 100644
  inc_tool = include_directories('tool')
  pps_datasources = []
  pps_includes = []
--- 
-2.25.1
-

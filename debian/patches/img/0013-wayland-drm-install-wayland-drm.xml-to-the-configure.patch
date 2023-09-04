@@ -12,10 +12,10 @@ path.
  2 files changed, 22 insertions(+)
  create mode 100644 src/egl/wayland/wayland-drm/wayland-drm.pc.in
 
-diff --git a/src/egl/wayland/wayland-drm/meson.build b/src/egl/wayland/wayland-drm/meson.build
-index b4782a013c9..f291ef9f55e 100644
---- a/src/egl/wayland/wayland-drm/meson.build
-+++ b/src/egl/wayland/wayland-drm/meson.build
+Index: mesa-21.2.1/src/egl/wayland/wayland-drm/meson.build
+===================================================================
+--- mesa-21.2.1.orig/src/egl/wayland/wayland-drm/meson.build
++++ mesa-21.2.1/src/egl/wayland/wayland-drm/meson.build
 @@ -49,6 +49,21 @@ libwayland_drm = static_library(
    build_by_default : false,
  )
@@ -38,11 +38,10 @@ index b4782a013c9..f291ef9f55e 100644
  # linux-dmabuf isn't part of wayland-drm, but this happens to be the only
  # place which is a) guaranteed to be built when building either or both
  # of EGL and Vulkan WSI, and b) guaranteed to be included before both,
-diff --git a/src/egl/wayland/wayland-drm/wayland-drm.pc.in b/src/egl/wayland/wayland-drm/wayland-drm.pc.in
-new file mode 100644
-index 00000000000..d08ccdaf6ce
+Index: mesa-21.2.1/src/egl/wayland/wayland-drm/wayland-drm.pc.in
+===================================================================
 --- /dev/null
-+++ b/src/egl/wayland/wayland-drm/wayland-drm.pc.in
++++ mesa-21.2.1/src/egl/wayland/wayland-drm/wayland-drm.pc.in
 @@ -0,0 +1,7 @@
 +prefix=@prefix@
 +datarootdir=@datarootdir@
@@ -52,6 +51,3 @@ index 00000000000..d08ccdaf6ce
 +Description: @PACKAGE_NAME@ Wayland protocol files
 +Version: @PACKAGE_VERSION@
 \ No newline at end of file
--- 
-2.25.1
-

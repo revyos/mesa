@@ -25,10 +25,10 @@ via the getCapabilities function in the DRI Image extension.
  src/gbm/backends/dri/gbm_driint.h   |  8 ++++++
  5 files changed, 66 insertions(+), 11 deletions(-)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 2fb440feb50..080d191b0a3 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -1548,6 +1548,8 @@ enum __DRIChromaSiting {
   */
  /*@{*/
@@ -38,10 +38,10 @@ index 2fb440feb50..080d191b0a3 100644
  /*@}*/
  
  /**
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index 1df53ef011c..ec4ac602a84 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
 @@ -1368,6 +1368,7 @@ dri2_display_destroy(_EGLDisplay *disp)
     }
  
@@ -50,7 +50,7 @@ index 1df53ef011c..ec4ac602a84 100644
     case _EGL_PLATFORM_WAYLAND:
     case _EGL_PLATFORM_X11:
        if (dri2_dpy->fd_dpy >= 0 && dri2_dpy->fd_dpy != dri2_dpy->fd)
-@@ -3943,6 +3944,15 @@ dri2_bind_wayland_display_wl(_EGLDisplay *disp, struct wl_display *wl_dpy)
+@@ -3943,6 +3944,15 @@ dri2_bind_wayland_display_wl(_EGLDisplay
         dri2_dpy->image->base.version >= 7 &&
         dri2_dpy->image->createImageFromFds != NULL)
        flags |= WAYLAND_DRM_PRIME;
@@ -66,11 +66,11 @@ index 1df53ef011c..ec4ac602a84 100644
  
     dri2_dpy->wl_server_drm =
             wayland_drm_init(wl_dpy, device_name,
-diff --git a/src/egl/drivers/dri2/platform_drm.c b/src/egl/drivers/dri2/platform_drm.c
-index 258e8b6593e..f160ad1175e 100644
---- a/src/egl/drivers/dri2/platform_drm.c
-+++ b/src/egl/drivers/dri2/platform_drm.c
-@@ -595,7 +595,7 @@ dri2_drm_authenticate(_EGLDisplay *disp, uint32_t id)
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_drm.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_drm.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_drm.c
+@@ -595,7 +595,7 @@ dri2_drm_authenticate(_EGLDisplay *disp,
  {
     struct dri2_egl_display *dri2_dpy = dri2_egl_display(disp);
  
@@ -130,10 +130,10 @@ index 258e8b6593e..f160ad1175e 100644
  #endif
     dri2_set_WL_bind_wayland_display(disp);
  
-diff --git a/src/gbm/backends/dri/gbm_dri.c b/src/gbm/backends/dri/gbm_dri.c
-index 5acb15b516f..c1586f42e46 100644
---- a/src/gbm/backends/dri/gbm_dri.c
-+++ b/src/gbm/backends/dri/gbm_dri.c
+Index: mesa-21.2.1/src/gbm/backends/dri/gbm_dri.c
+===================================================================
+--- mesa-21.2.1.orig/src/gbm/backends/dri/gbm_dri.c
++++ mesa-21.2.1/src/gbm/backends/dri/gbm_dri.c
 @@ -51,6 +51,7 @@
  #include "loader.h"
  #include "util/debug.h"
@@ -142,7 +142,7 @@ index 5acb15b516f..c1586f42e46 100644
  
  /* For importing wl_buffer */
  #if HAVE_WAYLAND_PLATFORM
-@@ -141,6 +142,14 @@ image_get_buffers(__DRIdrawable *driDrawable,
+@@ -141,6 +142,14 @@ image_get_buffers(__DRIdrawable *driDraw
                                   surf->dri_private, buffer_mask, buffers);
  }
  
@@ -157,7 +157,7 @@ index 5acb15b516f..c1586f42e46 100644
  static void
  swrast_get_drawable_info(__DRIdrawable *driDrawable,
                           int           *x,
-@@ -220,20 +229,22 @@ static const __DRIimageLookupExtension image_lookup_extension = {
+@@ -220,20 +229,22 @@ static const __DRIimageLookupExtension i
  };
  
  static const __DRIdri2LoaderExtension dri2_loader_extension = {
@@ -182,7 +182,7 @@ index 5acb15b516f..c1586f42e46 100644
  };
  
  static const __DRIswrastLoaderExtension swrast_loader_extension = {
-@@ -398,12 +409,12 @@ dri_screen_create_dri2(struct gbm_dri_device *dri, char *driver_name)
+@@ -398,12 +409,12 @@ dri_screen_create_dri2(struct gbm_dri_de
        return -1;
  
     if (dri->dri2->base.version >= 4) {
@@ -229,7 +229,7 @@ index 5acb15b516f..c1586f42e46 100644
     free(dri);
  }
  
-@@ -1445,6 +1471,8 @@ dri_device_create(int fd, uint32_t gbm_backend_version)
+@@ -1445,6 +1471,8 @@ dri_device_create(int fd, uint32_t gbm_b
     if (!dri)
        return NULL;
  
@@ -238,10 +238,10 @@ index 5acb15b516f..c1586f42e46 100644
     dri->base.v0.fd = fd;
     dri->base.v0.backend_version = gbm_backend_version;
     dri->base.v0.bo_create = gbm_dri_bo_create;
-diff --git a/src/gbm/backends/dri/gbm_driint.h b/src/gbm/backends/dri/gbm_driint.h
-index 9e77ba5887c..e33a96edb0b 100644
---- a/src/gbm/backends/dri/gbm_driint.h
-+++ b/src/gbm/backends/dri/gbm_driint.h
+Index: mesa-21.2.1/src/gbm/backends/dri/gbm_driint.h
+===================================================================
+--- mesa-21.2.1.orig/src/gbm/backends/dri/gbm_driint.h
++++ mesa-21.2.1/src/gbm/backends/dri/gbm_driint.h
 @@ -61,6 +61,8 @@ struct gbm_dri_visual {
  struct gbm_dri_device {
     struct gbm_device base;
@@ -251,7 +251,7 @@ index 9e77ba5887c..e33a96edb0b 100644
     void *driver;
     char *driver_name; /* Name of the DRI module, without the _dri suffix */
     bool software; /* A software driver was loaded */
-@@ -191,4 +193,10 @@ gbm_dri_bo_unmap_dumb(struct gbm_dri_bo *bo)
+@@ -191,4 +193,10 @@ gbm_dri_bo_unmap_dumb(struct gbm_dri_bo
     bo->map = NULL;
  }
  
@@ -262,6 +262,3 @@ index 9e77ba5887c..e33a96edb0b 100644
 +}
 +
  #endif
--- 
-2.25.1
-

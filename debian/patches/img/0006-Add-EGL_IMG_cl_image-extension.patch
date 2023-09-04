@@ -13,11 +13,11 @@ the DRI2 EGL driver.
  src/egl/main/egldisplay.h           |  2 +
  5 files changed, 73 insertions(+), 8 deletions(-)
 
-diff --git a/include/EGL/eglmesaext.h b/include/EGL/eglmesaext.h
-index f0395a8a58c..5d11f3e488e 100644
---- a/include/EGL/eglmesaext.h
-+++ b/include/EGL/eglmesaext.h
-@@ -49,6 +49,11 @@ typedef EGLBoolean (EGLAPIENTRYP PFNEGLSWAPBUFFERSREGIONNOK) (EGLDisplay dpy, EG
+Index: mesa-21.2.1/include/EGL/eglmesaext.h
+===================================================================
+--- mesa-21.2.1.orig/include/EGL/eglmesaext.h
++++ mesa-21.2.1/include/EGL/eglmesaext.h
+@@ -49,6 +49,11 @@ typedef EGLBoolean (EGLAPIENTRYP PFNEGLS
  #define EGL_DRM_BUFFER_FORMAT_RGB565_MESA       0x3292
  #endif /* EGL_MESA_drm_image_formats */
  
@@ -29,10 +29,10 @@ index f0395a8a58c..5d11f3e488e 100644
  #ifdef __cplusplus
  }
  #endif
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 510289403d2..b197092939f 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -1831,6 +1831,19 @@ struct __DRIimageExtensionRec {
                                              const unsigned int modifier_count,
                                              unsigned int use,
@@ -53,10 +53,10 @@ index 510289403d2..b197092939f 100644
  };
  
  
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index eee28eb4726..dea5899b3a8 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
 @@ -995,6 +995,10 @@ dri2_setup_screen(_EGLDisplay *disp)
           disp->Extensions.EXT_image_dma_buf_import_modifiers = EGL_TRUE;
        }
@@ -68,7 +68,7 @@ index eee28eb4726..dea5899b3a8 100644
     }
  
     if (dri2_dpy->flush_control)
-@@ -2360,17 +2364,13 @@ dri2_get_sync_values_chromium(_EGLDisplay *disp, _EGLSurface *surf,
+@@ -2360,17 +2364,13 @@ dri2_get_sync_values_chromium(_EGLDispla
     return dri2_dpy->vtbl->get_sync_values(disp, surf, ust, msc, sbc);
  }
  
@@ -88,7 +88,7 @@ index eee28eb4726..dea5899b3a8 100644
  }
  
  static _EGLImage *
-@@ -2449,7 +2449,49 @@ dri2_create_image_khr_texture(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -2449,7 +2449,49 @@ dri2_create_image_khr_texture(_EGLDispla
                                                attrs.GLTextureLevel,
                                                &error,
                                                NULL);
@@ -139,7 +139,7 @@ index eee28eb4726..dea5899b3a8 100644
  
     if (!dri2_img->dri_image) {
        free(dri2_img);
-@@ -2916,7 +2958,7 @@ dri2_create_image_dma_buf(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -2916,7 +2958,7 @@ dri2_create_image_dma_buf(_EGLDisplay *d
              &error,
              NULL);
     }
@@ -148,7 +148,7 @@ index eee28eb4726..dea5899b3a8 100644
  
     if (!dri_image)
        return EGL_NO_IMAGE_KHR;
-@@ -3152,6 +3194,8 @@ dri2_create_image_khr(_EGLDisplay *disp, _EGLContext *ctx, EGLenum target,
+@@ -3152,6 +3194,8 @@ dri2_create_image_khr(_EGLDisplay *disp,
     case EGL_WAYLAND_BUFFER_WL:
        return dri2_create_image_wayland_wl_buffer(disp, ctx, buffer, attr_list);
  #endif
@@ -157,11 +157,11 @@ index eee28eb4726..dea5899b3a8 100644
     default:
        _eglError(EGL_BAD_PARAMETER, "dri2_create_image_khr");
        return EGL_NO_IMAGE_KHR;
-diff --git a/src/egl/main/eglapi.c b/src/egl/main/eglapi.c
-index 17e36af22e1..6ffcff8b2cc 100644
---- a/src/egl/main/eglapi.c
-+++ b/src/egl/main/eglapi.c
-@@ -549,6 +549,7 @@ _eglCreateExtensionsString(_EGLDisplay *disp)
+Index: mesa-21.2.1/src/egl/main/eglapi.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglapi.c
++++ mesa-21.2.1/src/egl/main/eglapi.c
+@@ -549,6 +549,7 @@ _eglCreateExtensionsString(_EGLDisplay *
     _EGL_CHECK_EXTENSION(WL_bind_wayland_display);
     _EGL_CHECK_EXTENSION(WL_create_wayland_buffer_from_image);
  
@@ -169,10 +169,10 @@ index 17e36af22e1..6ffcff8b2cc 100644
  #undef _EGL_CHECK_EXTENSION
  }
  
-diff --git a/src/egl/main/egldisplay.h b/src/egl/main/egldisplay.h
-index 4d2afbc712e..5b05dcc1e6d 100644
---- a/src/egl/main/egldisplay.h
-+++ b/src/egl/main/egldisplay.h
+Index: mesa-21.2.1/src/egl/main/egldisplay.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egldisplay.h
++++ mesa-21.2.1/src/egl/main/egldisplay.h
 @@ -150,6 +150,8 @@ struct _egl_extensions
  
     EGLBoolean WL_bind_wayland_display;
@@ -182,6 +182,3 @@ index 4d2afbc712e..5b05dcc1e6d 100644
  };
  
  struct _egl_display
--- 
-2.25.1
-

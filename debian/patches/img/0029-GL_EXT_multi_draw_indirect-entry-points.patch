@@ -8,10 +8,10 @@ Subject: [PATCH 29/67] GL_EXT_multi_draw_indirect entry points
  src/mapi/glapi/gen/static_data.py |  2 ++
  2 files changed, 21 insertions(+)
 
-diff --git a/src/mapi/glapi/gen/es_EXT.xml b/src/mapi/glapi/gen/es_EXT.xml
-index fe8f27e1e6f..e0d60faa9d2 100644
---- a/src/mapi/glapi/gen/es_EXT.xml
-+++ b/src/mapi/glapi/gen/es_EXT.xml
+Index: mesa-21.2.1/src/mapi/glapi/gen/es_EXT.xml
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/es_EXT.xml
++++ mesa-21.2.1/src/mapi/glapi/gen/es_EXT.xml
 @@ -1140,6 +1140,25 @@
  
  </category>
@@ -38,10 +38,10 @@ index fe8f27e1e6f..e0d60faa9d2 100644
  <category name="GL_EXT_copy_image" number="208">
  
      <function name="CopyImageSubDataEXT" alias="CopyImageSubData" es2="3.0">
-diff --git a/src/mapi/glapi/gen/static_data.py b/src/mapi/glapi/gen/static_data.py
-index dc6bdc9dcce..e231c176264 100644
---- a/src/mapi/glapi/gen/static_data.py
-+++ b/src/mapi/glapi/gen/static_data.py
+Index: mesa-21.2.1/src/mapi/glapi/gen/static_data.py
+===================================================================
+--- mesa-21.2.1.orig/src/mapi/glapi/gen/static_data.py
++++ mesa-21.2.1/src/mapi/glapi/gen/static_data.py
 @@ -1704,6 +1704,8 @@ offsets = {
      "FramebufferTextureLayerDownsampleIMG" : 1668,
      "FramebufferTextureMultiviewOVR" : 1669,
@@ -51,6 +51,3 @@ index dc6bdc9dcce..e231c176264 100644
  }
  
  functions = [
--- 
-2.25.1
-

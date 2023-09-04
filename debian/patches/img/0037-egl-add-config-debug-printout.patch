@@ -20,10 +20,10 @@ index in the chosen configs array.
  create mode 100644 src/egl/main/eglconfigdebug.c
  create mode 100644 src/egl/main/eglconfigdebug.h
 
-diff --git a/src/egl/main/eglconfig.c b/src/egl/main/eglconfig.c
-index 5e56948ab72..ea4b3c15f3f 100644
---- a/src/egl/main/eglconfig.c
-+++ b/src/egl/main/eglconfig.c
+Index: mesa-21.2.1/src/egl/main/eglconfig.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglconfig.c
++++ mesa-21.2.1/src/egl/main/eglconfig.c
 @@ -40,6 +40,7 @@
  #include "util/macros.h"
  
@@ -32,7 +32,7 @@ index 5e56948ab72..ea4b3c15f3f 100644
  #include "egldisplay.h"
  #include "eglcurrent.h"
  #include "egllog.h"
-@@ -1039,14 +1040,21 @@ _eglChooseConfig(_EGLDisplay *disp, const EGLint *attrib_list,
+@@ -1039,14 +1040,21 @@ _eglChooseConfig(_EGLDisplay *disp, cons
                   EGLConfig *configs, EGLint config_size, EGLint *num_configs)
  {
     _EGLConfig criteria;
@@ -58,7 +58,7 @@ index 5e56948ab72..ea4b3c15f3f 100644
  }
  
  
-@@ -1096,5 +1104,9 @@ _eglGetConfigs(_EGLDisplay *disp, EGLConfig *configs,
+@@ -1096,5 +1104,9 @@ _eglGetConfigs(_EGLDisplay *disp, EGLCon
     *num_config = _eglFlattenArray(disp->Configs, (void *) configs,
           sizeof(configs[0]), config_size, _eglFlattenConfig);
  
@@ -68,11 +68,10 @@ index 5e56948ab72..ea4b3c15f3f 100644
 +
     return EGL_TRUE;
  }
-diff --git a/src/egl/main/eglconfigdebug.c b/src/egl/main/eglconfigdebug.c
-new file mode 100644
-index 00000000000..92ac41a5614
+Index: mesa-21.2.1/src/egl/main/eglconfigdebug.c
+===================================================================
 --- /dev/null
-+++ b/src/egl/main/eglconfigdebug.c
++++ mesa-21.2.1/src/egl/main/eglconfigdebug.c
 @@ -0,0 +1,321 @@
 +/*
 + * Copyright 2017 Imagination Technologies.
@@ -395,11 +394,10 @@ index 00000000000..92ac41a5614
 +      break;
 +   }
 +}
-diff --git a/src/egl/main/eglconfigdebug.h b/src/egl/main/eglconfigdebug.h
-new file mode 100644
-index 00000000000..562aefff9de
+Index: mesa-21.2.1/src/egl/main/eglconfigdebug.h
+===================================================================
 --- /dev/null
-+++ b/src/egl/main/eglconfigdebug.h
++++ mesa-21.2.1/src/egl/main/eglconfigdebug.h
 @@ -0,0 +1,55 @@
 +/**************************************************************************
 + * Copyright 2017 Imagination Technologies.
@@ -456,10 +454,10 @@ index 00000000000..562aefff9de
 +#endif
 +
 +#endif /* EGLCONFIGDEBUG_INCLUDED */
-diff --git a/src/egl/main/egllog.c b/src/egl/main/egllog.c
-index 973b7600ab1..7a9032f9bbb 100644
---- a/src/egl/main/egllog.c
-+++ b/src/egl/main/egllog.c
+Index: mesa-21.2.1/src/egl/main/egllog.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egllog.c
++++ mesa-21.2.1/src/egl/main/egllog.c
 @@ -153,6 +153,15 @@ _eglInitLogger(void)
     }
  }
@@ -476,10 +474,10 @@ index 973b7600ab1..7a9032f9bbb 100644
  
  /**
   * Log a message with message logger.
-diff --git a/src/egl/main/egllog.h b/src/egl/main/egllog.h
-index 2a06a34684a..a1cf9770ed8 100644
---- a/src/egl/main/egllog.h
-+++ b/src/egl/main/egllog.h
+Index: mesa-21.2.1/src/egl/main/egllog.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egllog.h
++++ mesa-21.2.1/src/egl/main/egllog.h
 @@ -44,6 +44,10 @@ extern "C" {
  #define _EGL_DEBUG   3   /* useful info for debugging */
  
@@ -491,10 +489,10 @@ index 2a06a34684a..a1cf9770ed8 100644
  extern void
  _eglLog(EGLint level, const char *fmtStr, ...);
  
-diff --git a/src/egl/meson.build b/src/egl/meson.build
-index daa6a3a04f0..384bb98ebb3 100644
---- a/src/egl/meson.build
-+++ b/src/egl/meson.build
+Index: mesa-21.2.1/src/egl/meson.build
+===================================================================
+--- mesa-21.2.1.orig/src/egl/meson.build
++++ mesa-21.2.1/src/egl/meson.build
 @@ -31,6 +31,8 @@ files_egl = files(
    'main/eglapi.c',
    'main/eglarray.c',
@@ -504,6 +502,3 @@ index daa6a3a04f0..384bb98ebb3 100644
    'main/eglconfig.c',
    'main/eglconfig.h',
    'main/eglcontext.c',
--- 
-2.25.1
-

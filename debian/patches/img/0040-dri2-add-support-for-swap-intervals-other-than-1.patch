@@ -21,10 +21,10 @@ Signed-off-by: Luigi Santivetti <luigi.santivetti@imgtec.com>
  src/egl/drivers/dri2/platform_null.c | 541 +++++++++++++++++++++++----
  2 files changed, 497 insertions(+), 78 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/egl_dri2.h b/src/egl/drivers/dri2/egl_dri2.h
-index eb2127e3fe6..64d60ed66e4 100644
---- a/src/egl/drivers/dri2/egl_dri2.h
-+++ b/src/egl/drivers/dri2/egl_dri2.h
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.h
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
 @@ -332,6 +332,23 @@ struct tpl_swap_queue_elem
  };
  #endif
@@ -93,10 +93,10 @@ index eb2127e3fe6..64d60ed66e4 100644
  #endif
  
     int out_fence_fd;
-diff --git a/src/egl/drivers/dri2/platform_null.c b/src/egl/drivers/dri2/platform_null.c
-index fb03ecc36fd..5b7c1ec426c 100644
---- a/src/egl/drivers/dri2/platform_null.c
-+++ b/src/egl/drivers/dri2/platform_null.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_null.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_null.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_null.c
 @@ -31,6 +31,7 @@
  #include <drm_fourcc.h>
  #include <fcntl.h>
@@ -123,7 +123,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
  #define object_property_set_named(output, object_type, prop_name, value)    \
     {                                                                        \
        .object_id = (output)->object_type##_id,                              \
-@@ -176,36 +188,6 @@ property_id_get_for_name(drmModePropertyRes **prop_res, const char *prop_name)
+@@ -176,36 +188,6 @@ property_id_get_for_name(drmModeProperty
     return 0;
  }
  
@@ -160,7 +160,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
  static drmModePropertyRes **
  object_get_property_resources(int fd, uint32_t object_id, uint32_t object_type)
  {
-@@ -495,6 +477,113 @@ display_output_atomic_modeset(int fd, struct display_output *output, uint32_t fb
+@@ -495,6 +477,113 @@ display_output_atomic_modeset(int fd, st
                                DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
  }
  
@@ -288,7 +288,8 @@ index fb03ecc36fd..5b7c1ec426c 100644
 +      else
 +         err = drmModePageFlip(fd, output->crtc_id, fb_id, flags, flip_data);
 +   } while (err == -EBUSY);
-+
+ 
+-   return drmModePageFlip(fd, output->crtc_id, fb_id, flags, flip_data);
 +   return err;
 +}
 +
@@ -316,15 +317,14 @@ index fb03ecc36fd..5b7c1ec426c 100644
 +   err = drmWaitVBlank(fd, &vblank);
 +   if (err)
 +      return err;
- 
--   return drmModePageFlip(fd, output->crtc_id, fb_id, flags, flip_data);
++
 +   *current_vblank_out = vblank.reply.sequence;
 +
 +   return 0;
  }
  
  static int
-@@ -587,6 +712,213 @@ display_output_modeset(int fd, struct display_output *output, uint32_t fb_id)
+@@ -587,6 +712,213 @@ display_output_modeset(int fd, struct di
                           &output->connector_id, 1, &output->mode);
  }
  
@@ -538,7 +538,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
  static bool
  add_fb_for_dri_image(struct dri2_egl_display *dri2_dpy, __DRIimage *image,
                       uint32_t *fb_id_out)
-@@ -651,15 +983,18 @@ get_back_bo(struct dri2_egl_surface *dri2_surf)
+@@ -651,15 +983,18 @@ get_back_bo(struct dri2_egl_surface *dri
     struct dri2_egl_display *dri2_dpy =
        dri2_egl_display(dri2_surf->base.Resource.Display);
  
@@ -559,7 +559,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
     }
  
     if (!dri2_surf->back->dri_image) {
-@@ -671,19 +1006,23 @@ get_back_bo(struct dri2_egl_surface *dri2_surf)
+@@ -671,19 +1006,23 @@ get_back_bo(struct dri2_egl_surface *dri
                                        __DRI_IMAGE_USE_SCANOUT,
                                        NULL);
        if (!dri2_surf->back->dri_image)
@@ -587,7 +587,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
  }
  
  static _EGLSurface *
-@@ -770,6 +1109,26 @@ dri2_null_create_window_surface(_EGLDisplay *disp, _EGLConfig *config,
+@@ -770,6 +1109,26 @@ dri2_null_create_window_surface(_EGLDisp
     dri2_surf->base.Width = dri2_dpy->output.mode.hdisplay;
     dri2_surf->base.Height = dri2_dpy->output.mode.vdisplay;
  
@@ -614,7 +614,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
     if (!get_front_bo(dri2_surf))  {
        _eglError(EGL_BAD_NATIVE_WINDOW, "window get buffer");
        goto err_destroy_surface;
-@@ -783,6 +1142,14 @@ dri2_null_create_window_surface(_EGLDisplay *disp, _EGLConfig *config,
+@@ -783,6 +1142,14 @@ dri2_null_create_window_surface(_EGLDisp
     }
  
     dri2_dpy->output.in_use = true;
@@ -629,7 +629,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
  
     return surf;
  
-@@ -808,8 +1175,27 @@ dri2_null_destroy_surface(_EGLDisplay *disp, _EGLSurface *surf)
+@@ -808,8 +1175,27 @@ dri2_null_destroy_surface(_EGLDisplay *d
     /* If there's a current surface then a page flip has been performed, so make
      * sure we process the flip event.
      */
@@ -659,7 +659,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
  
     if (dri2_surf->front)
        dri2_dpy->image->destroyImage(dri2_surf->front);
-@@ -837,9 +1223,7 @@ dri2_null_swap_buffers(_EGLDisplay *disp, _EGLSurface *draw)
+@@ -837,9 +1223,7 @@ dri2_null_swap_buffers(_EGLDisplay *disp
  {
     struct dri2_egl_display *dri2_dpy = dri2_egl_display(disp);
     struct dri2_egl_surface *dri2_surf = dri2_egl_surface(draw);
@@ -670,7 +670,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
  
     if (dri2_surf->base.Type != EGL_WINDOW_BIT)
        return EGL_TRUE;
-@@ -858,34 +1242,13 @@ dri2_null_swap_buffers(_EGLDisplay *disp, _EGLSurface *draw)
+@@ -858,34 +1242,13 @@ dri2_null_swap_buffers(_EGLDisplay *disp
     dri2_flush_drawable_for_swapbuffers(disp, draw);
     dri2_dpy->flush->invalidate(dri2_surf->dri_drawable);
  
@@ -680,16 +680,16 @@ index fb03ecc36fd..5b7c1ec426c 100644
 -         _eglError(EGL_BAD_NATIVE_WINDOW, "dri2_null_swap_buffers process");
 -         return EGL_FALSE;
 -      }
-+   back_id = get_back_buffer_id(dri2_surf);
-+   assert(dri2_surf->back == &dri2_surf->color_buffers[back_id]);
- 
+-
 -      plocked = &dri2_surf->current->locked;
 -   }
 -
 -   flags = DRM_MODE_PAGE_FLIP_EVENT;
 -   if (draw->SwapInterval == 0)
 -      flags |= DRM_MODE_PAGE_FLIP_ASYNC;
--
++   back_id = get_back_buffer_id(dri2_surf);
++   assert(dri2_surf->back == &dri2_surf->color_buffers[back_id]);
+ 
 -   do {
 -      err = display_output_flip(dri2_dpy->fd, &dri2_dpy->output,
 -                                dri2_surf->back->fb_id, flags, plocked);
@@ -709,7 +709,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
     dri2_surf->back = NULL;
  
     return EGL_TRUE;
-@@ -904,11 +1267,20 @@ dri2_null_query_buffer_age(_EGLDisplay *disp, _EGLSurface *surface)
+@@ -904,11 +1267,20 @@ dri2_null_query_buffer_age(_EGLDisplay *
     return dri2_surf->back->age;
  }
  
@@ -730,7 +730,7 @@ index fb03ecc36fd..5b7c1ec426c 100644
     .swap_buffers = dri2_null_swap_buffers,
     .query_buffer_age = dri2_null_query_buffer_age,
     .get_dri_drawable = dri2_surface_get_dri_drawable,
-@@ -1062,12 +1434,35 @@ dri2_null_add_configs_for_formats(_EGLDisplay *disp)
+@@ -1062,12 +1434,35 @@ dri2_null_add_configs_for_formats(_EGLDi
  
     return count != 0;
  }
@@ -780,6 +780,3 @@ index fb03ecc36fd..5b7c1ec426c 100644
  
     if (dri2_dpy->image->base.version < NULL_IMAGE_EXTENSION_VERSION_MIN) {
        _eglError(EGL_NOT_INITIALIZED, "image extension version too old");
--- 
-2.25.1
-

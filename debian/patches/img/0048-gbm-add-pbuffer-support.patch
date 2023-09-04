@@ -17,11 +17,11 @@ isn't supported.
  src/egl/drivers/dri2/platform_drm.c | 110 +++++++++++++++++++++++++---
  2 files changed, 103 insertions(+), 10 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/egl_dri2.h b/src/egl/drivers/dri2/egl_dri2.h
-index 13b808bff80..141df1b1732 100644
---- a/src/egl/drivers/dri2/egl_dri2.h
-+++ b/src/egl/drivers/dri2/egl_dri2.h
-@@ -471,6 +471,9 @@ struct dri2_egl_surface
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.h
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
+@@ -468,6 +468,9 @@ struct dri2_egl_surface
     /* surfaceless and device */
     __DRIimage           *front;
     unsigned int         visual;
@@ -31,10 +31,10 @@ index 13b808bff80..141df1b1732 100644
  
  #ifdef HAVE_WAYLAND_PLATFORM
     void                 *swrast_front;
-diff --git a/src/egl/drivers/dri2/platform_drm.c b/src/egl/drivers/dri2/platform_drm.c
-index 2b329437f88..258e8b6593e 100644
---- a/src/egl/drivers/dri2/platform_drm.c
-+++ b/src/egl/drivers/dri2/platform_drm.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_drm.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_drm.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_drm.c
 @@ -41,6 +41,38 @@
  #include "egl_dri2.h"
  #include "loader.h"
@@ -74,7 +74,7 @@ index 2b329437f88..258e8b6593e 100644
  static struct gbm_bo *
  lock_front_buffer(struct gbm_surface *_surf)
  {
-@@ -138,8 +170,8 @@ dri2_drm_config_is_compatible(struct dri2_egl_display *dri2_dpy,
+@@ -138,8 +170,8 @@ dri2_drm_config_is_compatible(struct dri
  }
  
  static _EGLSurface *
@@ -85,7 +85,7 @@ index 2b329437f88..258e8b6593e 100644
  {
     struct dri2_egl_display *dri2_dpy = dri2_egl_display(disp);
     struct dri2_egl_config *dri2_conf = dri2_egl_config(conf);
-@@ -154,11 +186,25 @@ dri2_drm_create_window_surface(_EGLDisplay *disp, _EGLConfig *conf,
+@@ -154,11 +186,25 @@ dri2_drm_create_window_surface(_EGLDispl
        return NULL;
     }
  
@@ -113,7 +113,7 @@ index 2b329437f88..258e8b6593e 100644
                                  dri2_surf->base.GLColorspace);
  
     if (!config) {
-@@ -183,11 +229,22 @@ dri2_drm_create_window_surface(_EGLDisplay *disp, _EGLConfig *conf,
+@@ -183,12 +229,23 @@ dri2_drm_create_window_surface(_EGLDispl
     return &dri2_surf->base;
  
   cleanup_surf:
@@ -125,7 +125,7 @@ index 2b329437f88..258e8b6593e 100644
     return NULL;
  }
  
-+static _EGLSurface *
+ static _EGLSurface *
 +dri2_drm_create_window_surface(_EGLDisplay *disp, _EGLConfig *conf,
 +                               void *native_surface, const EGLint *attrib_list)
 +{
@@ -133,10 +133,11 @@ index 2b329437f88..258e8b6593e 100644
 +                                  native_surface, attrib_list);
 +}
 +
- static _EGLSurface *
++static _EGLSurface *
  dri2_drm_create_pixmap_surface(_EGLDisplay *disp, _EGLConfig *conf,
                                 void *native_window, const EGLint *attrib_list)
-@@ -202,6 +259,14 @@ dri2_drm_create_pixmap_surface(_EGLDisplay *disp, _EGLConfig *conf,
+ {
+@@ -202,6 +259,14 @@ dri2_drm_create_pixmap_surface(_EGLDispl
     return NULL;
  }
  
@@ -151,7 +152,7 @@ index 2b329437f88..258e8b6593e 100644
  static EGLBoolean
  dri2_drm_destroy_surface(_EGLDisplay *disp, _EGLSurface *surf)
  {
-@@ -217,6 +282,11 @@ dri2_drm_destroy_surface(_EGLDisplay *disp, _EGLSurface *surf)
+@@ -217,6 +282,11 @@ dri2_drm_destroy_surface(_EGLDisplay *di
  
     dri2_egl_surface_free_local_buffers(dri2_surf);
  
@@ -163,19 +164,20 @@ index 2b329437f88..258e8b6593e 100644
     dri2_fini_surface(surf);
     free(surf);
  
-@@ -402,12 +472,27 @@ dri2_drm_image_get_buffers(__DRIdrawable *driDrawable,
+@@ -402,12 +472,27 @@ dri2_drm_image_get_buffers(__DRIdrawable
     struct dri2_egl_surface *dri2_surf = loaderPrivate;
     struct gbm_dri_bo *bo;
  
 -   if (get_back_bo(dri2_surf) < 0)
 -      return 0;
-+   buffers->image_mask = 0;
-+   buffers->front = NULL;
-+   buffers->back = NULL;
- 
+-
 -   bo = gbm_dri_bo(dri2_surf->back->bo);
 -   buffers->image_mask = __DRI_IMAGE_BUFFER_BACK;
 -   buffers->back = bo->image;
++   buffers->image_mask = 0;
++   buffers->front = NULL;
++   buffers->back = NULL;
++
 +   if (buffer_mask & __DRI_IMAGE_BUFFER_FRONT) {
 +      if (!dri2_drm_alloc_front_image(dri2_surf))
 +         return 0;
@@ -196,7 +198,7 @@ index 2b329437f88..258e8b6593e 100644
  
     return 1;
  }
-@@ -425,6 +510,9 @@ dri2_drm_swap_buffers(_EGLDisplay *disp, _EGLSurface *draw)
+@@ -425,6 +510,9 @@ dri2_drm_swap_buffers(_EGLDisplay *disp,
     struct dri2_egl_display *dri2_dpy = dri2_egl_display(disp);
     struct dri2_egl_surface *dri2_surf = dri2_egl_surface(draw);
  
@@ -206,7 +208,7 @@ index 2b329437f88..258e8b6593e 100644
     if (!dri2_dpy->flush) {
        dri2_dpy->core->swapBuffers(dri2_surf->dri_drawable);
        return EGL_TRUE;
-@@ -648,7 +736,8 @@ drm_add_configs_for_visuals(_EGLDisplay *disp)
+@@ -648,7 +736,8 @@ drm_add_configs_for_visuals(_EGLDisplay
           };
  
           dri2_conf = dri2_add_config(disp, dri2_dpy->driver_configs[i],
@@ -216,7 +218,7 @@ index 2b329437f88..258e8b6593e 100644
           if (dri2_conf) {
              if (dri2_conf->base.ConfigID == config_count + 1)
                 config_count++;
-@@ -672,6 +761,7 @@ static const struct dri2_egl_display_vtbl dri2_drm_display_vtbl = {
+@@ -672,6 +761,7 @@ static const struct dri2_egl_display_vtb
     .authenticate = dri2_drm_authenticate,
     .create_window_surface = dri2_drm_create_window_surface,
     .create_pixmap_surface = dri2_drm_create_pixmap_surface,
@@ -224,6 +226,3 @@ index 2b329437f88..258e8b6593e 100644
     .destroy_surface = dri2_drm_destroy_surface,
     .create_image = dri2_drm_create_image_khr,
     .swap_buffers = dri2_drm_swap_buffers,
--- 
-2.25.1
-

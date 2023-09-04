@@ -9,10 +9,10 @@ use an API that the screen supports.
  src/mesa/drivers/dri/common/dri_util.c | 14 +++++++++++++-
  1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/src/mesa/drivers/dri/common/dri_util.c b/src/mesa/drivers/dri/common/dri_util.c
-index caed5fa6a68..6c45eb007fc 100644
---- a/src/mesa/drivers/dri/common/dri_util.c
-+++ b/src/mesa/drivers/dri/common/dri_util.c
+Index: mesa-21.2.1/src/mesa/drivers/dri/common/dri_util.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/common/dri_util.c
++++ mesa-21.2.1/src/mesa/drivers/dri/common/dri_util.c
 @@ -50,6 +50,7 @@
  #include "main/debug_output.h"
  #include "main/errors.h"
@@ -21,7 +21,7 @@ index caed5fa6a68..6c45eb007fc 100644
  
  driOptionDescription __dri2ConfigOptions[] = {
        DRI_CONF_SECTION_DEBUG
-@@ -332,7 +333,11 @@ driCreateContextAttribs(__DRIscreen *screen, int api,
+@@ -332,7 +333,11 @@ driCreateContextAttribs(__DRIscreen *scr
  	mesa_api = API_OPENGLES;
  	break;
      case __DRI_API_GLES2:
@@ -49,6 +49,3 @@ index caed5fa6a68..6c45eb007fc 100644
                                       config, shared, data);
  }
  
--- 
-2.25.1
-

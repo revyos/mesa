@@ -19,11 +19,11 @@ The platform can be enabled by passing "-Dplatforms=tizen" to Meson.
  10 files changed, 1313 insertions(+), 15 deletions(-)
  create mode 100644 src/egl/drivers/dri2/platform_tizen.c
 
-diff --git a/meson.build b/meson.build
-index 968b4f5f499..3d9d345dbf2 100644
---- a/meson.build
-+++ b/meson.build
-@@ -358,6 +358,11 @@ with_platform_x11 = _platforms.contains('x11')
+Index: mesa-21.2.1/meson.build
+===================================================================
+--- mesa-21.2.1.orig/meson.build
++++ mesa-21.2.1/meson.build
+@@ -358,6 +358,11 @@ with_platform_x11 = _platforms.contains(
  with_platform_wayland = _platforms.contains('wayland')
  with_platform_haiku = _platforms.contains('haiku')
  with_platform_windows = _platforms.contains('windows')
@@ -83,10 +83,10 @@ index 968b4f5f499..3d9d345dbf2 100644
      _platforms += 'drm'
    endif
    lines += 'EGL/Vulkan/VL platforms:   ' + ' '.join(_platforms)
-diff --git a/meson_options.txt b/meson_options.txt
-index dac791099a1..8230db93c70 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
+Index: mesa-21.2.1/meson_options.txt
+===================================================================
+--- mesa-21.2.1.orig/meson_options.txt
++++ mesa-21.2.1/meson_options.txt
 @@ -23,7 +23,7 @@ option(
    type : 'array',
    value : ['auto'],
@@ -96,10 +96,10 @@ index dac791099a1..8230db93c70 100644
    ],
    description : 'window systems to support. If this is set to `auto`, all platforms applicable will be enabled.'
  )
-diff --git a/src/egl/drivers/dri2/egl_dri2.c b/src/egl/drivers/dri2/egl_dri2.c
-index dea5899b3a8..6d34395d65d 100644
---- a/src/egl/drivers/dri2/egl_dri2.c
-+++ b/src/egl/drivers/dri2/egl_dri2.c
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.c
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.c
 @@ -1179,6 +1179,11 @@ dri2_initialize(_EGLDisplay *disp)
     case _EGL_PLATFORM_ANDROID:
        ret = dri2_initialize_android(disp);
@@ -125,7 +125,7 @@ index dea5899b3a8..6d34395d65d 100644
     default:
        /* TODO: add teardown for other platforms */
        break;
-@@ -2293,8 +2304,96 @@ dri2_create_image_khr_renderbuffer(_EGLDisplay *disp, _EGLContext *ctx,
+@@ -2293,8 +2304,96 @@ dri2_create_image_khr_renderbuffer(_EGLD
     return dri2_create_image_from_dri(disp, dri_image);
  }
  
@@ -146,7 +146,7 @@ index dea5899b3a8..6d34395d65d 100644
 +      return 0;
 +   }
 +}
- 
++
 +static _EGLImage *
 +dri2_create_image_wayland_wl_buffer_tizen(_EGLDisplay *disp, _EGLContext *ctx,
 +                                          EGLClientBuffer _buffer,
@@ -182,7 +182,7 @@ index dea5899b3a8..6d34395d65d 100644
 +                "dri2_create_image_wayland_wl_buffer_tizen (multi-plane format)");
 +      return NULL;
 +   }
-+
+ 
 +   if (attrs.PlaneWL < 0 || attrs.PlaneWL >= info.num_planes) {
 +      _eglError(EGL_BAD_PARAMETER,
 +                "dri2_create_image_wayland_wl_buffer_tizen (plane out of bounds)");
@@ -223,18 +223,18 @@ index dea5899b3a8..6d34395d65d 100644
  /* This structure describes how a wl_buffer maps to one or more
   * __DRIimages.  A wl_drm_buffer stores the wl_drm format code and the
   * offsets and strides of the planes in the buffer.  This table maps a
-@@ -3193,6 +3292,10 @@ dri2_create_image_khr(_EGLDisplay *disp, _EGLContext *ctx, EGLenum target,
- #ifdef HAVE_WAYLAND_PLATFORM
+@@ -3194,6 +3293,10 @@ dri2_create_image_khr(_EGLDisplay *disp,
     case EGL_WAYLAND_BUFFER_WL:
        return dri2_create_image_wayland_wl_buffer(disp, ctx, buffer, attr_list);
-+#endif
+ #endif
 +#ifdef HAVE_TIZEN_PLATFORM
 +   case EGL_WAYLAND_BUFFER_WL:
 +      return dri2_create_image_wayland_wl_buffer_tizen(disp, ctx, buffer, attr_list);
- #endif
++#endif
     case EGL_CL_IMAGE_IMG:
        return dri2_create_image_img_buffer(disp, ctx, target, buffer, attr_list);
-@@ -3214,6 +3317,78 @@ dri2_destroy_image_khr(_EGLDisplay *disp, _EGLImage *image)
+    default:
+@@ -3214,6 +3317,78 @@ dri2_destroy_image_khr(_EGLDisplay *disp
     return EGL_TRUE;
  }
  
@@ -313,22 +313,22 @@ index dea5899b3a8..6d34395d65d 100644
  #ifdef HAVE_WAYLAND_PLATFORM
  
  static void
-@@ -3755,6 +3930,11 @@ const _EGLDriver _eglDriver = {
-    .BindWaylandDisplayWL = dri2_bind_wayland_display_wl,
+@@ -3756,6 +3931,11 @@ const _EGLDriver _eglDriver = {
     .UnbindWaylandDisplayWL = dri2_unbind_wayland_display_wl,
     .QueryWaylandBufferWL = dri2_query_wayland_buffer_wl,
-+#endif
+ #endif
 +#ifdef HAVE_TIZEN_PLATFORM
 +   .BindWaylandDisplayWL = dri2_bind_wayland_display_wl_tizen,
 +   .UnbindWaylandDisplayWL = dri2_unbind_wayland_display_wl_tizen,
 +   .QueryWaylandBufferWL = dri2_query_wayland_buffer_wl_tizen,
- #endif
++#endif
     .GetSyncValuesCHROMIUM = dri2_get_sync_values_chromium,
     .CreateSyncKHR = dri2_create_sync,
-diff --git a/src/egl/drivers/dri2/egl_dri2.h b/src/egl/drivers/dri2/egl_dri2.h
-index 6a7eedea112..a8bfe45b1f5 100644
---- a/src/egl/drivers/dri2/egl_dri2.h
-+++ b/src/egl/drivers/dri2/egl_dri2.h
+    .ClientWaitSyncKHR = dri2_client_wait_sync,
+Index: mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/egl_dri2.h
++++ mesa-21.2.1/src/egl/drivers/dri2/egl_dri2.h
 @@ -62,9 +62,9 @@ struct zwp_linux_dmabuf_v1;
  #include <gbm_driint.h>
  #endif
@@ -419,17 +419,17 @@ index 6a7eedea112..a8bfe45b1f5 100644
        /* for is_different_gpu case. NULL else */
        __DRIimage         *linear_copy;
        /* for swrast */
-@@ -325,6 +365,9 @@ struct dri2_egl_surface
- #endif
+@@ -326,6 +366,9 @@ struct dri2_egl_surface
  #ifdef HAVE_DRM_PLATFORM
        struct gbm_bo       *bo;
-+#endif
+ #endif
 +#ifdef HAVE_TIZEN_PLATFORM
 +      tbm_surface_h       tbm_surf;
- #endif
++#endif
        bool                locked;
        int                 age;
-@@ -525,6 +568,11 @@ dri2_initialize_android(_EGLDisplay *disp)
+    } color_buffers[4], *back, *current;
+@@ -525,6 +568,11 @@ dri2_initialize_android(_EGLDisplay *dis
  EGLBoolean
  dri2_initialize_surfaceless(_EGLDisplay *disp);
  
@@ -441,7 +441,7 @@ index 6a7eedea112..a8bfe45b1f5 100644
  EGLBoolean
  dri2_initialize_device(_EGLDisplay *disp);
  static inline void
-@@ -559,6 +607,11 @@ dri2_set_WL_bind_wayland_display(_EGLDisplay *disp)
+@@ -559,6 +607,11 @@ dri2_set_WL_bind_wayland_display(_EGLDis
  #endif
  }
  
@@ -453,11 +453,10 @@ index 6a7eedea112..a8bfe45b1f5 100644
  void
  dri2_display_destroy(_EGLDisplay *disp);
  
-diff --git a/src/egl/drivers/dri2/platform_tizen.c b/src/egl/drivers/dri2/platform_tizen.c
-new file mode 100644
-index 00000000000..a08bc8c07bf
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_tizen.c
+===================================================================
 --- /dev/null
-+++ b/src/egl/drivers/dri2/platform_tizen.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_tizen.c
 @@ -0,0 +1,980 @@
 +/*
 + * Mesa 3-D graphics library
@@ -1439,11 +1438,11 @@ index 00000000000..a08bc8c07bf
 +   dri2_display_destroy(dpy);
 +   return EGL_FALSE;
 +}
-diff --git a/src/egl/main/eglapi.c b/src/egl/main/eglapi.c
-index 234449adf64..43c7b917909 100644
---- a/src/egl/main/eglapi.c
-+++ b/src/egl/main/eglapi.c
-@@ -416,6 +416,13 @@ _eglGetPlatformDisplayCommon(EGLenum platform, void *native_display,
+Index: mesa-21.2.1/src/egl/main/eglapi.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglapi.c
++++ mesa-21.2.1/src/egl/main/eglapi.c
+@@ -416,6 +416,13 @@ _eglGetPlatformDisplayCommon(EGLenum pla
     case EGL_PLATFORM_DEVICE_EXT:
        disp = _eglGetDeviceDisplay(native_display, attrib_list);
        break;
@@ -1457,10 +1456,10 @@ index 234449adf64..43c7b917909 100644
     default:
        RETURN_EGL_ERROR(NULL, EGL_BAD_PARAMETER, NULL);
     }
-diff --git a/src/egl/main/egldisplay.c b/src/egl/main/egldisplay.c
-index 765618f0dd0..486ac3b0557 100644
---- a/src/egl/main/egldisplay.c
-+++ b/src/egl/main/egldisplay.c
+Index: mesa-21.2.1/src/egl/main/egldisplay.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egldisplay.c
++++ mesa-21.2.1/src/egl/main/egldisplay.c
 @@ -77,6 +77,7 @@ static const struct {
     { _EGL_PLATFORM_HAIKU, "haiku" },
     { _EGL_PLATFORM_SURFACELESS, "surfaceless" },
@@ -1495,7 +1494,7 @@ index 765618f0dd0..486ac3b0557 100644
     if (nativeDisplay == EGL_DEFAULT_DISPLAY)
        return _EGL_INVALID_PLATFORM;
  
-@@ -141,7 +154,7 @@ _eglNativePlatformDetectNativeDisplay(void *nativeDisplay)
+@@ -141,7 +154,7 @@ _eglNativePlatformDetectNativeDisplay(vo
           return _EGL_PLATFORM_DRM;
  #endif
     }
@@ -1504,7 +1503,7 @@ index 765618f0dd0..486ac3b0557 100644
     return _EGL_INVALID_PLATFORM;
  }
  
-@@ -595,6 +608,23 @@ _eglGetAndroidDisplay(void *native_display,
+@@ -595,6 +608,23 @@ _eglGetAndroidDisplay(void *native_displ
  }
  #endif /* HAVE_ANDROID_PLATFORM */
  
@@ -1528,10 +1527,10 @@ index 765618f0dd0..486ac3b0557 100644
  _EGLDisplay*
  _eglGetDeviceDisplay(void *native_display,
                       const EGLAttrib *attrib_list)
-diff --git a/src/egl/main/egldisplay.h b/src/egl/main/egldisplay.h
-index 5b05dcc1e6d..cbb098331bf 100644
---- a/src/egl/main/egldisplay.h
-+++ b/src/egl/main/egldisplay.h
+Index: mesa-21.2.1/src/egl/main/egldisplay.h
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egldisplay.h
++++ mesa-21.2.1/src/egl/main/egldisplay.h
 @@ -52,6 +52,7 @@ enum _egl_platform_type {
     _EGL_PLATFORM_HAIKU,
     _EGL_PLATFORM_SURFACELESS,
@@ -1540,7 +1539,7 @@ index 5b05dcc1e6d..cbb098331bf 100644
  
     _EGL_NUM_PLATFORMS,
     _EGL_INVALID_PLATFORM = -1
-@@ -329,6 +330,12 @@ _eglGetAndroidDisplay(void *native_display,
+@@ -329,6 +330,12 @@ _eglGetAndroidDisplay(void *native_displ
                           const EGLAttrib *attrib_list);
  #endif
  
@@ -1553,10 +1552,10 @@ index 5b05dcc1e6d..cbb098331bf 100644
  _EGLDisplay*
  _eglGetDeviceDisplay(void *native_display,
                       const EGLAttrib *attrib_list);
-diff --git a/src/egl/main/egllog.c b/src/egl/main/egllog.c
-index 6a91952577f..973b7600ab1 100644
---- a/src/egl/main/egllog.c
-+++ b/src/egl/main/egllog.c
+Index: mesa-21.2.1/src/egl/main/egllog.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/egllog.c
++++ mesa-21.2.1/src/egl/main/egllog.c
 @@ -46,15 +46,17 @@
  
  #include "egllog.h"
@@ -1578,7 +1577,7 @@ index 6a91952577f..973b7600ab1 100644
  
  #define MAXSTRING 1000
  #define FALLBACK_LOG_LEVEL _EGL_WARNING
-@@ -93,9 +95,26 @@ _eglDefaultLogger(EGLint level, const char *msg)
+@@ -93,9 +95,26 @@ _eglDefaultLogger(EGLint level, const ch
        [_EGL_DEBUG] = ANDROID_LOG_DEBUG,
     };
     LOG_PRI(egl2alog[level], LOG_TAG, "%s", msg);
@@ -1606,10 +1605,10 @@ index 6a91952577f..973b7600ab1 100644
  }
  
  
-diff --git a/src/egl/meson.build b/src/egl/meson.build
-index ab8f4e1fdbe..5749ec88f89 100644
---- a/src/egl/meson.build
-+++ b/src/egl/meson.build
+Index: mesa-21.2.1/src/egl/meson.build
+===================================================================
+--- mesa-21.2.1.orig/src/egl/meson.build
++++ mesa-21.2.1/src/egl/meson.build
 @@ -106,7 +106,7 @@ if with_dri2
      endif
      deps_for_egl += [dep_x11_xcb, dep_xcb_dri2, dep_xcb_xfixes]
@@ -1631,6 +1630,3 @@ index ab8f4e1fdbe..5749ec88f89 100644
  
  if cc.has_function('mincore')
    c_args_for_egl += '-DHAVE_MINCORE'
--- 
-2.25.1
-

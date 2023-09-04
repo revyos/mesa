@@ -23,10 +23,10 @@ This also adds support for NV12 and NV21 EGL configs.
  src/mesa/main/mtypes.h                        |  9 ++
  14 files changed, 181 insertions(+), 19 deletions(-)
 
-diff --git a/include/GL/internal/dri_interface.h b/include/GL/internal/dri_interface.h
-index 16cc095ea29..4d5a1874dc2 100644
---- a/include/GL/internal/dri_interface.h
-+++ b/include/GL/internal/dri_interface.h
+Index: mesa-21.2.1/include/GL/internal/dri_interface.h
+===================================================================
+--- mesa-21.2.1.orig/include/GL/internal/dri_interface.h
++++ mesa-21.2.1/include/GL/internal/dri_interface.h
 @@ -826,7 +826,13 @@ struct __DRIuseInvalidateExtensionRec {
  #define __DRI_ATTRIB_GREEN_SHIFT		51
  #define __DRI_ATTRIB_BLUE_SHIFT			52
@@ -90,11 +90,11 @@ index 16cc095ea29..4d5a1874dc2 100644
  /**
   * This extension defines the core DRI functionality.
   *
-diff --git a/src/gallium/frontends/dri/dri_screen.c b/src/gallium/frontends/dri/dri_screen.c
-index b565a1fe8ec..37a0d4add0c 100644
---- a/src/gallium/frontends/dri/dri_screen.c
-+++ b/src/gallium/frontends/dri/dri_screen.c
-@@ -324,7 +324,9 @@ dri_fill_in_modes(struct dri_screen *screen)
+Index: mesa-21.2.1/src/gallium/frontends/dri/dri_screen.c
+===================================================================
+--- mesa-21.2.1.orig/src/gallium/frontends/dri/dri_screen.c
++++ mesa-21.2.1/src/gallium/frontends/dri/dri_screen.c
+@@ -324,7 +324,9 @@ dri_fill_in_modes(struct dri_screen *scr
                                          depth_buffer_factor, back_buffer_modes,
                                          ARRAY_SIZE(back_buffer_modes),
                                          msaa_modes, 1,
@@ -105,7 +105,7 @@ index b565a1fe8ec..37a0d4add0c 100644
           configs = driConcatConfigs(configs, new_configs);
  
           /* Multi-sample configs without an accumulation buffer. */
-@@ -334,7 +336,9 @@ dri_fill_in_modes(struct dri_screen *screen)
+@@ -334,7 +336,9 @@ dri_fill_in_modes(struct dri_screen *scr
                                             depth_buffer_factor, back_buffer_modes,
                                             ARRAY_SIZE(back_buffer_modes),
                                             msaa_modes+1, num_msaa_modes-1,
@@ -116,10 +116,10 @@ index b565a1fe8ec..37a0d4add0c 100644
              configs = driConcatConfigs(configs, new_configs);
           }
        }
-diff --git a/src/gallium/include/pipe/p_format.h b/src/gallium/include/pipe/p_format.h
-index 0c93d7df6e2..fd653379b7a 100644
---- a/src/gallium/include/pipe/p_format.h
-+++ b/src/gallium/include/pipe/p_format.h
+Index: mesa-21.2.1/src/gallium/include/pipe/p_format.h
+===================================================================
+--- mesa-21.2.1.orig/src/gallium/include/pipe/p_format.h
++++ mesa-21.2.1/src/gallium/include/pipe/p_format.h
 @@ -513,6 +513,8 @@ enum pipe_format {
     PIPE_FORMAT_R4G4B4X4_UNORM,
     PIPE_FORMAT_B10G10R10X2_SNORM,
@@ -129,11 +129,11 @@ index 0c93d7df6e2..fd653379b7a 100644
  
     PIPE_FORMAT_COUNT
  };
-diff --git a/src/mesa/drivers/dri/common/utils.c b/src/mesa/drivers/dri/common/utils.c
-index a3f2bc57f46..d268dc41fbb 100644
---- a/src/mesa/drivers/dri/common/utils.c
-+++ b/src/mesa/drivers/dri/common/utils.c
-@@ -163,6 +163,21 @@ driGetRendererString( char * buffer, const char * hardware_name,
+Index: mesa-21.2.1/src/mesa/drivers/dri/common/utils.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/common/utils.c
++++ mesa-21.2.1/src/mesa/drivers/dri/common/utils.c
+@@ -163,6 +163,21 @@ driGetRendererString( char * buffer, con
   *                          This forces 32-bit color to have 24-bit depth, and
   *                          16-bit color to have 16-bit depth.
   *
@@ -259,7 +259,7 @@ index a3f2bc57f46..d268dc41fbb 100644
  		}
  	    }
  	}
-@@ -436,10 +500,14 @@ driGetConfigAttribIndex(const __DRIconfig *config,
+@@ -436,10 +500,14 @@ driGetConfigAttribIndex(const __DRIconfi
          break;
      __ATTRIB(__DRI_ATTRIB_SAMPLES,			samples);
      case __DRI_ATTRIB_RENDER_TYPE:
@@ -278,7 +278,7 @@ index a3f2bc57f46..d268dc41fbb 100644
  	break;
      case __DRI_ATTRIB_CONFIG_CAVEAT:
  	if (config->modes.accumRedBits != 0)
-@@ -505,6 +573,12 @@ driGetConfigAttribIndex(const __DRIconfig *config,
+@@ -505,6 +573,12 @@ driGetConfigAttribIndex(const __DRIconfi
      __ATTRIB(__DRI_ATTRIB_GREEN_SHIFT,			greenShift);
      __ATTRIB(__DRI_ATTRIB_BLUE_SHIFT,			blueShift);
      __ATTRIB(__DRI_ATTRIB_ALPHA_SHIFT,			alphaShift);
@@ -291,10 +291,10 @@ index a3f2bc57f46..d268dc41fbb 100644
      default:
          /* XXX log an error or smth */
          return GL_FALSE;
-diff --git a/src/mesa/drivers/dri/common/utils.h b/src/mesa/drivers/dri/common/utils.h
-index 7be0465c261..ebd98d9dc33 100644
---- a/src/mesa/drivers/dri/common/utils.h
-+++ b/src/mesa/drivers/dri/common/utils.h
+Index: mesa-21.2.1/src/mesa/drivers/dri/common/utils.h
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/common/utils.h
++++ mesa-21.2.1/src/mesa/drivers/dri/common/utils.h
 @@ -45,7 +45,8 @@ driCreateConfigs(mesa_format format,
  		 unsigned num_depth_stencil_bits,
  		 const GLenum * db_modes, unsigned num_db_modes,
@@ -305,11 +305,11 @@ index 7be0465c261..ebd98d9dc33 100644
  
  __DRIconfig **driConcatConfigs(__DRIconfig **a,
  			       __DRIconfig **b);
-diff --git a/src/mesa/drivers/dri/i915/intel_screen.c b/src/mesa/drivers/dri/i915/intel_screen.c
-index 6135357c2a0..a94c6de0a06 100644
---- a/src/mesa/drivers/dri/i915/intel_screen.c
-+++ b/src/mesa/drivers/dri/i915/intel_screen.c
-@@ -1083,7 +1083,9 @@ intel_screen_make_configs(__DRIscreen *dri_screen)
+Index: mesa-21.2.1/src/mesa/drivers/dri/i915/intel_screen.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/i915/intel_screen.c
++++ mesa-21.2.1/src/mesa/drivers/dri/i915/intel_screen.c
+@@ -1083,7 +1083,9 @@ intel_screen_make_configs(__DRIscreen *d
                                       num_depth_stencil_bits,
                                       back_buffer_modes, 2,
                                       singlesample_samples, 1,
@@ -320,7 +320,7 @@ index 6135357c2a0..a94c6de0a06 100644
        configs = driConcatConfigs(configs, new_configs);
     }
  
-@@ -1105,7 +1107,9 @@ intel_screen_make_configs(__DRIscreen *dri_screen)
+@@ -1105,7 +1107,9 @@ intel_screen_make_configs(__DRIscreen *d
                                       depth_bits, stencil_bits, 1,
                                       back_buffer_modes, 1,
                                       singlesample_samples, 1,
@@ -331,11 +331,11 @@ index 6135357c2a0..a94c6de0a06 100644
        configs = driConcatConfigs(configs, new_configs);
     }
  
-diff --git a/src/mesa/drivers/dri/i965/brw_screen.c b/src/mesa/drivers/dri/i965/brw_screen.c
-index 56811110567..c450bae1054 100644
---- a/src/mesa/drivers/dri/i965/brw_screen.c
-+++ b/src/mesa/drivers/dri/i965/brw_screen.c
-@@ -2292,7 +2292,9 @@ brw_screen_make_configs(__DRIscreen *dri_screen)
+Index: mesa-21.2.1/src/mesa/drivers/dri/i965/brw_screen.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/i965/brw_screen.c
++++ mesa-21.2.1/src/mesa/drivers/dri/i965/brw_screen.c
+@@ -2292,7 +2292,9 @@ brw_screen_make_configs(__DRIscreen *dri
                                       num_depth_stencil_bits,
                                       back_buffer_modes, 2,
                                       singlesample_samples, 1,
@@ -346,7 +346,7 @@ index 56811110567..c450bae1054 100644
        configs = driConcatConfigs(configs, new_configs);
     }
  
-@@ -2325,7 +2327,9 @@ brw_screen_make_configs(__DRIscreen *dri_screen)
+@@ -2325,7 +2327,9 @@ brw_screen_make_configs(__DRIscreen *dri
                                       depth_bits, stencil_bits, 1,
                                       back_buffer_modes, 1,
                                       singlesample_samples, 1,
@@ -357,7 +357,7 @@ index 56811110567..c450bae1054 100644
        configs = driConcatConfigs(configs, new_configs);
     }
  
-@@ -2390,7 +2394,9 @@ brw_screen_make_configs(__DRIscreen *dri_screen)
+@@ -2390,7 +2394,9 @@ brw_screen_make_configs(__DRIscreen *dri
                                       back_buffer_modes, 1,
                                       multisample_samples,
                                       num_msaa_modes,
@@ -368,10 +368,10 @@ index 56811110567..c450bae1054 100644
        configs = driConcatConfigs(configs, new_configs);
     }
  
-diff --git a/src/mesa/drivers/dri/nouveau/nouveau_screen.c b/src/mesa/drivers/dri/nouveau/nouveau_screen.c
-index c92efcd7b20..fc87d5eb395 100644
---- a/src/mesa/drivers/dri/nouveau/nouveau_screen.c
-+++ b/src/mesa/drivers/dri/nouveau/nouveau_screen.c
+Index: mesa-21.2.1/src/mesa/drivers/dri/nouveau/nouveau_screen.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/nouveau/nouveau_screen.c
++++ mesa-21.2.1/src/mesa/drivers/dri/nouveau/nouveau_screen.c
 @@ -79,7 +79,9 @@ nouveau_get_configs(uint32_t chipset)
  					  ARRAY_SIZE(back_buffer_modes),
  					  msaa_samples,
@@ -383,11 +383,11 @@ index c92efcd7b20..fc87d5eb395 100644
  		assert(config);
  
  		configs = driConcatConfigs(configs, config);
-diff --git a/src/mesa/drivers/dri/radeon/radeon_screen.c b/src/mesa/drivers/dri/radeon/radeon_screen.c
-index 3764a5d6538..f7628555b8f 100644
---- a/src/mesa/drivers/dri/radeon/radeon_screen.c
-+++ b/src/mesa/drivers/dri/radeon/radeon_screen.c
-@@ -838,7 +838,9 @@ __DRIconfig **radeonInitScreen2(__DRIscreen *psp)
+Index: mesa-21.2.1/src/mesa/drivers/dri/radeon/radeon_screen.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/radeon/radeon_screen.c
++++ mesa-21.2.1/src/mesa/drivers/dri/radeon/radeon_screen.c
+@@ -838,7 +838,9 @@ __DRIconfig **radeonInitScreen2(__DRIscr
  				     ARRAY_SIZE(back_buffer_modes),
  				     msaa_samples_array,
  				     ARRAY_SIZE(msaa_samples_array),
@@ -398,10 +398,10 @@ index 3764a5d6538..f7628555b8f 100644
        configs = driConcatConfigs(configs, new_configs);
     }
  
-diff --git a/src/mesa/main/format_info.py b/src/mesa/main/format_info.py
-index edc0324e60b..d58403ea85e 100644
---- a/src/mesa/main/format_info.py
-+++ b/src/mesa/main/format_info.py
+Index: mesa-21.2.1/src/mesa/main/format_info.py
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/main/format_info.py
++++ mesa-21.2.1/src/mesa/main/format_info.py
 @@ -29,7 +29,7 @@ import sys
  def get_gl_base_format(fmat):
     if fmat.name == 'MESA_FORMAT_NONE':
@@ -411,11 +411,11 @@ index edc0324e60b..d58403ea85e 100644
        return 'GL_YCBCR_MESA'
     elif fmat.has_channel('r'):
        if fmat.has_channel('g'):
-diff --git a/src/mesa/main/formats.c b/src/mesa/main/formats.c
-index 9cd026f7507..f81caeceff4 100644
---- a/src/mesa/main/formats.c
-+++ b/src/mesa/main/formats.c
-@@ -1452,6 +1452,15 @@ _mesa_format_matches_format_and_type(mesa_format mformat,
+Index: mesa-21.2.1/src/mesa/main/formats.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/main/formats.c
++++ mesa-21.2.1/src/mesa/main/formats.c
+@@ -1452,6 +1452,15 @@ _mesa_format_matches_format_and_type(mes
     if (error)
        *error = GL_NO_ERROR;
  
@@ -431,11 +431,11 @@ index 9cd026f7507..f81caeceff4 100644
     if (_mesa_is_format_compressed(mformat)) {
        if (error)
           *error = GL_INVALID_ENUM;
-diff --git a/src/mesa/main/formats.csv b/src/mesa/main/formats.csv
-index 21cdea26e08..b2d476577e0 100644
---- a/src/mesa/main/formats.csv
-+++ b/src/mesa/main/formats.csv
-@@ -92,6 +92,8 @@ MESA_FORMAT_A2R10G10B10_UNORM             , packed, 1, 1, 1, un2 , un10, un10, u
+Index: mesa-21.2.1/src/mesa/main/formats.csv
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/main/formats.csv
++++ mesa-21.2.1/src/mesa/main/formats.csv
+@@ -92,6 +92,8 @@ MESA_FORMAT_A2R10G10B10_UNORM
  
  MESA_FORMAT_YCBCR                         , other , 1, 1, 1, x16 ,     ,     ,     , xyzw, yuv
  MESA_FORMAT_YCBCR_REV                     , other , 1, 1, 1, x16 ,     ,     ,     , xyzw, yuv
@@ -444,10 +444,10 @@ index 21cdea26e08..b2d476577e0 100644
  
  MESA_FORMAT_RG_RB_UNORM8                  , other , 2, 1, 1, x16 ,     ,     ,     , xyz1, rgb
  MESA_FORMAT_GR_BR_UNORM8                  , other , 2, 1, 1, x16 ,     ,     ,     , xyz1, rgb
-diff --git a/src/mesa/main/formats.h b/src/mesa/main/formats.h
-index 508c9c342d2..0e778d64467 100644
---- a/src/mesa/main/formats.h
-+++ b/src/mesa/main/formats.h
+Index: mesa-21.2.1/src/mesa/main/formats.h
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/main/formats.h
++++ mesa-21.2.1/src/mesa/main/formats.h
 @@ -617,6 +617,13 @@ typedef enum pipe_format mesa_format;
  #define MESA_FORMAT_ATC_RGB                      PIPE_FORMAT_ATC_RGB
  #define MESA_FORMAT_ATC_RGBA_EXPLICIT            PIPE_FORMAT_ATC_RGBA_EXPLICIT
@@ -462,11 +462,11 @@ index 508c9c342d2..0e778d64467 100644
  #define MESA_FORMAT_COUNT                        PIPE_FORMAT_COUNT
  
  /* Packed to array format adapters */
-diff --git a/src/mesa/main/mtypes.h b/src/mesa/main/mtypes.h
-index 32528a5f16b..8f77d4c58dd 100644
---- a/src/mesa/main/mtypes.h
-+++ b/src/mesa/main/mtypes.h
-@@ -158,6 +158,7 @@ _mesa_varying_slot_in_fs(gl_varying_slot slot)
+Index: mesa-21.2.1/src/mesa/main/mtypes.h
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/main/mtypes.h
++++ mesa-21.2.1/src/mesa/main/mtypes.h
+@@ -158,6 +158,7 @@ _mesa_varying_slot_in_fs(gl_varying_slot
   */
  struct gl_config
  {
@@ -489,6 +489,3 @@ index 32528a5f16b..8f77d4c58dd 100644
  };
  
  
--- 
-2.25.1
-

@@ -9,10 +9,10 @@ rather than asserting.
  src/gbm/backends/dri/gbm_dri.c | 10 ++++++++--
  1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/src/gbm/backends/dri/gbm_dri.c b/src/gbm/backends/dri/gbm_dri.c
-index bd8a80cdecf..2aa9c7c41ad 100644
---- a/src/gbm/backends/dri/gbm_dri.c
-+++ b/src/gbm/backends/dri/gbm_dri.c
+Index: mesa-21.2.1/src/gbm/backends/dri/gbm_dri.c
+===================================================================
+--- mesa-21.2.1.orig/src/gbm/backends/dri/gbm_dri.c
++++ mesa-21.2.1/src/gbm/backends/dri/gbm_dri.c
 @@ -1245,8 +1245,11 @@ gbm_dri_bo_map(struct gbm_bo *_bo,
     if (!dri->context)
        dri->context = dri->dri2->createNewContext(dri->screen, NULL,
@@ -26,7 +26,7 @@ index bd8a80cdecf..2aa9c7c41ad 100644
  
     /* GBM flags and DRI flags are the same, so just pass them on */
     return dri->image->mapImage(dri->context, bo->image, x, y,
-@@ -1374,8 +1377,11 @@ gbm_dri_bo_blit(struct gbm_bo *_dst_bo, struct gbm_bo *_src_bo,
+@@ -1374,8 +1377,11 @@ gbm_dri_bo_blit(struct gbm_bo *_dst_bo,
     if (!dri->context)
        dri->context = dri->dri2->createNewContext(dri->screen, NULL,
                                                   NULL, NULL);
@@ -39,6 +39,3 @@ index bd8a80cdecf..2aa9c7c41ad 100644
  
     /* GBM flags and DRI flags are the same, so just pass them on */
     dri->image->blitImage(dri->context, dst_bo->image, src_bo->image,
--- 
-2.25.1
-

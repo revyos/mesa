@@ -13,11 +13,11 @@ pbuffer width, height and pixels.
  src/mesa/main/mtypes.h              | 5 +++++
  2 files changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/src/mesa/drivers/dri/common/utils.c b/src/mesa/drivers/dri/common/utils.c
-index df5f8cbfdc0..28debe4e013 100644
---- a/src/mesa/drivers/dri/common/utils.c
-+++ b/src/mesa/drivers/dri/common/utils.c
-@@ -480,6 +480,7 @@ __DRIconfig **driConcatConfigs(__DRIconfig **a,
+Index: mesa-21.2.1/src/mesa/drivers/dri/common/utils.c
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/drivers/dri/common/utils.c
++++ mesa-21.2.1/src/mesa/drivers/dri/common/utils.c
+@@ -480,6 +480,7 @@ __DRIconfig **driConcatConfigs(__DRIconf
      return all;
  }
  
@@ -25,7 +25,7 @@ index df5f8cbfdc0..28debe4e013 100644
  #define __ATTRIB(attrib, field) case attrib: *value = config->modes.field; break
  
  /**
-@@ -555,9 +556,9 @@ driGetConfigAttribIndex(const __DRIconfig *config,
+@@ -555,9 +556,9 @@ driGetConfigAttribIndex(const __DRIconfi
      __ATTRIB(__DRI_ATTRIB_GREEN_MASK,			greenMask);
      __ATTRIB(__DRI_ATTRIB_BLUE_MASK,			blueMask);
      __ATTRIB(__DRI_ATTRIB_ALPHA_MASK,			alphaMask);
@@ -38,10 +38,10 @@ index df5f8cbfdc0..28debe4e013 100644
      case __DRI_ATTRIB_OPTIMAL_PBUFFER_WIDTH:
      case __DRI_ATTRIB_OPTIMAL_PBUFFER_HEIGHT:
      case __DRI_ATTRIB_VISUAL_SELECT_GROUP:
-diff --git a/src/mesa/main/mtypes.h b/src/mesa/main/mtypes.h
-index 8f77d4c58dd..e37c61d23d0 100644
---- a/src/mesa/main/mtypes.h
-+++ b/src/mesa/main/mtypes.h
+Index: mesa-21.2.1/src/mesa/main/mtypes.h
+===================================================================
+--- mesa-21.2.1.orig/src/mesa/main/mtypes.h
++++ mesa-21.2.1/src/mesa/main/mtypes.h
 @@ -175,6 +175,11 @@ struct gl_config
     /* ARB_multisample / SGIS_multisample */
     GLuint samples;
@@ -54,6 +54,3 @@ index 8f77d4c58dd..e37c61d23d0 100644
     /* OML_swap_method */
     GLint swapMethod;
  
--- 
-2.25.1
-

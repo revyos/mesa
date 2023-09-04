@@ -10,11 +10,11 @@ before accessing the version fields.
  src/vulkan/wsi/wsi_common_x11.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/vulkan/wsi/wsi_common_x11.c b/src/vulkan/wsi/wsi_common_x11.c
-index 9dce78eddeb..9eb624df640 100644
---- a/src/vulkan/wsi/wsi_common_x11.c
-+++ b/src/vulkan/wsi/wsi_common_x11.c
-@@ -216,7 +216,7 @@ wsi_x11_connection_create(struct wsi_device *wsi_dev,
+Index: mesa-21.2.1/src/vulkan/wsi/wsi_common_x11.c
+===================================================================
+--- mesa-21.2.1.orig/src/vulkan/wsi/wsi_common_x11.c
++++ mesa-21.2.1/src/vulkan/wsi/wsi_common_x11.c
+@@ -216,7 +216,7 @@ wsi_x11_connection_create(struct wsi_dev
  
        ver_cookie = xcb_dri3_query_version(conn, 1, 2);
        ver_reply = xcb_dri3_query_version_reply(conn, ver_cookie, NULL);
@@ -23,7 +23,7 @@ index 9dce78eddeb..9eb624df640 100644
           (ver_reply->major_version > 1 || ver_reply->minor_version >= 2);
        free(ver_reply);
     }
-@@ -230,7 +230,7 @@ wsi_x11_connection_create(struct wsi_device *wsi_dev,
+@@ -230,7 +230,7 @@ wsi_x11_connection_create(struct wsi_dev
  
        ver_cookie = xcb_present_query_version(conn, 1, 2);
        ver_reply = xcb_present_query_version_reply(conn, ver_cookie, NULL);
@@ -32,6 +32,3 @@ index 9dce78eddeb..9eb624df640 100644
          (ver_reply->major_version > 1 || ver_reply->minor_version >= 2);
        free(ver_reply);
     }
--- 
-2.25.1
-

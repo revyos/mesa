@@ -8,11 +8,11 @@ This adds support for NV12 and NV21 configs.
  src/egl/drivers/dri2/platform_tizen.c | 278 ++++++++++++++++++--------
  1 file changed, 200 insertions(+), 78 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/platform_tizen.c b/src/egl/drivers/dri2/platform_tizen.c
-index 2bc9b3e7c64..b6478a1875b 100644
---- a/src/egl/drivers/dri2/platform_tizen.c
-+++ b/src/egl/drivers/dri2/platform_tizen.c
-@@ -100,37 +100,93 @@ create_image_from_native(struct dri2_egl_surface *dri2_surf,
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_tizen.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_tizen.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_tizen.c
+@@ -100,37 +100,93 @@ create_image_from_native(struct dri2_egl
  {
     _EGLSurface *surf = &dri2_surf->base;
     struct dri2_egl_display *dri2_dpy = dri2_egl_display(surf->Resource.Display);
@@ -48,7 +48,7 @@ index 2bc9b3e7c64..b6478a1875b 100644
     fourcc = dri2_fourcc_from_tbm_format(info.format);
 -   offset = info.planes[0].offset;
 -   pitch = info.planes[0].stride;
--
+ 
 -   dri_image = dri2_dpy->image->createImageFromFds(dri2_dpy->dri_screen,
 -                                                   info.width,
 -                                                   info.height,
@@ -59,7 +59,6 @@ index 2bc9b3e7c64..b6478a1875b 100644
 -                                                   &offset,
 -                                                   loaderPrivate);
 -   close(fd);
-+
 +   for (unsigned i = 0; i < info.num_planes; i++) {
 +      int index = tbm_surface_internal_get_plane_bo_idx(tbm_surf, i);
 +
@@ -127,7 +126,7 @@ index 2bc9b3e7c64..b6478a1875b 100644
  
     if (!dri_image) {
        _eglLog(_EGL_DEBUG, "%s: failed to create dri image from tbm bo", __func__);
-@@ -792,10 +848,22 @@ dri2_tizen_flush_front_buffer(__DRIdrawable * driDrawable, void *loaderPrivate)
+@@ -792,10 +848,22 @@ dri2_tizen_flush_front_buffer(__DRIdrawa
  {
  }
  
@@ -151,11 +150,10 @@ index 2bc9b3e7c64..b6478a1875b 100644
  };
  
  static const __DRIextension *image_loader_extensions[] = {
-@@ -804,6 +872,41 @@ static const __DRIextension *image_loader_extensions[] = {
-    NULL,
+@@ -805,89 +873,143 @@ static const __DRIextension *image_loade
  };
  
-+static EGLBoolean
+ static EGLBoolean
 +derive_yuv_native_visual_from_config(struct dri2_egl_display *dri2_dpy,
 +                                     const __DRIconfig *dri_config,
 +                                     int *native_visual)
@@ -190,10 +188,10 @@ index 2bc9b3e7c64..b6478a1875b 100644
 +   return EGL_FALSE;
 +}
 +
- static EGLBoolean
++static EGLBoolean
  dri2_tizen_add_configs(_EGLDisplay *dpy)
  {
-@@ -811,83 +914,102 @@ dri2_tizen_add_configs(_EGLDisplay *dpy)
+    struct dri2_egl_display *dri2_dpy = dri2_egl_display(dpy);
     int count = 0;
  
     for (unsigned i = 0; dri2_dpy->driver_configs[i]; i++) {
@@ -238,7 +236,13 @@ index 2bc9b3e7c64..b6478a1875b 100644
        dri2_dpy->core->getConfigAttrib(dri2_dpy->driver_configs[i],
 -                                      __DRI_ATTRIB_CONFIG_CAVEAT, &caveat);
 +                                      __DRI_ATTRIB_RENDER_TYPE, &render_type);
-+
+ 
+-      res = tpl_display_query_config(dri2_dpy->tpl_dpy, TPL_SURFACE_TYPE_WINDOW,
+-                                     sizes[0], sizes[1], sizes[2], sizes[3],
+-                                     depth, &attr_list[1], &is_slow);
+-      if (res != TPL_ERROR_NONE)
+-         continue;
+-      surface_type |= EGL_WINDOW_BIT;
 +      if (render_type & __DRI_ATTRIB_RGBA_BIT) {
 +         static const struct rgba_shifts_and_sizes pbuffer_sasa[] = {
 +            {
@@ -263,17 +267,16 @@ index 2bc9b3e7c64..b6478a1875b 100644
 +         tpl_bool_t is_slow;
 +         tpl_result_t res;
  
--      res = tpl_display_query_config(dri2_dpy->tpl_dpy, TPL_SURFACE_TYPE_WINDOW,
--                                     sizes[0], sizes[1], sizes[2], sizes[3],
--                                     depth, &attr_list[1], &is_slow);
--      if (res != TPL_ERROR_NONE)
--         continue;
--      surface_type |= EGL_WINDOW_BIT;
+-      if (is_slow)
+-         caveat |= __DRI_ATTRIB_SLOW_BIT;
 +         dri2_get_shifts_and_sizes(dri2_dpy->core, dri2_dpy->driver_configs[i],
 +                                   shifts, sizes);
  
--      if (is_slow)
--         caveat |= __DRI_ATTRIB_SLOW_BIT;
+-      res = tpl_display_query_config(dri2_dpy->tpl_dpy, TPL_SURFACE_TYPE_PIXMAP,
+-                                     sizes[0], sizes[1], sizes[2], sizes[3],
+-                                     depth, NULL, &is_slow);
+-      if (res == TPL_ERROR_NONE) {
+-         surface_type |= EGL_PIXMAP_BIT;
 +         dri2_dpy->core->getConfigAttrib(dri2_dpy->driver_configs[i],
 +                                         __DRI_ATTRIB_BUFFER_SIZE, &depth);
 +
@@ -283,12 +286,7 @@ index 2bc9b3e7c64..b6478a1875b 100644
 +                                        depth, &attr_list[1], &is_slow);
 +         if (res != TPL_ERROR_NONE)
 +            continue;
- 
--      res = tpl_display_query_config(dri2_dpy->tpl_dpy, TPL_SURFACE_TYPE_PIXMAP,
--                                     sizes[0], sizes[1], sizes[2], sizes[3],
--                                     depth, NULL, &is_slow);
--      if (res == TPL_ERROR_NONE) {
--         surface_type |= EGL_PIXMAP_BIT;
++
 +         surface_type |= EGL_WINDOW_BIT;
  
           if (is_slow)
@@ -297,7 +295,13 @@ index 2bc9b3e7c64..b6478a1875b 100644
  
 -      for (unsigned j = 0; j < ARRAY_SIZE(pbuffer_sasa); j++) {
 -         const struct rgba_shifts_and_sizes *pbuffer_sas = &pbuffer_sasa[j];
--
++         res = tpl_display_query_config(dri2_dpy->tpl_dpy,
++                                        TPL_SURFACE_TYPE_PIXMAP,
++                                        sizes[0], sizes[1], sizes[2], sizes[3],
++                                        depth, NULL, &is_slow);
++         if (res == TPL_ERROR_NONE) {
++            surface_type |= EGL_PIXMAP_BIT;
+ 
 -         if (shifts[0] == pbuffer_sas->shifts[0] &&
 -             shifts[1] == pbuffer_sas->shifts[1] &&
 -             shifts[2] == pbuffer_sas->shifts[2] &&
@@ -308,13 +312,6 @@ index 2bc9b3e7c64..b6478a1875b 100644
 -             sizes[3] == pbuffer_sas->sizes[3]) {
 -            surface_type |= EGL_PBUFFER_BIT;
 -            break;
-+         res = tpl_display_query_config(dri2_dpy->tpl_dpy,
-+                                        TPL_SURFACE_TYPE_PIXMAP,
-+                                        sizes[0], sizes[1], sizes[2], sizes[3],
-+                                        depth, NULL, &is_slow);
-+         if (res == TPL_ERROR_NONE) {
-+            surface_type |= EGL_PIXMAP_BIT;
-+
 +            if (is_slow)
 +               caveat |= __DRI_ATTRIB_SLOW_BIT;
           }
@@ -352,6 +349,3 @@ index 2bc9b3e7c64..b6478a1875b 100644
  
        if (caveat & __DRI_ATTRIB_NON_CONFORMANT_CONFIG)
           attr_list[3] = EGL_NON_CONFORMANT_CONFIG;
--- 
-2.25.1
-

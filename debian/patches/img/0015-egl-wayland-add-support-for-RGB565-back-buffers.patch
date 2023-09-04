@@ -7,11 +7,11 @@ Subject: [PATCH 15/67] egl/wayland: add support for RGB565 back buffers
  src/egl/drivers/dri2/platform_wayland.c | 13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
-index cfff0ade90e..c18edc0de4e 100644
---- a/src/egl/drivers/dri2/platform_wayland.c
-+++ b/src/egl/drivers/dri2/platform_wayland.c
-@@ -633,18 +633,27 @@ back_bo_to_dri_buffer(struct dri2_egl_surface *dri2_surf, __DRIbuffer *buffer)
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_wayland.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+@@ -633,18 +633,27 @@ back_bo_to_dri_buffer(struct dri2_egl_su
     struct dri2_egl_display *dri2_dpy =
        dri2_egl_display(dri2_surf->base.Resource.Display);
     __DRIimage *image;
@@ -41,6 +41,3 @@ index cfff0ade90e..c18edc0de4e 100644
  }
  
  static int
--- 
-2.25.1
-

@@ -32,11 +32,11 @@ is 1.0.
  src/egl/main/eglapi.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/src/egl/main/eglapi.c b/src/egl/main/eglapi.c
-index 6ffcff8b2cc..3cd69b96a0f 100644
---- a/src/egl/main/eglapi.c
-+++ b/src/egl/main/eglapi.c
-@@ -888,6 +888,9 @@ eglMakeCurrent(EGLDisplay dpy, EGLSurface draw, EGLSurface read,
+Index: mesa-21.2.1/src/egl/main/eglapi.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/main/eglapi.c
++++ mesa-21.2.1/src/egl/main/eglapi.c
+@@ -888,6 +888,9 @@ eglMakeCurrent(EGLDisplay dpy, EGLSurfac
           RETURN_EGL_ERROR(disp, EGL_BAD_SURFACE, EGL_FALSE);
        if (draw_surf || read_surf)
           RETURN_EGL_ERROR(disp, EGL_BAD_MATCH, EGL_FALSE);
@@ -46,6 +46,3 @@ index 6ffcff8b2cc..3cd69b96a0f 100644
     }
  
     /*    If a native window underlying either draw or read is no longer valid,
--- 
-2.25.1
-

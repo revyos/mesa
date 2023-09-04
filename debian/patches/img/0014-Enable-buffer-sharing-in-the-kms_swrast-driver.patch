@@ -9,10 +9,10 @@ Wayland client when kms_swrast is being used by the compositor.
  src/gallium/frontends/dri/dri2.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/gallium/frontends/dri/dri2.c b/src/gallium/frontends/dri/dri2.c
-index ebc18a73c86..09f4b02e758 100644
---- a/src/gallium/frontends/dri/dri2.c
-+++ b/src/gallium/frontends/dri/dri2.c
+Index: mesa-21.2.1/src/gallium/frontends/dri/dri2.c
+===================================================================
+--- mesa-21.2.1.orig/src/gallium/frontends/dri/dri2.c
++++ mesa-21.2.1/src/gallium/frontends/dri/dri2.c
 @@ -2400,7 +2400,7 @@ dri_kms_init_screen(__DRIscreen * sPriv)
     if (!configs)
        goto destroy_screen;
@@ -22,6 +22,3 @@ index ebc18a73c86..09f4b02e758 100644
     screen->auto_fake_front = dri_with_format(sPriv);
     screen->broken_invalidate = !sPriv->dri2.useInvalidate;
     screen->lookup_egl_image = dri2_lookup_egl_image;
--- 
-2.25.1
-

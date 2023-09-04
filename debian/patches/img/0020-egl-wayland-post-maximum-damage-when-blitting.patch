@@ -14,11 +14,11 @@ when the number of damage rectangles is 1.
  src/egl/drivers/dri2/platform_wayland.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/src/egl/drivers/dri2/platform_wayland.c b/src/egl/drivers/dri2/platform_wayland.c
-index c18edc0de4e..c2e428769fe 100644
---- a/src/egl/drivers/dri2/platform_wayland.c
-+++ b/src/egl/drivers/dri2/platform_wayland.c
-@@ -1112,7 +1112,8 @@ dri2_wl_swap_buffers_with_damage(_EGLDisplay *disp,
+Index: mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+===================================================================
+--- mesa-21.2.1.orig/src/egl/drivers/dri2/platform_wayland.c
++++ mesa-21.2.1/src/egl/drivers/dri2/platform_wayland.c
+@@ -1112,7 +1112,8 @@ dri2_wl_swap_buffers_with_damage(_EGLDis
     /* If the compositor doesn't support damage_buffer, we deliberately
      * ignore the damage region and post maximum damage, due to
      * https://bugs.freedesktop.org/78190 */
@@ -28,6 +28,3 @@ index c18edc0de4e..c2e428769fe 100644
        wl_surface_damage(dri2_surf->wl_surface_wrapper,
                          0, 0, INT32_MAX, INT32_MAX);
  
--- 
-2.25.1
-
