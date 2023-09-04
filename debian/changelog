@@ -1,3 +1,10 @@
+mesa (1:21.2.1-2revyos1) unstable; urgency=medium
+
+  * Add pvr patch (ddk 1.17)
+  * Use llvm 15
+
+ -- Han Gao <gaohan@iscas.ac.cn>  Mon, 04 Sep 2023 17:47:00 +0800
+
 mesa (21.2.1-2) unstable; urgency=medium
 
   [ Adrian Bunk ]
