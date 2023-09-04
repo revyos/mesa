@@ -60,7 +60,7 @@ else
 
   ifeq ($(DEB_HOST_ARCH_OS), linux)
 	confflags_DRI3 = -Ddri3=enabled
-	DRI_DRIVERS += nouveau
+	DRI_DRIVERS += nouveau pvr
 	# Gallium drivers which require kernel support, not yet ported to non-Linux
 	GALLIUM_DRIVERS += nouveau virgl
 
