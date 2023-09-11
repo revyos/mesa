@@ -1,3 +1,10 @@
+mesa (1:21.2.1-2revyos2) unstable; urgency=medium
+
+  * Enable pvr vulkan
+  * Disable swrast vulkan(disable soft vulkan)
+
+ -- Han Gao <gaohan@iscas.ac.cn>  Tue, 12 Sep 2023 01:12:21 +0800
+
 mesa (1:21.2.1-2revyos1) unstable; urgency=medium
 
   * Add pvr patch (ddk 1.17)
