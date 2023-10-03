@@ -1,3 +1,12 @@
+mesa (1:21.2.1+2revyos1) unstable; urgency=medium
+
+  * Add pvr patch (ddk 1.17)
+  * Enable pvr vulkan & dri drivers
+  * Use llvm 14
+  * Disable swrast vulkan(disable soft vulkan)
+
+ -- Han Gao <gaohan@iscas.ac.cn>  Tue, 03 Oct 2023 18:52:54 +0800
+
 mesa (21.2.1-2) unstable; urgency=medium
 
   [ Adrian Bunk ]
