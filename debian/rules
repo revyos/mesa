@@ -155,6 +155,7 @@ confflags += \
 	-Dgallium-omx=disabled \
 	-Db_ndebug=true \
 	-Dbuild-tests=true \
+	-Ddraw-use-llvm=false \
 	$(confflags_DIRECT_RENDERING) \
 	$(confflags_GBM) \
 	$(confflags_DRI3) \
